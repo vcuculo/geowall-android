@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/layoutStyle" >
+
+    <RelativeLayout style="@style/layoutStyle" >
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/logo" />
+
+        <EditText
+            android:id="@+id/nickText"
+            style="@style/whiteText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/logo"
+            android:background="@drawable/text"
+            android:hint="@string/nickText" >
+
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/pwText"
+            style="@style/whiteText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nickText"
+            android:background="@drawable/text"
+            android:hint="@string/pwText"
+            android:inputType="textPassword" />
+
+        <LinearLayout
+            android:id="@+id/buttonLayout"
+            style="@style/layoutStyleHorizontal"
+            android:layout_below="@id/pwText" >
+
+            <Button
+                android:id="@+id/loginButton"
+                style="@style/buttonDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button"
+                android:text="@string/loginButton" />
+
+            <Button
+                android:id="@+id/registerButton"
+                style="@style/buttonDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button"
+                android:text="@string/registerButton" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/forgotLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/buttonLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:text="@string/forgotLabel"
+            android:textColor="@color/white" />
+
+        <LinearLayout
+            android:id="@+id/socialLayout"
+            style="@style/layoutStyle"
+            android:layout_below="@id/forgotLabel"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/socialLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/socialButton"
+                android:textColor="@color/white" />
+
+            <ImageButton
+                android:id="@+id/fbButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/socialbutton"
+                android:src="@drawable/facebook" />
+
+            <ImageButton
+                android:id="@+id/twButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/socialbutton"
+                android:src="@drawable/twitter" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</ScrollView>

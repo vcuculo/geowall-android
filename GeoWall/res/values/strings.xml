@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">GeoWall</string>
+    <string name="loginButton">Login</string>
+    <string name="registerButton">Signup</string>
+    <string name="nickText">Insert username or email</string>
+    <string name="pwText">Insert password</string>
+    <string name="forgotLabel">Forgot your password?</string>
+    <string name="socialButton">Login with</string>
+
+</resources>
