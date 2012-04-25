@@ -7,6 +7,8 @@
     <string name="nickText">Insert username or email</string>
     <string name="pwText">Insert password</string>
     <string name="forgotLabel">Forgot your password?</string>
-    <string name="socialButton">Login with</string>
+    <string name="socialButton">Login with:</string>
+    <string name="nextButton">Next</string>
+    <string name="backButton">Back</string>
 
 </resources>

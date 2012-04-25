@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/layoutStyleWhite" >
+
+    <RelativeLayout style="@style/layoutStyleWhite" >
+
+        <RelativeLayout
+            style="@style/barStyleGreen" >
+
+            <ImageView
+                android:id="@+id/logo2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/logoview" />
+
+            <LinearLayout
+                android:id="@+id/barRegistration"
+                style="@style/layoutStyleHorizontalGreen"
+                android:layout_toRightOf="@id/logo2"
+                android:gravity="right" >
+
+                <Button
+                    android:id="@+id/backButton"
+                    style="@style/buttonToolbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button"
+                    android:text="@string/backButton" />
+
+                <Button
+                    android:id="@+id/nextButton"
+                    style="@style/buttonToolbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button"
+                    android:text="@string/nextButton" />
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>
