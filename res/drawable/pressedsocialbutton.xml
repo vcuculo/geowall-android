@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
-<stroke android:color="@color/greenbuttonpressed"
-    android:width="20dp"></stroke>
-<solid android:color="@color/greenbuttonpressed"/>
-<size android:width="50px"
-    android:height="50px"/>
- <padding
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval" >
+
+    <stroke
+        android:width="20dp"
+        android:color="@color/darkgray" >
+    </stroke>
+
+    <solid android:color="@color/darkgray" />
+
+    <size
+        android:height="50px"
+        android:width="50px" />
+
+    <padding
+        android:bottom="5dp"
         android:left="5dp"
-        android:top="5dp"
         android:right="5dp"
-        android:bottom="5dp" />
+        android:top="5dp" />
+
 </shape>

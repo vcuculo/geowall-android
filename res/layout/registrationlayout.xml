@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/layoutStyle"
+    style="@style/layoutBackground"
     android:orientation="vertical" >
 
     <RelativeLayout
         android:id="@+id/barComplete"
         style="@style/barStyle"
-        android:background="@drawable/bar"
-        android:overScrollMode="never"
-        android:scrollbars="none" >
+        android:background="@drawable/bar" >
 
         <ImageView
             android:id="@+id/logo2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/logoview" />
 
@@ -24,20 +23,20 @@
             android:gravity="right" >
 
             <Button
-                android:id="@+id/backButton"
-                style="@style/buttonToolbar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button"
-                android:text="@string/backButton" />
-
-            <Button
                 android:id="@+id/nextButton"
                 style="@style/buttonToolbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button"
                 android:text="@string/nextButton" />
+
+            <Button
+                android:id="@+id/saveButton"
+                style="@style/buttonToolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button"
+                android:text="@string/saveButton" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -47,13 +46,22 @@
             style="@style/layoutStyle"
             android:gravity="center" >
 
+            <TextView
+                android:id="@+id/registrationText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/registrationText"
+                android:textColor="@color/black" />
+
             <EditText
                 android:id="@+id/nickRegistrationText"
                 style="@style/whiteText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/barComplete"
-                android:layout_marginTop="40dp"
+                android:layout_below="@id/registrationText"
                 android:background="@drawable/normaltext"
                 android:hint="@string/nickRegistrationText" />
 
@@ -78,17 +86,6 @@
                 android:background="@drawable/normaltext"
                 android:hint="@string/pwRegistrationText"
                 android:inputType="textPassword" />
-
-            <Button
-                android:id="@+id/saveButton"
-                style="@style/buttonDisplay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/button"
-                android:layout_below="@id/pwRegistrationText"
-                android:text="@string/saveButton" />
-
         </RelativeLayout>
     </ScrollView>
 

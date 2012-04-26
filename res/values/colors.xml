@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="greenbackground">#7B6450</color>
     <color name="greenbutton">#688700</color>
-    <color name="greenbuttonpressed">#DBFF63</color>
+    <color name="greenbuttonpressed">#425700</color>
     <color name="greenBar">#8AA337</color>
     <color name="greenBarCenter">#ACC96E</color>
-    <color name="gray">#F3FCDB</color>
+    <color name="lightgray">#F3FCDB</color>
+    <color name="darkgray">#6D6D6B</color>
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray">#CCCCCC</color>
+
 </resources>

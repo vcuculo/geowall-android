@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="layoutBackground">
+        <item name="android:background">@drawable/background</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:tileMode">repeat</item>
+    </style>
+
     <style name="layoutStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">@color/greenbackground</item>
     </style>
 
     <style name="barStyle">
@@ -13,7 +19,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingTop">5dp</item>
         <item name="android:paddingBottom">5dp</item>
-        <item name="android:gravity">clip_vertical</item>
     </style>
 
     <style name="layoutStyleHorizontal">
