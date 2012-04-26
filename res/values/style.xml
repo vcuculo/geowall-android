@@ -8,16 +8,13 @@
         <item name="android:background">@color/greenbackground</item>
     </style>
 
-    <style name="layoutStyleWhite" parent="@style/layoutStyle">
-        
-        <item name="android:background">@color/white</item>
-    </style>
-    
-    <style name="barStyleGreen">
+    <style name="barStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
         <item name="android:gravity">clip_vertical</item>
-        <item name="android:background">@color/greenbackground</item>
+       
     </style>
 
     <style name="layoutStyleHorizontal">
@@ -25,12 +22,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:gravity">center_horizontal</item>
-    </style>
-    
-    <style name="layoutStyleHorizontalGreen" parent="@style/layoutStyleHorizontal">
-        <item name="android:background">@color/greenbackground</item>
-        <item name="android:gravity">center</item>
-      
     </style>
 
     <style name="whiteText">
@@ -40,6 +31,7 @@
         <item name="android:layout_marginRight">15dp</item>
         <item name="android:padding">10dp</item>
     </style>
+
 
     <style name="buttonDisplay">
         <item name="android:paddingLeft">20dp</item>
@@ -53,17 +45,19 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/white</item>
     </style>
-	<style name="buttonToolbar">
-	      <item name="android:paddingLeft">10dp</item>
+
+    <style name="buttonToolbar">
+        <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
-        <item name="android:paddingTop">5dp</item>
-        <item name="android:paddingBottom">5dp</item>
-         <item name="android:layout_marginTop">5dp</item>
-          <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
         <item name="android:layout_marginLeft">5dp</item>
         <item name="android:layout_marginRight">5dp</item>
         <item name="android:textSize">15dp</item>
-	     <item name="android:textStyle">bold</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/white</item>
-	</style>
+    </style>
+
 </resources>
