@@ -10,5 +10,8 @@
     <string name="socialButton">Login with:</string>
     <string name="nextButton">Next</string>
     <string name="backButton">Back</string>
+    <string name="nickRegistrationText">Insert username</string>
+    <string name="pwRegistrationText">Insert password</string>
+    <string name="emailRegistrationText">Insert email</string>
 
 </resources>
