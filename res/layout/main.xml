@@ -21,9 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/logo"
             android:background="@drawable/text"
+            android:singleLine="true"
             android:hint="@string/nickText" >
-
-            <requestFocus />
         </EditText>
 
         <EditText
