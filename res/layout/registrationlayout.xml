@@ -1,81 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/layoutStyle" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/layoutStyle"
+    android:orientation="vertical" >
 
-    <RelativeLayout style="@style/layoutStyle" >
+    <RelativeLayout
+        android:id="@+id/barComplete"
+        style="@style/barStyle"
+        android:background="@drawable/bar"
+        android:overScrollMode="never"
+        android:scrollbars="none" >
 
-        <RelativeLayout
-            android:id="@+id/barComplete"
-            style="@style/barStyle"
-            android:background="@drawable/bar"
-             >
+        <ImageView
+            android:id="@+id/logo2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/logoview" />
 
-            <ImageView
-                android:id="@+id/logo2"
+        <LinearLayout
+            android:id="@+id/barRegistration"
+            style="@style/layoutStyleHorizontal"
+            android:layout_toRightOf="@id/logo2"
+            android:gravity="right" >
+
+            <Button
+                android:id="@+id/backButton"
+                style="@style/buttonToolbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/logoview" />
+                android:background="@drawable/button"
+                android:text="@string/backButton" />
 
-            <LinearLayout
-                android:id="@+id/barRegistration"
-                style="@style/layoutStyleHorizontal"
-                android:layout_toRightOf="@id/logo2"
-                android:gravity="right" >
-
-                <Button
-                    android:id="@+id/backButton"
-                    style="@style/buttonToolbar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/button"
-                    android:text="@string/backButton" />
-
-                <Button
-                    android:id="@+id/nextButton"
-                    style="@style/buttonToolbar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/button"
-                    android:text="@string/nextButton" />
-
-                <requestFocus />
-            </LinearLayout>
-        </RelativeLayout>
-
-        <EditText
-            android:id="@+id/nickRegistrationText"
-            style="@style/whiteText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/barComplete"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/normaltext"
-            android:hint="@string/nickRegistrationText" >
-        </EditText>
-
-        <EditText
-            android:id="@+id/emailRegistrationText"
-            style="@style/whiteText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/nickRegistrationText"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/normaltext"
-            android:inputType="textEmailAddress"
-            android:hint="@string/emailRegistrationText" >
-        </EditText>
-
-        <EditText
-            android:id="@+id/pwRegistrationText"
-            style="@style/whiteText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/emailRegistrationText"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/normaltext"
-            android:inputType="textPassword"
-            android:hint="@string/pwRegistrationText" />
+            <Button
+                android:id="@+id/nextButton"
+                style="@style/buttonToolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button"
+                android:text="@string/nextButton" />
+        </LinearLayout>
     </RelativeLayout>
 
-</ScrollView>
+    <ScrollView style="@style/layoutStyle" >
+
+        <RelativeLayout
+            style="@style/layoutStyle"
+            android:gravity="center" >
+
+            <EditText
+                android:id="@+id/nickRegistrationText"
+                style="@style/whiteText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/barComplete"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/normaltext"
+                android:hint="@string/nickRegistrationText" />
+
+            <EditText
+                android:id="@+id/emailRegistrationText"
+                style="@style/whiteText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/nickRegistrationText"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/normaltext"
+                android:hint="@string/emailRegistrationText"
+                android:inputType="textEmailAddress" />
+
+            <EditText
+                android:id="@+id/pwRegistrationText"
+                style="@style/whiteText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/emailRegistrationText"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/normaltext"
+                android:hint="@string/pwRegistrationText"
+                android:inputType="textPassword" />
+
+            <Button
+                android:id="@+id/saveButton"
+                style="@style/buttonDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/button"
+                android:layout_below="@id/pwRegistrationText"
+                android:text="@string/saveButton" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+</LinearLayout>

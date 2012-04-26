@@ -11,4 +11,5 @@
     <string name="nickRegistrationText">Insert username</string>
     <string name="pwRegistrationText">Insert password</string>
     <string name="emailRegistrationText">Insert email</string>
+    <string name="saveButton">Save</string>
 </resources>
