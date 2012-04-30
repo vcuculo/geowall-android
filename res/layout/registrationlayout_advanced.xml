@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/layoutBackground"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/barCompleteAdavanced"
+        style="@style/barStyle"
+        android:background="@drawable/bar" >
+
+        <ImageView
+            android:id="@+id/logo2Advanced"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/logoview" />
+
+        <LinearLayout
+            android:id="@+id/barRegistrationAdvanced"
+            style="@style/layoutStyleHorizontal"
+            android:layout_toRightOf="@id/logo2"
+            android:gravity="right" >
+
+            <Button
+                android:id="@+id/saveButtonAdvanced"
+                style="@style/buttonToolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button"
+                android:text="@string/saveButton" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ScrollView style="@style/layoutStyle" >
+
+        <LinearLayout
+            style="@style/layoutStyle"
+            android:layout_gravity="left"
+            android:layout_marginTop="10dp"
+            android:gravity="left"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/registrationAdvancedText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/registrationAdvancedText"
+                android:textColor="@color/black" />
+
+            <LinearLayout
+                style="@style/layoutStyleHorizontal"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:gravity="left" >
+
+                <TextView
+                    android:id="@+id/photoText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/photoText"
+                    android:textColor="@color/black" />
+
+                <ImageButton
+                    android:id="@+id/putImageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/updateimage" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/layoutStyleHorizontal"
+                
+                android:layout_marginTop="10dp"
+                android:layout_gravity="left"
+                android:gravity="left" >
+
+                <TextView
+                    android:id="@+id/birthdayText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/birthdayText"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/dateRegistrationText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"
+                    android:hint="@string/formatDate" />
+
+                <ImageButton
+                    android:id="@+id/calendarButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/calendar" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/countryText"
+                style="@style/whiteText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/normaltext"
+                android:hint="@string/countryText" />
+
+            <EditText
+                android:id="@+id/cityText"
+                style="@style/whiteText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/normaltext"
+                android:hint="@string/cityText" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

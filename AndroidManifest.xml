@@ -22,6 +22,10 @@
             android:name=".RegistrationActivity"
             android:windowSoftInputMode="stateHidden" >
         </activity>
+         <activity
+            android:name=".Registration_AdvancedActivity"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
     </application>
 
 </manifest>

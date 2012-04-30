@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="loginButton">Login</string>
     <string name="registerButton">Signup</string>
     <string name="nickText">Insert username or email</string>
@@ -13,4 +14,11 @@
     <string name="emailRegistrationText">Insert email</string>
     <string name="saveButton">Save</string>
     <string name="registrationText">Sign up, all fields are mandatory.</string>
+    <string name="registrationAdvancedText">Sign up, all fields are optional.</string>
+    <string name="birthdayText">Birthday:</string>
+    <string name="photoText">Profile picture:</string>
+    <string name="formatDate">mm/dd/yyyy</string>
+    <string name="cityText">Insert your city</string>
+    <string name="countryText">Insert your country</string>
+
 </resources>

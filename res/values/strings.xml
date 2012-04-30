@@ -15,4 +15,11 @@
     <string name="emailRegistrationText">Insert email</string>
     <string name="saveButton">Save</string>
     <string name="registrationText">Sign up, all fields are mandatory.</string>
+    <string name="registrationAdvancedText">Sign up, all fields are optional.</string>
+    <string name="birthdayText">Birthday</string>
+    <string name="photoText">Profile picture</string>
+    <string name="formatDate">dd/mm/yyyy</string>
+    <string name="cityText">Insert your city</string>
+    <string name="countryText">Insert your country</string>
+
 </resources>
