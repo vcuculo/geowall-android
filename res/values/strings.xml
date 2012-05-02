@@ -14,6 +14,7 @@
     <string name="pwRegistrationText">Insert password</string>
     <string name="emailRegistrationText">Insert email</string>
     <string name="saveButton">Save</string>
+    <string name="finishButton">Finish</string>
     <string name="registrationText">Sign up, all fields are required.</string>
     <string name="registrationAdvancedText">All fields are optional.</string>
     <string name="birthdayText">Birthday</string>
