@@ -61,13 +61,26 @@
                 android:text="@string/photoText"
                 android:textColor="@color/black" />
 
-            <ImageButton
-                android:id="@+id/putImageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/updateimage" />
+                <TextView
+                    android:id="@+id/photoText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/photoText"
+                    android:textColor="@color/black" />
+
+                <ImageButton
+                    android:id="@+id/putImageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/updateimage" />
+
+            </LinearLayout>
+
 
             <LinearLayout
                 style="@style/layoutStyleHorizontal"
@@ -113,6 +126,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/normaltext"
+                android:editable="false"
                 android:hint="@string/countryText" />
 
             <EditText
@@ -126,7 +140,7 @@
                 android:background="@drawable/normaltext"
                 android:hint="@string/cityText" />
 
-        </LinearLayout>
+       
     </ScrollView>
 
 </LinearLayout>
