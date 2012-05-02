@@ -9,17 +9,17 @@
         android:background="@drawable/bar" >
 
         <ImageView
-            android:id="@+id/logo2Advanced"
+            android:id="@+id/accountImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/logoview" />
+            android:layout_marginTop="5dp"
+            android:src="@drawable/account" />
 
         <LinearLayout
             android:id="@+id/barRegistrationAdvanced"
             style="@style/layoutStyleHorizontal"
-            android:layout_toRightOf="@id/logo2"
+            android:layout_toRightOf="@id/accountImage"
             android:gravity="right" >
 
             <Button
@@ -51,36 +51,28 @@
                 android:text="@string/registrationAdvancedText"
                 android:textColor="@color/black" />
 
-            <LinearLayout
-                style="@style/layoutStyleHorizontal"
+            <TextView
+                android:id="@+id/photoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
-                android:layout_gravity="left"
-                android:gravity="left" >
+                android:text="@string/photoText"
+                android:textColor="@color/black" />
 
-                <TextView
-                    android:id="@+id/photoText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/photoText"
-                    android:textColor="@color/black" />
-
-                <ImageButton
-                    android:id="@+id/putImageButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="10dp"
-                    android:src="@drawable/updateimage" />
-            </LinearLayout>
+            <ImageButton
+                android:id="@+id/putImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/updateimage" />
 
             <LinearLayout
                 style="@style/layoutStyleHorizontal"
-                
-                android:layout_marginTop="10dp"
                 android:layout_gravity="left"
+                android:layout_marginTop="10dp"
                 android:gravity="left" >
 
                 <TextView
@@ -100,17 +92,17 @@
                     android:layout_marginBottom="5dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="10dp"
-                    android:textSize="20dp"
+                    android:hint="@string/formatDate"
                     android:textColor="@color/black"
-                    android:hint="@string/formatDate" />
-
-                <ImageButton
-                    android:id="@+id/calendarButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:src="@drawable/calendar" />
+                    android:textSize="20dp" />
             </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/calendarButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/calendar" />
 
             <EditText
                 android:id="@+id/countryText"
@@ -119,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/normaltext"
                 android:hint="@string/countryText" />
 
@@ -133,6 +125,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/normaltext"
                 android:hint="@string/cityText" />
+
         </LinearLayout>
     </ScrollView>
 

@@ -9,17 +9,17 @@
         android:background="@drawable/bar" >
 
         <ImageView
-            android:id="@+id/logo2"
+            android:id="@+id/accountImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/logoview" />
+            android:layout_marginTop="5dp"
+            android:src="@drawable/account" />
 
         <LinearLayout
             android:id="@+id/barRegistration"
             style="@style/layoutStyleHorizontal"
-            android:layout_toRightOf="@id/logo2"
+            android:layout_toRightOf="@id/accountImage"
             android:gravity="right" >
 
             <Button
