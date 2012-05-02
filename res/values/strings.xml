@@ -22,7 +22,5 @@
     <string name="formatDate">dd/mm/yyyy</string>
     <string name="cityText">Insert your city</string>
     <string name="countryText">Insert your country</string>
-
-
-
+    
 </resources>

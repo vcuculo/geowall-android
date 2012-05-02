@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -25,6 +26,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 	private TextView mDateDisplay, countryText;
 	private ImageButton mPickDate, imageButton;
 	private ImageView accountImage;
+	private Button saveButton;
 	private int mYear;
 	private int mMonth;
 	private int mDay;
@@ -37,9 +39,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 	// it is used to callback activity
 	static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 
-
 	static final String STOREIMAGE = "image/*";
-
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -49,21 +49,20 @@ public class RegistrationAdvancedActivity extends Activity implements
 		mDateDisplay = (TextView) findViewById(R.id.dateRegistrationText);
 		mPickDate = (ImageButton) findViewById(R.id.calendarButton);
 		imageButton = (ImageButton) findViewById(R.id.putImageButton);
-
-		accountImage=(ImageView) findViewById(R.id.accountImage);
-
+		saveButton = (Button) findViewById(R.id.saveButtonAdvanced);
+		accountImage = (ImageView) findViewById(R.id.accountImage);
 		countryText = (TextView) findViewById(R.id.countryText);
-
 
 		mPickDate.setOnClickListener(this);
 		imageButton.setOnClickListener(this);
 		countryText.setOnClickListener(this);
+		saveButton.setOnClickListener(this);
 		// get the current date
 		Calendar c = Calendar.getInstance();
 		mYear = c.get(Calendar.YEAR);
 		mMonth = c.get(Calendar.MONTH);
 		mDay = c.get(Calendar.DAY_OF_MONTH);
-
+		updateBirthday();
 	}
 
 	@Override
@@ -79,6 +78,10 @@ public class RegistrationAdvancedActivity extends Activity implements
 			break;
 		case R.id.countryText:
 			showDialog(COUNTRY_DIALOG_ID);
+			break;
+		case R.id.saveButtonAdvanced:
+			Intent i = new Intent(this, GeoMapActivity.class);
+			this.startActivity(i);
 			break;
 		}
 	}
@@ -135,17 +138,11 @@ public class RegistrationAdvancedActivity extends Activity implements
 	 */
 	protected void captureImage() {
 
-
-		
-
-
 		Intent imageIntent = MediaController.captureMedia(STOREIMAGE);
 
 		startActivityForResult(
 				Intent.createChooser(imageIntent, "Select Picture"),
 				CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-
-
 
 	}
 
@@ -157,9 +154,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 				Toast.makeText(this, "Image saved to:\n" + data.getData(),
 						Toast.LENGTH_LONG).show();
 
-				
 				accountImage.setImageURI(data.getData());
-				
 
 			} else if (resultCode == RESULT_CANCELED) {
 				// User cancelled the image capture
@@ -167,8 +162,6 @@ public class RegistrationAdvancedActivity extends Activity implements
 				// Image capture failed, advise user
 			}
 		}
-
-	
 
 	}
 }
