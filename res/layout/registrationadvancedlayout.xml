@@ -32,7 +32,7 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <ScrollView style="@style/layoutStyle">
+    <ScrollView style="@style/layoutStyle" >
 
         <LinearLayout
             style="@style/layoutStyle"
@@ -61,13 +61,13 @@
                 android:text="@string/photoText"
                 android:textColor="@color/black" />
 
-                <ImageButton
-                    android:id="@+id/putImageButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="10dp"
-                    android:src="@drawable/updateimage" />
+            <ImageButton
+                android:id="@+id/putImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/updateimage" />
 
             <LinearLayout
                 style="@style/layoutStyleHorizontal"
@@ -122,14 +122,13 @@
                 style="@style/whiteText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
                 android:background="@drawable/normaltext"
                 android:hint="@string/cityText" />
-
-       </LinearLayout>
+        </LinearLayout>
     </ScrollView>
 
 </LinearLayout>

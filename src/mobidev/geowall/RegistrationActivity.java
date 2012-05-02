@@ -28,7 +28,7 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		
-		Intent i = new Intent(this, Registration_AdvancedActivity.class);
+		Intent i = new Intent(this, RegistrationAdvancedActivity.class);
 		this.startActivity(i);
 	}
 

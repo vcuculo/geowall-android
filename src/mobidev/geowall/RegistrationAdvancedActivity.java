@@ -20,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Registration_AdvancedActivity extends Activity implements
+public class RegistrationAdvancedActivity extends Activity implements
 		OnClickListener {
 	private TextView mDateDisplay, countryText;
 	private ImageButton mPickDate, imageButton;
@@ -44,7 +44,7 @@ public class Registration_AdvancedActivity extends Activity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.registrationlayout_advanced);
+		setContentView(R.layout.registrationadvancedlayout);
 
 		mDateDisplay = (TextView) findViewById(R.id.dateRegistrationText);
 		mPickDate = (ImageButton) findViewById(R.id.calendarButton);

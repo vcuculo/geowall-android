@@ -25,7 +25,7 @@
             android:windowSoftInputMode="stateHidden" >
         </activity>
          <activity
-            android:name=".Registration_AdvancedActivity"
+            android:name=".RegistrationAdvancedActivity"
             android:windowSoftInputMode="stateHidden" >
             <intent-filter >
                 <action android:name="android.intent.action.GET_CONTENT" />
