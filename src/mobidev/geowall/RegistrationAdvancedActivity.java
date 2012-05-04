@@ -1,6 +1,9 @@
 package mobidev.geowall;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,8 +12,12 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -35,11 +42,15 @@ public class RegistrationAdvancedActivity extends Activity implements
 	// the date picker
 	static final int DATE_DIALOG_ID = 0;
 	static final int COUNTRY_DIALOG_ID = 1;
+	static final int MEDIA_DIALOG_ID = 2;
 
 	// it is used to callback activity
 	static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+	static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 200;
 
 	static final String STOREIMAGE = "image/*";
+	
+	private int optionMedia;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -74,7 +85,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 			showDialog(DATE_DIALOG_ID);
 			break;
 		case R.id.putImageButton:
-			captureImage();
+			showDialog(MEDIA_DIALOG_ID);
 			break;
 		case R.id.countryText:
 			showDialog(COUNTRY_DIALOG_ID);
@@ -129,6 +140,21 @@ public class RegistrationAdvancedActivity extends Activity implements
 					});
 			AlertDialog alert = builder.create();
 			return alert;
+
+		case MEDIA_DIALOG_ID:
+			final CharSequence[] items = getResources().getStringArray(
+					R.array.mediaOption);
+
+			AlertDialog.Builder buildOption = new AlertDialog.Builder(this);
+			buildOption.setTitle(R.string.mediaText);
+			buildOption.setItems(items, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int item) {
+					getMedia(item+1);
+				}
+			});
+			AlertDialog alertOtpion = buildOption.create();
+
+			return alertOtpion;
 		}
 		return null;
 	}
@@ -136,14 +162,12 @@ public class RegistrationAdvancedActivity extends Activity implements
 	/**
 	 * This is used to capture image
 	 */
-	protected void captureImage() {
+	protected void getMedia(int option) {
 
-		Intent imageIntent = MediaController.captureMedia(STOREIMAGE);
-
-		startActivityForResult(
-				Intent.createChooser(imageIntent, "Select Picture"),
-				CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-
+		
+		Intent imageIntent= MediaController.getMedia(option);
+	
+		startActivityForResult(imageIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 	}
 
 	@Override
@@ -151,10 +175,8 @@ public class RegistrationAdvancedActivity extends Activity implements
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) {
 				// Image captured and saved to fileUri specified in the Intent
-				Toast.makeText(this, "Image saved to:\n" + data.getData(),
+				Toast.makeText(this, "Image saved to:\n" + data,
 						Toast.LENGTH_LONG).show();
-
-				accountImage.setImageURI(data.getData());
 
 			} else if (resultCode == RESULT_CANCELED) {
 				// User cancelled the image capture
@@ -163,5 +185,19 @@ public class RegistrationAdvancedActivity extends Activity implements
 			}
 		}
 
+		if (requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE) {
+			if (resultCode == RESULT_OK) {
+				// Video captured and saved to fileUri specified in the Intent
+				Toast.makeText(this,
+						"Video saved to:\n" + data.getData().getPath(),
+						Toast.LENGTH_LONG).show();
+			} else if (resultCode == RESULT_CANCELED) {
+				// User cancelled the video capture
+			} else {
+				// Video capture failed, advise user
+			}
+		}
+
 	}
+
 }
