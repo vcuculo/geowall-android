@@ -178,13 +178,16 @@ public class RegistrationAdvancedActivity extends Activity implements
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) {
 				if (data != null) {
-					//user select image to the directory
-					Drawable image= BitmapDrawable.createFromPath(data.getDataString());
-					accountImage.setImageDrawable(image);
+					// user select image to the directory
+					int height, width;
 					
-				}
-				else{
-					//user take photo
+					accountImage.setAdjustViewBounds(true);
+					accountImage.setMaxHeight(40);
+					accountImage.setMaxWidth(40);
+					accountImage.setImageURI(data.getData());
+
+				} else {
+					// user take photo
 				}
 
 			} else if (resultCode == RESULT_CANCELED) {
