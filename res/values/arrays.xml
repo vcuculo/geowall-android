@@ -241,11 +241,15 @@
         <item>Zambia</item>
         <item>Zimbabwe</item>
     </string-array>
-    <string-array name="mediaOption">
-        <item>Select Image</item>
-        <item>Select Video</item>
-        <item>Take Photo</item>
-        <item>Take Video</item>
+    <string-array name="mediaPhoto">
+        <item>Image Store</item>
+        <item>Take a Photo</item>
+    </string-array>
+     <string-array name="media">
+        <item>Image Store</item>
+        <item>Take a Photo</item>
+         <item>Video Store</item>
+        <item>Take a Video</item>
     </string-array>
 
 </resources>

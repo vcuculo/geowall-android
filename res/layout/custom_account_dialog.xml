@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/accountDialog"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/imageItem"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal"
+        android:padding="10dp" >
+
+        <ImageView
+            android:id="@+id/imageGetPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/image" />
+
+        <TextView
+            android:id="@+id/getPhotoText"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="@string/getPhotoText"
+            android:textColor="#FFF" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/takePhotoItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp" >
+
+        <ImageView
+            android:id="@+id/imageTakePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/camera" />
+
+        <TextView
+            android:id="@+id/takePhotoText"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="@string/takePhotoText"
+            android:textColor="#FFF" />
+    </LinearLayout>
+
+</LinearLayout>

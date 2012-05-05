@@ -23,5 +23,6 @@
     <string name="cityText">Insert your city</string>
     <string name="countryText">Insert your country</string>
     <string name="mediaText">Select Mode</string>
-    
+    <string name="getPhotoText">Select Photo</string>
+    <string name="takePhotoText">Take a Photo</string>
 </resources>

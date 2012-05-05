@@ -1,23 +1,22 @@
 package mobidev.geowall;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 
 import android.util.Log;
+
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -49,8 +48,8 @@ public class RegistrationAdvancedActivity extends Activity implements
 	static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 200;
 
 	static final String STOREIMAGE = "image/*";
-	
-	private int optionMedia;
+
+	;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -142,19 +141,24 @@ public class RegistrationAdvancedActivity extends Activity implements
 			return alert;
 
 		case MEDIA_DIALOG_ID:
-			final CharSequence[] items = getResources().getStringArray(
-					R.array.mediaOption);
+			final String[] items = getResources().getStringArray(
+					R.array.mediaPhoto);
 
-			AlertDialog.Builder buildOption = new AlertDialog.Builder(this);
-			buildOption.setTitle(R.string.mediaText);
-			buildOption.setItems(items, new DialogInterface.OnClickListener() {
+			AlertDialog.Builder buildMedia = new AlertDialog.Builder(this);
+			buildMedia.setTitle(R.string.mediaText);
+			buildMedia.setIcon(R.drawable.camera);
+			buildMedia.setItems(items, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int item) {
-					getMedia(item+1);
+					if (item == 0)
+						getMedia(MediaController.MEDIA_TYPE_IMAGE,
+								CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+					if (item == 1)
+						getMedia(MediaController.TAKE_PHOTO,
+								CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 				}
 			});
-			AlertDialog alertOtpion = buildOption.create();
-
-			return alertOtpion;
+			AlertDialog alertMedia = buildMedia.create();
+			return alertMedia;
 		}
 		return null;
 	}
@@ -162,21 +166,26 @@ public class RegistrationAdvancedActivity extends Activity implements
 	/**
 	 * This is used to capture image
 	 */
-	protected void getMedia(int option) {
+	protected void getMedia(int option, int captureImage) {
 
-		
-		Intent imageIntent= MediaController.getMedia(option);
-	
-		startActivityForResult(imageIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+		Intent imageIntent = MediaController.getMedia(option);
+
+		startActivityForResult(imageIntent, captureImage);
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) {
-				// Image captured and saved to fileUri specified in the Intent
-				Toast.makeText(this, "Image saved to:\n" + data,
-						Toast.LENGTH_LONG).show();
+				if (data != null) {
+					//user select image to the directory
+					Drawable image= BitmapDrawable.createFromPath(data.getDataString());
+					accountImage.setImageDrawable(image);
+					
+				}
+				else{
+					//user take photo
+				}
 
 			} else if (resultCode == RESULT_CANCELED) {
 				// User cancelled the image capture
