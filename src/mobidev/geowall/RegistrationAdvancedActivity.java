@@ -1,5 +1,8 @@
 package mobidev.geowall;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Calendar;
 
 import android.app.Activity;
@@ -10,10 +13,13 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 
 import android.util.Log;
 
@@ -49,7 +55,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 
 	static final String STOREIMAGE = "image/*";
 
-	;
+	File imageAccountFile = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -67,6 +73,17 @@ public class RegistrationAdvancedActivity extends Activity implements
 		imageButton.setOnClickListener(this);
 		countryText.setOnClickListener(this);
 		saveButton.setOnClickListener(this);
+
+		imageAccountFile = MediaController.getImage();
+
+		
+		if (imageAccountFile.exists()) {
+			accountImage.setAdjustViewBounds(true);
+			accountImage.setMaxHeight(40);
+			accountImage.setMaxWidth(40);
+			accountImage.setImageURI(Uri.fromFile(imageAccountFile));
+		}
+
 		// get the current date
 		Calendar c = Calendar.getInstance();
 		mYear = c.get(Calendar.YEAR);
@@ -179,15 +196,34 @@ public class RegistrationAdvancedActivity extends Activity implements
 			if (resultCode == RESULT_OK) {
 				if (data != null) {
 					// user select image to the directory
-					int height, width;
-					
+
 					accountImage.setAdjustViewBounds(true);
 					accountImage.setMaxHeight(40);
 					accountImage.setMaxWidth(40);
 					accountImage.setImageURI(data.getData());
 
+					Uri image = data.getData();
+					InputStream in;
+					try {
+						in = getContentResolver().openInputStream(image);
+						Bitmap imageBitmap = BitmapFactory.decodeStream(in);
+						MediaController.saveMedia(imageBitmap,
+								MediaController.MEDIA_TYPE_IMAGE);
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
 				} else {
 					// user take photo
+					accountImage.setAdjustViewBounds(true);
+					accountImage.setMaxHeight(40);
+					accountImage.setMaxWidth(40);
+					imageAccountFile = MediaController.getImage();
+					Bitmap b = BitmapFactory.decodeFile(imageAccountFile
+							.getPath());
+					accountImage.setImageBitmap(b);
+
 				}
 
 			} else if (resultCode == RESULT_CANCELED) {

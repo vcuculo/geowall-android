@@ -1,11 +1,20 @@
 package mobidev.geowall;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -36,15 +45,15 @@ public class MediaController {
 			Intent imageIntent = new Intent(Intent.ACTION_GET_CONTENT);
 			imageIntent.setType(STOREIMAGE);
 			return imageIntent;
-		}else if(mediatype== MEDIA_TYPE_VIDEO){
+		} else if (mediatype == MEDIA_TYPE_VIDEO) {
 			Intent imageIntent = new Intent(Intent.ACTION_GET_CONTENT);
 			imageIntent.setType(STOREVIDEO);
 			return imageIntent;
-		}
-		else if (mediatype == TAKE_PHOTO) {
+		} else if (mediatype == TAKE_PHOTO) {
 			Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			intent.putExtra(MediaStore.EXTRA_OUTPUT,
 					getOutputMediaFileUri(MEDIA_TYPE_IMAGE));
+
 			return intent;
 
 		} else if (mediatype == TAKE_VIDEO) {
@@ -57,7 +66,28 @@ public class MediaController {
 
 	}
 
-	
+	protected static boolean saveMedia(Bitmap image, int type) {
+		if (image == null)
+			return false;
+		File temp = getOutputMediaFile(type);
+
+		try {
+			FileOutputStream stream = new FileOutputStream(temp);
+
+			image.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+			return true;
+		} catch (IOException e) {
+			Log.i("Error", e.getMessage());
+			return false;
+		}
+
+	}
+
+	protected static File getImage() {
+
+		return getOutputMediaFile(MEDIA_TYPE_IMAGE);
+
+	}
 
 	/** Create a file Uri for saving an image or video */
 	private static Uri getOutputMediaFileUri(int type) {

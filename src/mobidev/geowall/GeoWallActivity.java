@@ -1,5 +1,7 @@
 package mobidev.geowall;
 
+import java.io.File;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,9 +42,17 @@ public class GeoWallActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 
-		// Il codice che segue lo utlizzo solo per far partire
-		// l'activity di registrazione per fare delle prove
-		Intent i = new Intent(this, RegistrationActivity.class);
-		this.startActivity(i);
+		switch (v.getId()) {
+		case R.id.registerButton:
+			// Il codice che segue lo utlizzo solo per far partire
+			// l'activity di registrazione per fare delle prove
+			Intent i = new Intent(this, RegistrationActivity.class);
+			this.startActivity(i);
+
+			// delete image temp if it exists
+			File temp = MediaController.getImage();
+			temp.delete();
+			break;
+		}
 	}
 }
