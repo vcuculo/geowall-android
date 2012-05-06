@@ -88,6 +88,10 @@ public class MediaController {
 		return getOutputMediaFile(MEDIA_TYPE_IMAGE);
 
 	}
+	
+	protected static File getVideo(){
+		return getOutputMediaFile(MEDIA_TYPE_VIDEO);
+	}
 
 	/** Create a file Uri for saving an image or video */
 	private static Uri getOutputMediaFileUri(int type) {

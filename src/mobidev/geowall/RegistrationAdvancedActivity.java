@@ -14,10 +14,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
 import android.net.Uri;
+
 import android.os.Bundle;
 import android.provider.MediaStore;
 
@@ -74,6 +77,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 		countryText.setOnClickListener(this);
 		saveButton.setOnClickListener(this);
 
+		/*
 		imageAccountFile = MediaController.getImage();
 
 		
@@ -83,7 +87,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 			accountImage.setMaxWidth(40);
 			accountImage.setImageURI(Uri.fromFile(imageAccountFile));
 		}
-
+*/
 		// get the current date
 		Calendar c = Calendar.getInstance();
 		mYear = c.get(Calendar.YEAR);
@@ -92,6 +96,21 @@ public class RegistrationAdvancedActivity extends Activity implements
 		updateBirthday();
 	}
 
+	public void onResume(){
+		super.onResume();
+		
+		imageAccountFile = MediaController.getImage();
+
+		if (imageAccountFile.exists()) {
+			accountImage.setAdjustViewBounds(true);
+			accountImage.setMaxHeight(40);
+			accountImage.setMaxWidth(40);
+			accountImage.setImageURI(Uri.fromFile(imageAccountFile));
+			
+		}
+	
+	}
+	
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -222,7 +241,11 @@ public class RegistrationAdvancedActivity extends Activity implements
 					imageAccountFile = MediaController.getImage();
 					Bitmap b = BitmapFactory.decodeFile(imageAccountFile
 							.getPath());
+	
+
+					
 					accountImage.setImageBitmap(b);
+					
 
 				}
 

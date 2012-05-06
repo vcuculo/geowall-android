@@ -27,7 +27,7 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 		nextButton = (Button) findViewById(R.id.nextButton);
 		accountImage= (ImageView) findViewById(R.id.accountImage);
 		
-		
+		nextButton.setOnClickListener(this);
 
 	}
 	
