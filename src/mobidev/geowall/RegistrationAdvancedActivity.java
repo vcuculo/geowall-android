@@ -4,6 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Calendar;
@@ -248,18 +250,20 @@ public class RegistrationAdvancedActivity extends Activity implements
 					InputStream in;
 					try {
 						in = getContentResolver().openInputStream(image);
+						
+						OutputStream out=new FileOutputStream(MediaController.getImage());
+						
+						 byte[] buf = new byte[1024];
+						  int len;
+						  while ((len = in.read(buf)) > 0){
+						  out.write(buf, 0, len);
+						  }
+						  in.close();
+						  out.close();
+						  
+						  
 
-						Bitmap imageBitmap = BitmapFactory.decodeStream(in);
-
-						MediaController.saveMedia(imageBitmap,
-								MediaController.MEDIA_TYPE_IMAGE);
-
-						imageAccountFile = MediaController.getImage();
-
-						Bitmap temp = MediaController
-								.decodeFile(imageAccountFile);
-
-						accountImage.setImageBitmap(temp);
+						accountImage.setImageBitmap(MediaController.decodeFile(MediaController.getImage()));
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
