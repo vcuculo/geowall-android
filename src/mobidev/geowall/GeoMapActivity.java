@@ -19,7 +19,7 @@ public class GeoMapActivity extends MapActivity {
 		setContentView(R.layout.maplayout);
 		mapView = (MapView) findViewById(R.id.mapview);
 		mapView.setBuiltInZoomControls(true);
-
+		
 		LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		
@@ -28,7 +28,6 @@ public class GeoMapActivity extends MapActivity {
 		if (lastKnownLocation != null){
 			PositionView.drawMyPosition(lastKnownLocation, mapView, icon, this);
 			PositionView.centerMap(lastKnownLocation, mapView);
-
 		}
 		
 		PositionController locationListener = new PositionController(mapView, icon, this);

@@ -45,6 +45,7 @@ public class PositionView {
 	static public void centerMap(Location loc, MapView map){
 		MapController mapc = map.getController();
 		mapc.animateTo(location2geopoint(loc));
+		mapc.setZoom(10);
 	}
 	
 	
