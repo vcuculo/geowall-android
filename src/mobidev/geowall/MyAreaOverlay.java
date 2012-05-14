@@ -16,37 +16,33 @@ import com.google.android.maps.Projection;
 
 public class MyAreaOverlay extends Overlay {
 	
-	private float x1,y1,x2,y2;
-	private GeoPoint mGp=null,p2=null;
-	private MapView mv = null;
+	private MapView mv;
+	private GeoPoint mGp1, mGp2;
 	private Paint paint = new Paint();
-	private boolean isUp = false;
 	
-	public MyAreaOverlay(MapView mapV, GeoPoint gp){
-		mv = mapV;
-		mGp = gp;
+	public MyAreaOverlay(MapView map, GeoPoint gp){
+		mv = map;
+		mGp1 = gp;
+		mGp2 = new GeoPoint(mGp1.getLatitudeE6() - 1, mGp1.getLongitudeE6() - 1);
 	}
 	
 	@Override
-	public boolean draw(Canvas canvas, MapView mapView, boolean shadow,
-			long when) {
+	public void draw(Canvas canvas, MapView mapView, boolean shadow) {
 	
-			
-			//Get map projection
+			super.draw (canvas, mapView, shadow);
 			Projection projection = mapView.getProjection();
 
 			//Convert Points to on screen location
 			Point p1 = new Point();
-			projection.toPixels(mGp, p1);
+			Point p2 = new Point();
+			projection.toPixels(mGp1, p1);
+			projection.toPixels(mGp2, p2);
 			
-			Point p2 = new Point(p1.x + 100 , p1.y - 100);
-	        
 	        paint.setColor(color.black);
 	        paint.setStyle(Style.FILL);
 	        canvas.drawRect(p1.x, p1.y, p2.x, p2.y, paint);
-			paint.setColor(color.white);
+		/*	paint.setColor(color.white);
 			paint.setStyle(Style.STROKE);
-			canvas.drawRect(p1.x, p1.y, p2.x, p2.y, paint);
-		return true;
+			canvas.drawRect(p1.x, p1.y, p2.x, p2.y, paint);*/
 	}
 }
