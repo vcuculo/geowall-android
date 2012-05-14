@@ -1,5 +1,6 @@
 package mobidev.geowall;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -243,24 +244,25 @@ public class RegistrationAdvancedActivity extends Activity implements
 				if (data != null) {
 					// user select image
 
-					Uri image= data.getData();
+					Uri image = data.getData();
 					InputStream in;
-					try{
-					in = getContentResolver().openInputStream(image);
-					Bitmap imageBitmap = BitmapFactory.decodeStream(in);
-					MediaController.saveMedia(imageBitmap,
-							MediaController.MEDIA_TYPE_IMAGE);
+					try {
+						in = getContentResolver().openInputStream(image);
 
-					imageAccountFile = MediaController.getImage();
+						Bitmap imageBitmap = BitmapFactory.decodeStream(in);
 
-					Bitmap temp = MediaController
-							.decodeFile(imageAccountFile);
+						MediaController.saveMedia(imageBitmap,
+								MediaController.MEDIA_TYPE_IMAGE);
 
-					accountImage.setImageBitmap(temp);
-					}catch(Exception e){
+						imageAccountFile = MediaController.getImage();
+
+						Bitmap temp = MediaController
+								.decodeFile(imageAccountFile);
+
+						accountImage.setImageBitmap(temp);
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					
 
 				} else {
 					// user take photo
@@ -280,24 +282,24 @@ public class RegistrationAdvancedActivity extends Activity implements
 		}
 
 	}
-	
-	  @Override
-	    protected void onDestroy() {
-	    super.onDestroy();
 
-	    unbindDrawables(findViewById(R.id.RootView));
-	    System.gc();
-	    }
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
 
-	    private void unbindDrawables(View view) {
-	        if (view.getBackground() != null) {
-	        view.getBackground().setCallback(null);
-	        }
-	        if (view instanceof ViewGroup) {
-	            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-	            unbindDrawables(((ViewGroup) view).getChildAt(i));
-	            }
-	        ((ViewGroup) view).removeAllViews();
-	        }
-	    }
+		unbindDrawables(findViewById(R.id.RootView));
+		System.gc();
+	}
+
+	private void unbindDrawables(View view) {
+		if (view.getBackground() != null) {
+			view.getBackground().setCallback(null);
+		}
+		if (view instanceof ViewGroup) {
+			for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+				unbindDrawables(((ViewGroup) view).getChildAt(i));
+			}
+			((ViewGroup) view).removeAllViews();
+		}
+	}
 }
