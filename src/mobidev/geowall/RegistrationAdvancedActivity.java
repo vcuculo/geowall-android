@@ -240,15 +240,21 @@ public class RegistrationAdvancedActivity extends Activity implements
 					accountImage.setMaxHeight(40);
 					accountImage.setMaxWidth(40);
 					
-					accountImage.setImageURI(data.getData());
+					//accountImage.setImageURI(data.getData());
 
 					Uri image = data.getData();
 					InputStream in;
 					try {
 						in = getContentResolver().openInputStream(image);
 						Bitmap imageBitmap = BitmapFactory.decodeStream(in);
+						
+						imageBitmap.setDensity(DisplayMetrics.DENSITY_LOW);
+						
 						MediaController.saveMedia(imageBitmap,
 								MediaController.MEDIA_TYPE_IMAGE);
+						
+						accountImage.setImageBitmap(imageBitmap);
+						
 					} catch (FileNotFoundException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
