@@ -32,6 +32,7 @@ import android.util.Log;
 
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -223,8 +224,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 	protected void getMedia(int option, int captureImage) {
 
 		// if the image exist delete
-		if (MediaController.getImage().exists())
-			MediaController.getImage().delete();
+		MediaController.getImage().delete();
 
 		Intent imageIntent = MediaController.getMedia(option);
 
@@ -243,25 +243,24 @@ public class RegistrationAdvancedActivity extends Activity implements
 				if (data != null) {
 					// user select image
 
-					Uri image = data.getData();
+					Uri image= data.getData();
 					InputStream in;
-					try {
-						in = getContentResolver().openInputStream(image);
-						Bitmap imageBitmap = BitmapFactory.decodeStream(in);
-						MediaController.saveMedia(imageBitmap,
-								MediaController.MEDIA_TYPE_IMAGE);
+					try{
+					in = getContentResolver().openInputStream(image);
+					Bitmap imageBitmap = BitmapFactory.decodeStream(in);
+					MediaController.saveMedia(imageBitmap,
+							MediaController.MEDIA_TYPE_IMAGE);
 
-						imageAccountFile = MediaController.getImage();
+					imageAccountFile = MediaController.getImage();
 
-						Bitmap temp = MediaController
-								.decodeFile(imageAccountFile);
+					Bitmap temp = MediaController
+							.decodeFile(imageAccountFile);
 
-						accountImage.setImageBitmap(temp);
-
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
+					accountImage.setImageBitmap(temp);
+					}catch(Exception e){
 						e.printStackTrace();
 					}
+					
 
 				} else {
 					// user take photo
@@ -281,4 +280,24 @@ public class RegistrationAdvancedActivity extends Activity implements
 		}
 
 	}
+	
+	  @Override
+	    protected void onDestroy() {
+	    super.onDestroy();
+
+	    unbindDrawables(findViewById(R.id.RootView));
+	    System.gc();
+	    }
+
+	    private void unbindDrawables(View view) {
+	        if (view.getBackground() != null) {
+	        view.getBackground().setCallback(null);
+	        }
+	        if (view instanceof ViewGroup) {
+	            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+	            unbindDrawables(((ViewGroup) view).getChildAt(i));
+	            }
+	        ((ViewGroup) view).removeAllViews();
+	        }
+	    }
 }
