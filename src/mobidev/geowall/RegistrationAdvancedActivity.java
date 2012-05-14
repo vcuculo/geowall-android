@@ -269,9 +269,9 @@ public class RegistrationAdvancedActivity extends Activity implements
 					Bitmap b = BitmapFactory.decodeFile(imageAccountFile
 							.getPath());
 	
-					b.setDensity(DisplayMetrics.DENSITY_LOW);
+					Bitmap showBitmap=b.createBitmap(b,0,0,40,40);
 					
-					accountImage.setImageBitmap(b);
+					accountImage.setImageBitmap(showBitmap);
 					
 
 				}
