@@ -33,16 +33,17 @@ public class PositionView {
 		itemizedoverlay.addOverlay(overlayitem);
 		mapOverlays.add(ICON_POSITION, itemizedoverlay);
 		centerMap(loc, map);
+		drawNearArea(loc, map, context);
 	}
 
 	static private void drawNearArea(Location loc, MapView map, Context context){
 		MapView mapview = map;
 		List<Overlay> mapOverlays = mapview.getOverlays();
-		
-		MyAreaOverlay areaoverlay = new MyAreaOverlay(map, 10, 10);
-		
-		GeoPoint point = location2geopoint(loc);	
 
+		GeoPoint gpoint = location2geopoint(loc);	
+
+		MyAreaOverlay areaoverlay = new MyAreaOverlay(map, gpoint);
+		
 		mapOverlays.add(areaoverlay);				
 		
 	}
