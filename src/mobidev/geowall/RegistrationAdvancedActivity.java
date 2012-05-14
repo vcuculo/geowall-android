@@ -24,6 +24,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import android.view.View;
@@ -46,6 +47,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 	private int mMonth;
 	private int mDay;
 
+
 	// is a static integer that uniquely identifies the Dialog that will display
 	// the date picker
 	static final int DATE_DIALOG_ID = 0;
@@ -57,6 +59,9 @@ public class RegistrationAdvancedActivity extends Activity implements
 	static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 200;
 
 	static final String STOREIMAGE = "image/*";
+	
+	
+	
 
 	File imageAccountFile = null;
 
@@ -77,17 +82,6 @@ public class RegistrationAdvancedActivity extends Activity implements
 		countryText.setOnClickListener(this);
 		saveButton.setOnClickListener(this);
 
-		/*
-		imageAccountFile = MediaController.getImage();
-
-		
-		if (imageAccountFile.exists()) {
-			accountImage.setAdjustViewBounds(true);
-			accountImage.setMaxHeight(40);
-			accountImage.setMaxWidth(40);
-			accountImage.setImageURI(Uri.fromFile(imageAccountFile));
-		}
-*/
 		// get the current date
 		Calendar c = Calendar.getInstance();
 		mYear = c.get(Calendar.YEAR);
@@ -131,12 +125,38 @@ public class RegistrationAdvancedActivity extends Activity implements
 			break;
 		}
 	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState){
+		
+		
+		//save state of the date
+		outState.putInt("Day", mDay);
+		outState.putInt("Month", mMonth);
+		outState.putInt("Year",mYear);
+		
+		super.onSaveInstanceState(outState);
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState){
+		
+		//pull the date
+		
+		super.onRestoreInstanceState(savedInstanceState);
+		mDay=savedInstanceState.getInt("Day", mDay);
+		mMonth=savedInstanceState.getInt("Month",mMonth);
+		mYear=savedInstanceState.getInt("Year",mYear);
+		
+		updateBirthday();
+		
+	}
 
 	// updates the date in the TextView
 	private void updateBirthday() {
 		mDateDisplay.setText(new StringBuilder()
 				// Month is 0 based so add 1
-				.append(mMonth + 1).append("/").append(mDay).append("/")
+				.append(mDay).append("/").append(mMonth + 1).append("/")  
 				.append(mYear).append(" "));
 	}
 
@@ -219,6 +239,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 					accountImage.setAdjustViewBounds(true);
 					accountImage.setMaxHeight(40);
 					accountImage.setMaxWidth(40);
+					
 					accountImage.setImageURI(data.getData());
 
 					Uri image = data.getData();
@@ -242,7 +263,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 					Bitmap b = BitmapFactory.decodeFile(imageAccountFile
 							.getPath());
 	
-
+					b.setDensity(DisplayMetrics.DENSITY_LOW);
 					
 					accountImage.setImageBitmap(b);
 					
@@ -256,18 +277,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 			}
 		}
 
-		if (requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE) {
-			if (resultCode == RESULT_OK) {
-				// Video captured and saved to fileUri specified in the Intent
-				Toast.makeText(this,
-						"Video saved to:\n" + data.getData().getPath(),
-						Toast.LENGTH_LONG).show();
-			} else if (resultCode == RESULT_CANCELED) {
-				// User cancelled the video capture
-			} else {
-				// Video capture failed, advise user
-			}
-		}
+	
 
 	}
 
