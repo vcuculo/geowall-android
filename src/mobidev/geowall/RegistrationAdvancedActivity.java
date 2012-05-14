@@ -230,7 +230,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 
 	
 		MediaController.getImage().delete();
-		Bitmap b=null;
+		accountImage.setBackgroundResource(R.drawable.account);
 		
 
 		Intent imageIntent = MediaController.getMedia(option);
