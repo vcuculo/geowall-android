@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Calendar;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.backup.FileBackupHelper;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -48,7 +50,6 @@ public class RegistrationAdvancedActivity extends Activity implements
 	private int mMonth;
 	private int mDay;
 
-
 	// is a static integer that uniquely identifies the Dialog that will display
 	// the date picker
 	static final int DATE_DIALOG_ID = 0;
@@ -60,9 +61,6 @@ public class RegistrationAdvancedActivity extends Activity implements
 	static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 200;
 
 	static final String STOREIMAGE = "image/*";
-	
-	
-	
 
 	File imageAccountFile = null;
 
@@ -91,9 +89,9 @@ public class RegistrationAdvancedActivity extends Activity implements
 		updateBirthday();
 	}
 
-	public void onResume(){
+	public void onResume() {
 		super.onResume();
-		
+
 		imageAccountFile = MediaController.getImage();
 
 		if (imageAccountFile.exists()) {
@@ -101,11 +99,11 @@ public class RegistrationAdvancedActivity extends Activity implements
 			accountImage.setMaxHeight(40);
 			accountImage.setMaxWidth(40);
 			accountImage.setImageURI(Uri.fromFile(imageAccountFile));
-			
+
 		}
-	
+
 	}
-	
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -126,38 +124,37 @@ public class RegistrationAdvancedActivity extends Activity implements
 			break;
 		}
 	}
-	
+
 	@Override
-	protected void onSaveInstanceState(Bundle outState){
-		
-		
-		//save state of the date
+	protected void onSaveInstanceState(Bundle outState) {
+
+		// save state of the date
 		outState.putInt("Day", mDay);
 		outState.putInt("Month", mMonth);
-		outState.putInt("Year",mYear);
-		
+		outState.putInt("Year", mYear);
+
 		super.onSaveInstanceState(outState);
 	}
-	
+
 	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState){
-		
-		//pull the date
-		
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+
+		// pull the date
+
 		super.onRestoreInstanceState(savedInstanceState);
-		mDay=savedInstanceState.getInt("Day", mDay);
-		mMonth=savedInstanceState.getInt("Month",mMonth);
-		mYear=savedInstanceState.getInt("Year",mYear);
-		
+		mDay = savedInstanceState.getInt("Day", mDay);
+		mMonth = savedInstanceState.getInt("Month", mMonth);
+		mYear = savedInstanceState.getInt("Year", mYear);
+
 		updateBirthday();
-		
+
 	}
 
 	// updates the date in the TextView
 	private void updateBirthday() {
 		mDateDisplay.setText(new StringBuilder()
 				// Month is 0 based so add 1
-				.append(mDay).append("/").append(mMonth + 1).append("/")  
+				.append(mDay).append("/").append(mMonth + 1).append("/")
 				.append(mYear).append(" "));
 	}
 
@@ -225,6 +222,10 @@ public class RegistrationAdvancedActivity extends Activity implements
 	 */
 	protected void getMedia(int option, int captureImage) {
 
+		// if the image exist delete
+		if (MediaController.getImage().exists())
+			MediaController.getImage().delete();
+
 		Intent imageIntent = MediaController.getMedia(option);
 
 		startActivityForResult(imageIntent, captureImage);
@@ -234,28 +235,29 @@ public class RegistrationAdvancedActivity extends Activity implements
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) {
-				if (data != null) {
-					// user select image to the directory
 
-					accountImage.setAdjustViewBounds(true);
-					accountImage.setMaxHeight(40);
-					accountImage.setMaxWidth(40);
-					
-					//accountImage.setImageURI(data.getData());
+				accountImage.setAdjustViewBounds(true);
+				accountImage.setMaxHeight(40);
+				accountImage.setMaxWidth(40);
+
+				if (data != null) {
+					// user select image
 
 					Uri image = data.getData();
 					InputStream in;
 					try {
 						in = getContentResolver().openInputStream(image);
 						Bitmap imageBitmap = BitmapFactory.decodeStream(in);
-						
-						imageBitmap.setDensity(DisplayMetrics.DENSITY_LOW);
-						
 						MediaController.saveMedia(imageBitmap,
 								MediaController.MEDIA_TYPE_IMAGE);
-						
-						accountImage.setImageBitmap(imageBitmap);
-						
+
+						imageAccountFile = MediaController.getImage();
+
+						Bitmap temp = MediaController
+								.decodeFile(imageAccountFile);
+
+						accountImage.setImageBitmap(temp);
+
 					} catch (FileNotFoundException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -263,17 +265,11 @@ public class RegistrationAdvancedActivity extends Activity implements
 
 				} else {
 					// user take photo
-					accountImage.setAdjustViewBounds(true);
-					accountImage.setMaxHeight(40);
-					accountImage.setMaxWidth(40);
 					imageAccountFile = MediaController.getImage();
-					//Bitmap b = BitmapFactory.decodeFile(imageAccountFile
-					//		.getPath());
-	
-					
-					
-					accountImage.setImageBitmap(decodeFile(imageAccountFile));
-					
+
+					Bitmap temp = MediaController.decodeFile(imageAccountFile);
+
+					accountImage.setImageBitmap(temp);
 
 				}
 
@@ -284,31 +280,5 @@ public class RegistrationAdvancedActivity extends Activity implements
 			}
 		}
 
-	
-
 	}
-	
-	private Bitmap decodeFile(File f){
-	    try {
-	        //Decode image size
-	        BitmapFactory.Options o = new BitmapFactory.Options();
-	        o.inJustDecodeBounds = true;
-	        BitmapFactory.decodeStream(new FileInputStream(f),null,o);
-
-	        //The new size we want to scale to
-	        final int REQUIRED_SIZE=70;
-
-	        //Find the correct scale value. It should be the power of 2.
-	        int scale=1;
-	        while(o.outWidth/scale/2>=REQUIRED_SIZE && o.outHeight/scale/2>=REQUIRED_SIZE)
-	            scale*=2;
-
-	        //Decode with inSampleSize
-	        BitmapFactory.Options o2 = new BitmapFactory.Options();
-	        o2.inSampleSize=scale;
-	        return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
-	    } catch (FileNotFoundException e) {}
-	    return null;
-	}
-
 }
