@@ -43,7 +43,7 @@ public class PositionView {
 		GeoPoint gpoint = location2geopoint(loc);	
 
 		MyAreaOverlay areaoverlay = new MyAreaOverlay(map, gpoint);
-		
+				
 		mapOverlays.add(areaoverlay);				
 		
 	}
