@@ -20,6 +20,7 @@ public class PositionView {
 		
 		MapView mapview = map;
 		List<Overlay> mapOverlays = mapview.getOverlays();
+		
 		if (!mapOverlays.isEmpty())
 			mapOverlays.remove(ICON_POSITION);
 		
