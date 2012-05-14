@@ -76,6 +76,7 @@ public class MediaController {
 			FileOutputStream stream = new FileOutputStream(temp);
 
 			image.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+			stream.close();
 			return true;
 		} catch (IOException e) {
 			Log.i("Error", e.getMessage());

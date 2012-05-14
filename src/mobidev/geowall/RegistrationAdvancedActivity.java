@@ -227,7 +227,11 @@ public class RegistrationAdvancedActivity extends Activity implements
 	protected void getMedia(int option, int captureImage) {
 
 		// if the image exist delete
+
+	
 		MediaController.getImage().delete();
+		Bitmap b=null;
+		
 
 		Intent imageIntent = MediaController.getMedia(option);
 
@@ -242,7 +246,8 @@ public class RegistrationAdvancedActivity extends Activity implements
 				accountImage.setAdjustViewBounds(true);
 				accountImage.setMaxHeight(40);
 				accountImage.setMaxWidth(40);
-
+				//unbindDrawables(findViewById(R.id.RootView));
+				System.gc();
 				if (data != null) {
 					// user select image
 
@@ -275,7 +280,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 					Bitmap temp = MediaController.decodeFile(imageAccountFile);
 
 					accountImage.setImageBitmap(temp);
-
+					
 				}
 
 			} else if (resultCode == RESULT_CANCELED) {
@@ -291,8 +296,6 @@ public class RegistrationAdvancedActivity extends Activity implements
 	protected void onDestroy() {
 		super.onDestroy();
 
-		unbindDrawables(findViewById(R.id.RootView));
-		System.gc();
 	}
 
 	private void unbindDrawables(View view) {
