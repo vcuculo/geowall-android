@@ -35,6 +35,18 @@ public class PositionView {
 		centerMap(loc, map);
 	}
 
+	static private void drawNearArea(Location loc, MapView map, Context context){
+		MapView mapview = map;
+		List<Overlay> mapOverlays = mapview.getOverlays();
+		
+		MyAreaOverlay areaoverlay = new MyAreaOverlay(map, 10, 10);
+		
+		GeoPoint point = location2geopoint(loc);	
+
+		mapOverlays.add(areaoverlay);				
+		
+	}
+	
 	static private GeoPoint location2geopoint(Location loc) {
 
 		Double latitude = loc.getLatitude() * 1E6;
