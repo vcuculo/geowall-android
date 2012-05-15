@@ -33,16 +33,18 @@ public class MediaController {
 	public static final int TAKE_PHOTO = 3;
 	public static final int TAKE_VIDEO = 4;
 
+	
+	
 	/**
-	 * This is used to capture image
+	 * This is used to capture image or video
 	 * 
-	 * @param location
-	 *            Path where image or video are stored
+	 * @param mediatype The mode to select image or video
 	 */
 	protected static Intent getMedia(int mediatype) {
 
 		if (mediatype == MEDIA_TYPE_IMAGE) {
 			Intent imageIntent = new Intent(Intent.ACTION_GET_CONTENT);
+
 			imageIntent.setType(STOREIMAGE);
 			return imageIntent;
 		} else if (mediatype == MEDIA_TYPE_VIDEO) {
@@ -67,6 +69,9 @@ public class MediaController {
 
 	}
 
+	/**
+	 * Save a Bitmap in a specific path
+	 */
 	protected static boolean saveMedia(Bitmap image, int type) {
 		if (image == null)
 			return false;
@@ -84,13 +89,19 @@ public class MediaController {
 		}
 
 	}
-
+	
+	/**
+	 * 
+	 * @return a specific file that contains a Bitmap
+	 */
 	protected static File getImage() {
-
 		return getOutputMediaFile(MEDIA_TYPE_IMAGE);
-
 	}
-
+	
+	/**
+	 * 
+	 * @return a specific file that contains a Video
+	 */
 	protected static File getVideo() {
 		return getOutputMediaFile(MEDIA_TYPE_VIDEO);
 	}
@@ -136,6 +147,11 @@ public class MediaController {
 		return mediaFile;
 	}
 
+	/**
+	 * 
+	 * @param f file that contains a Bitmap
+	 * @return a compress bitmap 
+	 */
 	static public Bitmap decodeFile(File f) {
 		try {
 			// Decode image size

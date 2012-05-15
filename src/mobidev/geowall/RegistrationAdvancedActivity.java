@@ -1,11 +1,9 @@
 package mobidev.geowall;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+
 import java.io.FileOutputStream;
-import java.io.IOException;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Calendar;
@@ -19,30 +17,19 @@ import android.app.backup.FileBackupHelper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 
 import android.net.Uri;
 
 import android.os.Bundle;
-import android.provider.MediaStore;
-
-import android.util.DisplayMetrics;
-import android.util.Log;
 
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class RegistrationAdvancedActivity extends Activity implements
 		OnClickListener {
@@ -105,6 +92,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 			accountImage.setImageURI(Uri.fromFile(imageAccountFile));
 
 		}
+		imageAccountFile = null;
 
 	}
 
@@ -228,10 +216,8 @@ public class RegistrationAdvancedActivity extends Activity implements
 
 		// if the image exist delete
 
-	
 		MediaController.getImage().delete();
 		accountImage.setBackgroundResource(R.drawable.account);
-		
 
 		Intent imageIntent = MediaController.getMedia(option);
 
@@ -246,7 +232,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 				accountImage.setAdjustViewBounds(true);
 				accountImage.setMaxHeight(40);
 				accountImage.setMaxWidth(40);
-				//unbindDrawables(findViewById(R.id.RootView));
+				// unbindDrawables(findViewById(R.id.RootView));
 				System.gc();
 				if (data != null) {
 					// user select image
@@ -255,20 +241,28 @@ public class RegistrationAdvancedActivity extends Activity implements
 					InputStream in;
 					try {
 						in = getContentResolver().openInputStream(image);
-						
-						OutputStream out=new FileOutputStream(MediaController.getImage());
-						
-						 byte[] buf = new byte[1024];
-						  int len;
-						  while ((len = in.read(buf)) > 0){
-						  out.write(buf, 0, len);
-						  }
-						  in.close();
-						  out.close();
-						  
-						  
 
-						accountImage.setImageBitmap(MediaController.decodeFile(MediaController.getImage()));
+						OutputStream out = new FileOutputStream(
+								MediaController.getImage());
+
+						byte[] buf = new byte[1024];
+						int len;
+						while ((len = in.read(buf)) > 0) {
+							out.write(buf, 0, len);
+						}
+						in.close();
+						out.close();
+						imageAccountFile = MediaController.getImage();
+
+						Bitmap temp = MediaController
+								.decodeFile(imageAccountFile);
+
+						accountImage.setImageBitmap(temp);
+						MediaController.saveMedia(temp,
+								MediaController.MEDIA_TYPE_IMAGE);
+						temp = null;
+						imageAccountFile = null;
+
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -278,9 +272,12 @@ public class RegistrationAdvancedActivity extends Activity implements
 					imageAccountFile = MediaController.getImage();
 
 					Bitmap temp = MediaController.decodeFile(imageAccountFile);
-
+					MediaController.saveMedia(temp,
+							MediaController.MEDIA_TYPE_IMAGE);
 					accountImage.setImageBitmap(temp);
-					
+					temp = null;
+					imageAccountFile = null;
+
 				}
 
 			} else if (resultCode == RESULT_CANCELED) {
@@ -298,15 +295,4 @@ public class RegistrationAdvancedActivity extends Activity implements
 
 	}
 
-	private void unbindDrawables(View view) {
-		if (view.getBackground() != null) {
-			view.getBackground().setCallback(null);
-		}
-		if (view instanceof ViewGroup) {
-			for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-				unbindDrawables(((ViewGroup) view).getChildAt(i));
-			}
-			((ViewGroup) view).removeAllViews();
-		}
-	}
 }
