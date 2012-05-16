@@ -18,17 +18,14 @@ public class GeoMapActivity extends MapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.maplayout);
 		mapView = (MapView) findViewById(R.id.mapview);
-		mapView.setBuiltInZoomControls(true);
 		
 		LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		
 		Drawable icon = this.getResources().getDrawable(R.drawable.ic_launcher);
 		
-		if (lastKnownLocation != null){
+		if (lastKnownLocation != null)
 			PositionView.drawMyPosition(lastKnownLocation, mapView, icon, this);
-			PositionView.centerMap(lastKnownLocation, mapView);
-		}
 		
 		PositionController locationListener = new PositionController(mapView, icon, this);
 		
