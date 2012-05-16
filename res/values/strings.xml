@@ -25,4 +25,5 @@
     <string name="mediaText">Select Mode</string>
     <string name="getPhotoText">Select Photo</string>
     <string name="takePhotoText">Take a Photo</string>
+    <string name="outOfMemoryException">The max image size is 5 MB</string>
 </resources>

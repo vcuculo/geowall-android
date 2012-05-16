@@ -1,30 +1,27 @@
 package mobidev.geowall;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+
+import java.io.FileOutputStream;
+
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Calendar;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.backup.FileBackupHelper;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 
 import android.net.Uri;
 
 import android.os.Bundle;
-import android.provider.MediaStore;
-
-import android.util.Log;
 
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -77,17 +74,6 @@ public class RegistrationAdvancedActivity extends Activity implements
 		countryText.setOnClickListener(this);
 		saveButton.setOnClickListener(this);
 
-		/*
-		imageAccountFile = MediaController.getImage();
-
-		
-		if (imageAccountFile.exists()) {
-			accountImage.setAdjustViewBounds(true);
-			accountImage.setMaxHeight(40);
-			accountImage.setMaxWidth(40);
-			accountImage.setImageURI(Uri.fromFile(imageAccountFile));
-		}
-*/
 		// get the current date
 		Calendar c = Calendar.getInstance();
 		mYear = c.get(Calendar.YEAR);
@@ -96,9 +82,9 @@ public class RegistrationAdvancedActivity extends Activity implements
 		updateBirthday();
 	}
 
-	public void onResume(){
+	public void onResume() {
 		super.onResume();
-		
+
 		imageAccountFile = MediaController.getImage();
 
 		if (imageAccountFile.exists()) {
@@ -106,11 +92,12 @@ public class RegistrationAdvancedActivity extends Activity implements
 			accountImage.setMaxHeight(40);
 			accountImage.setMaxWidth(40);
 			accountImage.setImageURI(Uri.fromFile(imageAccountFile));
-			
+
 		}
-	
+		imageAccountFile = null;
+
 	}
-	
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -132,11 +119,36 @@ public class RegistrationAdvancedActivity extends Activity implements
 		}
 	}
 
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+
+		// save state of the date
+		outState.putInt("Day", mDay);
+		outState.putInt("Month", mMonth);
+		outState.putInt("Year", mYear);
+
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+
+		// pull the date
+
+		super.onRestoreInstanceState(savedInstanceState);
+		mDay = savedInstanceState.getInt("Day", mDay);
+		mMonth = savedInstanceState.getInt("Month", mMonth);
+		mYear = savedInstanceState.getInt("Year", mYear);
+
+		updateBirthday();
+
+	}
+
 	// updates the date in the TextView
 	private void updateBirthday() {
 		mDateDisplay.setText(new StringBuilder()
 				// Month is 0 based so add 1
-				.append(mMonth + 1).append("/").append(mDay).append("/")
+				.append(mDay).append("/").append(mMonth + 1).append("/")
 				.append(mYear).append(" "));
 	}
 
@@ -204,6 +216,11 @@ public class RegistrationAdvancedActivity extends Activity implements
 	 */
 	protected void getMedia(int option, int captureImage) {
 
+		// if the image exist delete
+
+		MediaController.getImage().delete();
+		accountImage.setBackgroundResource(R.drawable.account);
+
 		Intent imageIntent = MediaController.getMedia(option);
 
 		startActivityForResult(imageIntent, captureImage);
@@ -213,40 +230,72 @@ public class RegistrationAdvancedActivity extends Activity implements
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) {
+				
+				try{
+					
+				accountImage.setAdjustViewBounds(true);
+				accountImage.setMaxHeight(40);
+				accountImage.setMaxWidth(40);
+				int readByte=0;
+				System.gc();
 				if (data != null) {
-					// user select image to the directory
-
-					accountImage.setAdjustViewBounds(true);
-					accountImage.setMaxHeight(40);
-					accountImage.setMaxWidth(40);
-					accountImage.setImageURI(data.getData());
-
+					// user select image
+					
+					
 					Uri image = data.getData();
+					
 					InputStream in;
 					try {
 						in = getContentResolver().openInputStream(image);
-						Bitmap imageBitmap = BitmapFactory.decodeStream(in);
-						MediaController.saveMedia(imageBitmap,
-								MediaController.MEDIA_TYPE_IMAGE);
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
+						
+						OutputStream out = new FileOutputStream(
+								MediaController.getImage());
+
+						byte[] buf = new byte[1024];
+						int len;
+						
+						while ((len = in.read(buf)) > 0) {
+							readByte++;
+							out.write(buf, 0, len);
+						}
+						in.close();
+						out.close();
+						if(readByte>5000){
+							imageAccountFile=null;
+							MediaController.deleteImage();
+							accountImage.setImageResource(R.drawable.account);
+							String errorSizeImage=getResources().getString(R.string.outOfMemoryException);
+							Toast.makeText(this, errorSizeImage, Toast.LENGTH_LONG).show();
+							
+							return;
+						}
+						imageAccountFile = MediaController.getImage();
+						image=null;
+						
+						
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 
 				} else {
 					// user take photo
-					accountImage.setAdjustViewBounds(true);
-					accountImage.setMaxHeight(40);
-					accountImage.setMaxWidth(40);
 					imageAccountFile = MediaController.getImage();
-					Bitmap b = BitmapFactory.decodeFile(imageAccountFile
-							.getPath());
-	
 
-					
-					accountImage.setImageBitmap(b);
-					
-
+				}
+				
+			
+				
+				
+				Bitmap temp = MediaController.decodeFile(imageAccountFile);
+				MediaController.saveMedia(temp,
+						MediaController.MEDIA_TYPE_IMAGE);
+				accountImage.setImageBitmap(temp);
+				temp = null;
+				imageAccountFile = null;
+				
+				}catch(OutOfMemoryError e ){
+					//String errorSizeImage=getResources().getString(R.string.outOfMemoryException);
+					//Toast.makeText(this, errorSizeImage, Toast.LENGTH_LONG).show();
 				}
 
 			} else if (resultCode == RESULT_CANCELED) {
@@ -256,18 +305,11 @@ public class RegistrationAdvancedActivity extends Activity implements
 			}
 		}
 
-		if (requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE) {
-			if (resultCode == RESULT_OK) {
-				// Video captured and saved to fileUri specified in the Intent
-				Toast.makeText(this,
-						"Video saved to:\n" + data.getData().getPath(),
-						Toast.LENGTH_LONG).show();
-			} else if (resultCode == RESULT_CANCELED) {
-				// User cancelled the video capture
-			} else {
-				// Video capture failed, advise user
-			}
-		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
 
 	}
 

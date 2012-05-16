@@ -28,16 +28,20 @@ public class MediaController {
 	static final String STOREIMAGE = "image/*";
 	static final String STOREVIDEO = "video/*";
 
+	
+	
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;
 	public static final int TAKE_PHOTO = 3;
 	public static final int TAKE_VIDEO = 4;
 
+	// The new size we want to scale to
+	public static final int REQUIRED_SIZE = 70;	
+	
 	/**
-	 * This is used to capture image
+	 * This is used to capture image or video
 	 * 
-	 * @param location
-	 *            Path where image or video are stored
+	 * @param mediatype The mode to select image or video
 	 */
 	protected static Intent getMedia(int mediatype) {
 
@@ -50,9 +54,11 @@ public class MediaController {
 			imageIntent.setType(STOREVIDEO);
 			return imageIntent;
 		} else if (mediatype == TAKE_PHOTO) {
+
 			Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			intent.putExtra(MediaStore.EXTRA_OUTPUT,
 					getOutputMediaFileUri(MEDIA_TYPE_IMAGE));
+			intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 5000000);
 
 			return intent;
 
@@ -66,6 +72,9 @@ public class MediaController {
 
 	}
 
+	/**
+	 * Save a Bitmap in a specific path
+	 */
 	protected static boolean saveMedia(Bitmap image, int type) {
 		if (image == null)
 			return false;
@@ -75,6 +84,7 @@ public class MediaController {
 			FileOutputStream stream = new FileOutputStream(temp);
 
 			image.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+			stream.close();
 			return true;
 		} catch (IOException e) {
 			Log.i("Error", e.getMessage());
@@ -82,14 +92,24 @@ public class MediaController {
 		}
 
 	}
-
+	
+	/**
+	 * 
+	 * @return a specific file that contains a Bitmap
+	 */
 	protected static File getImage() {
-
 		return getOutputMediaFile(MEDIA_TYPE_IMAGE);
-
 	}
 	
-	protected static File getVideo(){
+	public static void deleteImage(){
+		getImage().delete();
+	}
+	
+	/**
+	 * 
+	 * @return a specific file that contains a Video
+	 */
+	protected static File getVideo() {
 		return getOutputMediaFile(MEDIA_TYPE_VIDEO);
 	}
 
@@ -132,5 +152,32 @@ public class MediaController {
 		}
 
 		return mediaFile;
+	}
+
+	/**
+	 * 
+	 * @param f file that contains a Bitmap
+	 * @return a compress bitmap 
+	 */
+	static public Bitmap decodeFile(File f) {
+		try {
+			// Decode image size
+			BitmapFactory.Options o = new BitmapFactory.Options();
+			o.inJustDecodeBounds = true;
+			BitmapFactory.decodeStream(new FileInputStream(f), null, o);
+
+			// Find the correct scale value. It should be the power of 2.
+			int scale = 1;
+			while (o.outWidth / scale / 2 >= REQUIRED_SIZE
+					&& o.outHeight / scale / 2 >= REQUIRED_SIZE)
+				scale *= 2;
+
+			// Decode with inSampleSize
+			BitmapFactory.Options o2 = new BitmapFactory.Options();
+			o2.inSampleSize = scale;
+			return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
+		} catch (FileNotFoundException e) {
+		}
+		return null;
 	}
 }
