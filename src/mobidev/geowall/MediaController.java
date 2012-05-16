@@ -28,12 +28,15 @@ public class MediaController {
 	static final String STOREIMAGE = "image/*";
 	static final String STOREVIDEO = "video/*";
 
+	
+	
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;
 	public static final int TAKE_PHOTO = 3;
 	public static final int TAKE_VIDEO = 4;
 
-	
+	// The new size we want to scale to
+	public static final int REQUIRED_SIZE = 70;	
 	
 	/**
 	 * This is used to capture image or video
@@ -44,7 +47,6 @@ public class MediaController {
 
 		if (mediatype == MEDIA_TYPE_IMAGE) {
 			Intent imageIntent = new Intent(Intent.ACTION_GET_CONTENT);
-
 			imageIntent.setType(STOREIMAGE);
 			return imageIntent;
 		} else if (mediatype == MEDIA_TYPE_VIDEO) {
@@ -56,6 +58,7 @@ public class MediaController {
 			Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			intent.putExtra(MediaStore.EXTRA_OUTPUT,
 					getOutputMediaFileUri(MEDIA_TYPE_IMAGE));
+			intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 5000000);
 
 			return intent;
 
@@ -158,9 +161,6 @@ public class MediaController {
 			BitmapFactory.Options o = new BitmapFactory.Options();
 			o.inJustDecodeBounds = true;
 			BitmapFactory.decodeStream(new FileInputStream(f), null, o);
-
-			// The new size we want to scale to
-			final int REQUIRED_SIZE = 70;
 
 			// Find the correct scale value. It should be the power of 2.
 			int scale = 1;

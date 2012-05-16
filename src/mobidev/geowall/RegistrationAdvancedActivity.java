@@ -4,6 +4,7 @@ import java.io.File;
 
 import java.io.FileOutputStream;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Calendar;
@@ -30,6 +31,7 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RegistrationAdvancedActivity extends Activity implements
 		OnClickListener {
@@ -228,20 +230,23 @@ public class RegistrationAdvancedActivity extends Activity implements
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) {
-
+				
+				try{
+					
 				accountImage.setAdjustViewBounds(true);
 				accountImage.setMaxHeight(40);
 				accountImage.setMaxWidth(40);
-				// unbindDrawables(findViewById(R.id.RootView));
 				System.gc();
 				if (data != null) {
 					// user select image
-
+					
+					
 					Uri image = data.getData();
+					
 					InputStream in;
 					try {
 						in = getContentResolver().openInputStream(image);
-
+						
 						OutputStream out = new FileOutputStream(
 								MediaController.getImage());
 
@@ -253,16 +258,8 @@ public class RegistrationAdvancedActivity extends Activity implements
 						in.close();
 						out.close();
 						imageAccountFile = MediaController.getImage();
-
-						Bitmap temp = MediaController
-								.decodeFile(imageAccountFile);
-
-						accountImage.setImageBitmap(temp);
-						MediaController.saveMedia(temp,
-								MediaController.MEDIA_TYPE_IMAGE);
-						temp = null;
-						imageAccountFile = null;
-
+						image=null;
+						
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -271,13 +268,21 @@ public class RegistrationAdvancedActivity extends Activity implements
 					// user take photo
 					imageAccountFile = MediaController.getImage();
 
-					Bitmap temp = MediaController.decodeFile(imageAccountFile);
-					MediaController.saveMedia(temp,
-							MediaController.MEDIA_TYPE_IMAGE);
-					accountImage.setImageBitmap(temp);
-					temp = null;
-					imageAccountFile = null;
-
+				}
+				
+			
+				
+				
+				Bitmap temp = MediaController.decodeFile(imageAccountFile);
+				MediaController.saveMedia(temp,
+						MediaController.MEDIA_TYPE_IMAGE);
+				accountImage.setImageBitmap(temp);
+				temp = null;
+				imageAccountFile = null;
+				
+				}catch(OutOfMemoryError e ){
+					String errorSizeImage=getResources().getString(R.string.outOfMemoryException);
+					Toast.makeText(this, errorSizeImage, Toast.LENGTH_LONG).show();
 				}
 
 			} else if (resultCode == RESULT_CANCELED) {
