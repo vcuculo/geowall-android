@@ -236,6 +236,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 				accountImage.setAdjustViewBounds(true);
 				accountImage.setMaxHeight(40);
 				accountImage.setMaxWidth(40);
+				int readByte=0;
 				System.gc();
 				if (data != null) {
 					// user select image
@@ -252,13 +253,25 @@ public class RegistrationAdvancedActivity extends Activity implements
 
 						byte[] buf = new byte[1024];
 						int len;
+						
 						while ((len = in.read(buf)) > 0) {
+							readByte++;
 							out.write(buf, 0, len);
 						}
 						in.close();
 						out.close();
+						if(readByte>5000){
+							imageAccountFile=null;
+							MediaController.deleteImage();
+							accountImage.setImageResource(R.drawable.account);
+							String errorSizeImage=getResources().getString(R.string.outOfMemoryException);
+							Toast.makeText(this, errorSizeImage, Toast.LENGTH_LONG).show();
+							
+							return;
+						}
 						imageAccountFile = MediaController.getImage();
 						image=null;
+						
 						
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -281,8 +294,8 @@ public class RegistrationAdvancedActivity extends Activity implements
 				imageAccountFile = null;
 				
 				}catch(OutOfMemoryError e ){
-					String errorSizeImage=getResources().getString(R.string.outOfMemoryException);
-					Toast.makeText(this, errorSizeImage, Toast.LENGTH_LONG).show();
+					//String errorSizeImage=getResources().getString(R.string.outOfMemoryException);
+					//Toast.makeText(this, errorSizeImage, Toast.LENGTH_LONG).show();
 				}
 
 			} else if (resultCode == RESULT_CANCELED) {

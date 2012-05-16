@@ -101,6 +101,10 @@ public class MediaController {
 		return getOutputMediaFile(MEDIA_TYPE_IMAGE);
 	}
 	
+	public static void deleteImage(){
+		getImage().delete();
+	}
+	
 	/**
 	 * 
 	 * @return a specific file that contains a Video
