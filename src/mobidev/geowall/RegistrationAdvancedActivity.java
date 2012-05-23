@@ -294,8 +294,8 @@ public class RegistrationAdvancedActivity extends Activity implements
 				imageAccountFile = null;
 				
 				}catch(OutOfMemoryError e ){
-					//String errorSizeImage=getResources().getString(R.string.outOfMemoryException);
-					//Toast.makeText(this, errorSizeImage, Toast.LENGTH_LONG).show();
+					String errorSizeImage=getResources().getString(R.string.outOfMemoryException);
+					Toast.makeText(this, errorSizeImage, Toast.LENGTH_LONG).show();
 				}
 
 			} else if (resultCode == RESULT_CANCELED) {
