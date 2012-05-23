@@ -39,13 +39,16 @@ public class UserData  {
 	public String getnick(){
 		return nick;
 	}
-	public Bitmap getBitmap(){
+	public Bitmap getbitmap(){
 		return img;
 	}
-	public String getCountry(){
+	public String getcountry(){
 		return country;
 	}
-	public String getCity(){
+	public String getcity(){
 		return city;
+	}
+	public int getpassword(){
+		return hash;
 	}
 }
