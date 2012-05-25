@@ -8,7 +8,7 @@ public class CheckPassword implements UtilityCheck {
 	}
 	@Override
 	public boolean check() {
-		if(pw=="")
+		if(pw=="" || pw.length()>10)
 			return false;
 		return true;
 	}

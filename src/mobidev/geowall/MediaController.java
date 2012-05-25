@@ -1,5 +1,8 @@
 package mobidev.geowall;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,17 +10,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 
 public class MediaController {
@@ -28,20 +28,19 @@ public class MediaController {
 	static final String STOREIMAGE = "image/*";
 	static final String STOREVIDEO = "video/*";
 
-	
-	
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	public static final int MEDIA_TYPE_VIDEO = 2;
 	public static final int TAKE_PHOTO = 3;
 	public static final int TAKE_VIDEO = 4;
 
 	// The new size we want to scale to
-	public static final int REQUIRED_SIZE = 70;	
-	
+	public static final int REQUIRED_SIZE = 70;
+
 	/**
 	 * This is used to capture image or video
 	 * 
-	 * @param mediatype The mode to select image or video
+	 * @param mediatype
+	 *            The mode to select image or video
 	 */
 	protected static Intent getMedia(int mediatype) {
 
@@ -92,7 +91,7 @@ public class MediaController {
 		}
 
 	}
-	
+
 	/**
 	 * 
 	 * @return a specific file that contains a Bitmap
@@ -100,11 +99,43 @@ public class MediaController {
 	protected static File getImage() {
 		return getOutputMediaFile(MEDIA_TYPE_IMAGE);
 	}
-	
-	public static void deleteImage(){
+
+	public static void deleteImage() {
 		getImage().delete();
 	}
-	
+
+	public String encodeBase64toString(File image) {
+
+		InputStream is;
+		try {
+			is = new FileInputStream(image);
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			byte[] b = new byte[1024];
+			int bytesRead;
+			while ((bytesRead = is.read(b)) != -1) {
+				bos.write(b, 0, bytesRead);
+			}
+			byte[] bytes = bos.toByteArray();
+
+			return Base64.encodeToString(bytes, Base64.DEFAULT);
+		} catch (FileNotFoundException e) {
+			return null;
+
+		} catch (IOException i) {
+			return null;
+		}
+
+	}
+
+	public Bitmap decodeBase64toBitmap(String image) {
+
+		byte[] b = Base64.decode(image, Base64.DEFAULT);
+		InputStream i = new ByteArrayInputStream(b);
+		return BitmapFactory.decodeStream(i);
+
+	}
+
+
 	/**
 	 * 
 	 * @return a specific file that contains a Video
@@ -156,8 +187,9 @@ public class MediaController {
 
 	/**
 	 * 
-	 * @param f file that contains a Bitmap
-	 * @return a compress bitmap 
+	 * @param f
+	 *            file that contains a Bitmap
+	 * @return a compress bitmap
 	 */
 	static public Bitmap decodeFile(File f) {
 		try {

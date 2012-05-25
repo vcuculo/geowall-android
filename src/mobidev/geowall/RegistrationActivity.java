@@ -15,11 +15,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 
@@ -32,8 +36,13 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 	File imageAccountFile = null;
 
 	private UserData userPreferences;
-
+	private String USER_PREFERENCES= "UserPreferncer";
+	
 	public final int ERROR_DIALOG_ID=0;
+	String error="";
+	String cNick;
+	String cEmail;
+	String cPw;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,9 +56,17 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 		nick = (TextView) findViewById(R.id.nickRegistrationText);
 		email = (TextView) findViewById(R.id.emailRegistrationText);
 		pw = (TextView) findViewById(R.id.pwRegistrationText);
-
+		
+		cNick=(String) nick.getText().toString();
+		cEmail=(String)email.getText().toString();
+		cPw=(String)pw.getText().toString();
+		
 		nextButton.setOnClickListener(this);
 		saveButton.setOnClickListener(this);
+		
+		SharedPreferences setting = getSharedPreferences(USER_PREFERENCES, 0);
+	       
+
 
 	}
 
@@ -79,24 +96,40 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 			String pwUser = pw.getText().toString();
 			
 			UtilityCheck checkUser=new CheckNick(nickUser), checkEmail=new CheckEmail(emailUser), checkPassword=new CheckPassword(pwUser);
-				if(!(checkUser.check() && checkEmail.check() && checkPassword.check())){
+			
+			boolean controll=true;
+				if(!checkUser.check() || nickUser.equals(cNick)){
+					error+="Nick field is required\n";
+						controll=false;
+				}
+				if(!checkEmail.check()){
+					error+="Email is not correct\n";
+					controll=false;
+				}
+				if(!checkPassword.check() || pwUser.equals(cPw)){
+					error+="Password is required and it is max 10 character";
+					controll=false;
+				}
+				if(controll==false){
 					showDialog(ERROR_DIALOG_ID);
 					return;
-					
 				}
 						
 			try {
-				userPreferences = saveUserData(nickUser, emailUser, pwUser);
-				setSharedPreference();
+				
+				userPreferences = new UserData(nickUser, emailUser, getDigest(pwUser));
+					
+				
+				
 			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Toast.makeText(this, "Problema nella criptazione della password\nSegnalare Errore", Toast.LENGTH_LONG).show();
 			} catch (DigestException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Toast.makeText(this, "Problema nella criptazione della password\nSegnalare Errore", Toast.LENGTH_LONG).show();;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Toast.makeText(this, "Problema Digest\nSegnalare Errore", Toast.LENGTH_LONG).show();
+				Log.i("PreferencesNick",nickUser);
+				Log.i("PreferencesEmail",emailUser);
+				Log.i("Preferences", e.getMessage());
 			}
 
 			i = new Intent(this, GeoMapActivity.class);
@@ -116,7 +149,7 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 		switch (id) {
 		case ERROR_DIALOG_ID:
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage("All fiels are required and checks whether they are correct ")
+			builder.setMessage(error)
 			       .setCancelable(false)
 			       .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
@@ -130,31 +163,39 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 		return alert;
 		}	
 
-	private UserData saveUserData(String nick, String email, String pw)
+	private String getDigest(String pw)
 			throws NoSuchAlgorithmException, IOException, DigestException {
-		InputStream in = getContentResolver().openInputStream(Uri.parse(pw));
-
+	
+		StringBuffer hexString=null;
 		MessageDigest digester = MessageDigest.getInstance("MD5");
-		byte[] bytes = new byte[8192];
-		int byteCount;
-		while ((byteCount = in.read(bytes)) > 0) {
-			digester.update(bytes, 0, byteCount);
-		}
-
-		int digest = digester.digest(bytes, 0, bytes.length);
-		return new UserData(nick, email, digest);
+		
+			digester.update(pw.getBytes());
+			byte[] messageDigest=digester.digest();
+			
+			//Hex
+			hexString=new StringBuffer();
+			for (int i=0;i<messageDigest.length;i++)
+				hexString.append(Integer.toHexString(0xff & messageDigest[i]));
+				
+		return hexString.toString();
 
 	}
 
 	private void setSharedPreference() {
-		SharedPreferences settings = getSharedPreferences("USER_PREFENRENCES",0);
+		SharedPreferences settings = getSharedPreferences(USER_PREFERENCES,0);
 		SharedPreferences.Editor editor = settings.edit();
 		
 		editor.putString("NICK", userPreferences.getnick());
 		editor.putString("EMAIL", userPreferences.getemail());
-		editor.putInt("PASS", userPreferences.getpassword());
+		editor.putString("PASS", userPreferences.getpassword());
 		
 		editor.commit();
 
+	}
+	@Override
+	protected void onStop() {
+		
+		super.onStop();
+		setSharedPreference();
 	}
 }
