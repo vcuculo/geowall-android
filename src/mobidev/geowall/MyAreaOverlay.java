@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
@@ -19,6 +20,7 @@ public class MyAreaOverlay extends Overlay {
 
 	private GeoPoint mGp1, mGp2;
 	private int id;
+	private boolean clicked = false;
 
 	public MyAreaOverlay(GeoPoint gp, int i) {
 		id = i;
@@ -42,7 +44,7 @@ public class MyAreaOverlay extends Overlay {
 
 		Canvas mCanvas = canvas;
 		Projection projection = mapView.getProjection();
-
+		
 		// Convert Points to on screen location
 		Point p1 = new Point();
 		Point p2 = new Point();
@@ -51,13 +53,24 @@ public class MyAreaOverlay extends Overlay {
 
 		Paint areaPaint = new Paint();
 
-		areaPaint.setStyle(Paint.Style.FILL);
-		areaPaint.setColor(Color.WHITE);
-		areaPaint.setStrokeWidth(0);
-		areaPaint.setAntiAlias(true);
-		areaPaint.setAlpha(60);
-		mCanvas.drawRect((float) p1.x, (float) p1.y, (float) p2.x,
-				(float) p2.y, areaPaint);
+		if (!clicked) {
+			areaPaint.setStyle(Paint.Style.FILL);
+			areaPaint.setColor(Color.WHITE);
+			areaPaint.setStrokeWidth(0);
+			areaPaint.setAntiAlias(true);
+			areaPaint.setAlpha(60);
+			mCanvas.drawRect((float) p1.x, (float) p1.y, (float) p2.x,
+					(float) p2.y, areaPaint);
+
+		} else {
+			areaPaint.setStyle(Paint.Style.FILL);
+			areaPaint.setColor(Color.RED);
+			areaPaint.setAlpha(70);
+			areaPaint.setStrokeWidth(0);
+			areaPaint.setAntiAlias(true);
+			mCanvas.drawRect((float) p1.x, (float) p1.y, (float) p2.x,
+					(float) p2.y, areaPaint);
+		}
 
 		areaPaint.setStyle(Paint.Style.STROKE);
 		areaPaint.setStrokeWidth(1);
@@ -65,20 +78,42 @@ public class MyAreaOverlay extends Overlay {
 		areaPaint.setAlpha(70);
 		mCanvas.drawRect((float) p1.x, (float) p1.y, (float) p2.x,
 				(float) p2.y, areaPaint);
+
 	}
 
 	@Override
-	public boolean onTap(GeoPoint p, MapView m) {
+	public boolean onTouchEvent(MotionEvent e, MapView mapView) {
+		
+		GeoPoint p = mapView.getProjection().fromPixels((int) e.getX(),
+				(int) e.getY());
+		
+		if (isInsideMe(p)) {
+			if (e.getAction() == MotionEvent.ACTION_DOWN) {
+				clicked = true;
+			} else if (e.getAction() == MotionEvent.ACTION_UP) {
+				clicked = false;
+			}
+			mapView.invalidate();
+		}
+		return super.onTouchEvent(e, mapView);
+	}
 
+	private boolean isInsideMe(GeoPoint p) {
 		int minX = mGp1.getLatitudeE6();
 		int minY = mGp1.getLongitudeE6();
 
 		int maxX = mGp2.getLatitudeE6();
 		int maxY = mGp2.getLongitudeE6();
 
-		if (p.getLatitudeE6() >= minX && p.getLongitudeE6() >= minY
-				&& p.getLatitudeE6() <= maxX && p.getLongitudeE6() <= maxY) {
+		return (p.getLatitudeE6() >= minX && p.getLongitudeE6() >= minY
+				&& p.getLatitudeE6() <= maxX && p.getLongitudeE6() <= maxY) ? true
+				: false;
+	}
 
+	@Override
+	public boolean onTap(GeoPoint p, MapView m) {
+
+		if (isInsideMe(p)) {
 			/*
 			 * Context contexto = m.getContext(); Geocoder geoCoder = new
 			 * Geocoder(contexto, Locale.getDefault());
@@ -93,7 +128,6 @@ public class MyAreaOverlay extends Overlay {
 			 */
 			Toast.makeText(m.getContext(), "Area #" + id, Toast.LENGTH_SHORT)
 					.show();
-
 			/*
 			 * } catch (IOException e) { // TODO Auto-generated catch block
 			 * e.printStackTrace(); }
@@ -104,4 +138,5 @@ public class MyAreaOverlay extends Overlay {
 
 		return false;
 	}
+
 }

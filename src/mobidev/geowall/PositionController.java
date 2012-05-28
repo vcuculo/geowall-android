@@ -13,13 +13,11 @@ public class PositionController implements LocationListener {
 
 	private Location bestPosition;
 	private MapView mapview;
-	private Drawable icon;
 	private Context cont;
 	final static float DISTANZA_BACHECA = 100;
 	
 	
-	public PositionController(MapView map, Drawable icon, Context context) {
-		this.icon = icon;
+	public PositionController(MapView map, Context context) {
 		this.mapview = map;
 		this.cont = context;
 	}
@@ -28,7 +26,7 @@ public class PositionController implements LocationListener {
 	public void onLocationChanged(Location arg0) {
 		if (isBetterLocation(arg0)){
 			bestPosition = arg0;
-			PositionView.drawMyPosition(arg0, mapview, icon);
+			PositionView.drawMyPosition(PositionView.location2geopoint(arg0), mapview);
 		}
 	}
 

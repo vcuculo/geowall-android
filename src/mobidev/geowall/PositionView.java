@@ -18,38 +18,43 @@ public class PositionView {
 	static final int ICON_POSITION = 0;
 	/* areas positions goes from 1 to 10 */
 	
-	static public void drawMyPosition(Location loc, MapView map, Drawable icon) {
-
+	static final int ICON_REF = R.drawable.ic_launcher;
+	
+	static public void drawMyPosition(GeoPoint mGp, MapView map) {
+		
+     	GeoPoint point = mGp;
 		MapView mapview = map;
+		
+		/* center Map */
+		centerMap(point, map);
+		/* update near areas */
+		drawNearArea(point, map);
+		
 		List<Overlay> mapOverlays = mapview.getOverlays();
 		Context mContext = map.getContext();
+		Drawable icon = mContext.getResources().getDrawable(ICON_REF);
 		
-		/* update my position removing old one */
-		if (!mapOverlays.isEmpty())
-			mapOverlays.remove(ICON_POSITION);
-
 		/* create overlay with my position */
 		MyItemizedOverlay itemizedoverlay = new MyItemizedOverlay(icon, mContext);
-		GeoPoint point = location2geopoint(loc);
 		OverlayItem overlayitem = new OverlayItem(point, "Geowall",
 				point.getLatitudeE6() + " - " + point.getLongitudeE6());
 
 		itemizedoverlay.addOverlay(overlayitem);
-		mapOverlays.add(ICON_POSITION, itemizedoverlay);
-		/* center Map */
-		centerMap(loc, map);
-		/* update near areas */
-		drawNearArea(loc, map);
+		mapOverlays.add(itemizedoverlay);
+
 	}
 
-	static private void drawNearArea(Location loc, MapView map) {
+	static private void drawNearArea(GeoPoint mGp, MapView map) {
 		double lat, lon;
 		int latfact, lonfact;
 		GeoPoint mGeo;
-		Location mLoc = loc;
 		MapView mapview = map;
 		List<Overlay> mapOverlays = mapview.getOverlays();
-
+	
+		/* update my position removing old one */
+		if (!mapOverlays.isEmpty())
+			mapOverlays.clear();
+					
 		/* 
 		 * Areas are drawn as follow, #4 is my current area.
 		 *  --- --- ---
@@ -69,13 +74,13 @@ public class PositionView {
 			Log.i("LONFACT", Double.toString(lonfact * 1E4));
 			Log.i("LATFACT", Double.toString(latfact * 1E4));
 			
-			lon = (mLoc.getLongitude() * 1E6) + (int) (lonfact * MyAreaOverlay.LON_FACTOR);
-			lat = (mLoc.getLatitude() * 1E6) + (int) (latfact * MyAreaOverlay.LAT_FACTOR);
+			lon = (mGp.getLongitudeE6()) + (int) (lonfact * MyAreaOverlay.LON_FACTOR);
+			lat = (mGp.getLatitudeE6()) + (int) (latfact * MyAreaOverlay.LAT_FACTOR);
 		
 			mGeo = new GeoPoint((int)lat, (int)lon);
 
-			MyAreaOverlay areaoverlay = new MyAreaOverlay(mGeo, i+1);
-			mapOverlays.add(i+1, areaoverlay);
+			MyAreaOverlay areaoverlay = new MyAreaOverlay(mGeo, i);
+			mapOverlays.add(i, areaoverlay);
 		}
 	}
 
@@ -83,9 +88,9 @@ public class PositionView {
     	return new GeoPoint((int)(loc.getLatitude() * 1E6), (int)(loc.getLongitude() * 1E6));
 	}
 	
-	static public void centerMap(Location loc, MapView map) {
+	static public void centerMap(GeoPoint gp, MapView map) {
 		MapController mapc = map.getController();
-		mapc.animateTo(location2geopoint(loc));
+		mapc.animateTo(gp);
 		mapc.setZoom(15);
 	}	
 	
