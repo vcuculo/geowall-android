@@ -82,56 +82,58 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		Intent i;
+		
+		String nickUser = nick.getText().toString();
+		String emailUser = email.getText().toString();
+		String pwUser = pw.getText().toString();
+
+		UtilityCheck checkUser = new CheckNick(nickUser),
+		checkEmail = new CheckEmail(emailUser),
+		checkPassword = new CheckPassword(pwUser);
+
+		boolean controll = true;
+		if (!checkUser.check() || nickUser.equals(cNick)) {
+			controll = false;
+		}
+		if (!checkEmail.check()) {
+			controll = false;
+		}
+		if (!checkPassword.check() || pwUser.equals(cPw)) {
+			controll = false;
+		}
+		if (controll == false) {
+			showDialog(ERROR_DIALOG_ID);
+			return;
+		}
+
+		try {
+
+			userPreferences = new UserData(nickUser, emailUser,
+					getDigest(pwUser));
+
+			//Log.i("PreferencesPw", userPreferences.getpassword());
+
+		} catch (NoSuchAlgorithmException e) {
+			Toast.makeText(
+					this,
+					"Problema nella criptazione della password\nSegnalare Errore",
+					Toast.LENGTH_LONG).show();
+		} catch (DigestException e) {
+			Toast.makeText(
+					this,
+					"Problema nella criptazione della password\nSegnalare Errore",
+					Toast.LENGTH_LONG).show();
+			;
+		} catch (IOException e) {
+			Toast.makeText(this, "Problema Digest\nSegnalare Errore",
+					Toast.LENGTH_LONG).show();
+			Log.i("PreferencesNick", nickUser);
+			Log.i("PreferencesEmail", emailUser);
+			Log.i("Preferences", e.getMessage());
+		}
 		switch (v.getId()) {
 		case R.id.saveButton:
-			String nickUser = nick.getText().toString();
-			String emailUser = email.getText().toString();
-			String pwUser = pw.getText().toString();
-
-			UtilityCheck checkUser = new CheckNick(nickUser),
-			checkEmail = new CheckEmail(emailUser),
-			checkPassword = new CheckPassword(pwUser);
-
-			boolean controll = true;
-			if (!checkUser.check() || nickUser.equals(cNick)) {
-				controll = false;
-			}
-			if (!checkEmail.check()) {
-				controll = false;
-			}
-			if (!checkPassword.check() || pwUser.equals(cPw)) {
-				controll = false;
-			}
-			if (controll == false) {
-				showDialog(ERROR_DIALOG_ID);
-				return;
-			}
-
-			try {
-
-				userPreferences = new UserData(nickUser, emailUser,
-						getDigest(pwUser));
-
-				Log.i("PreferencesPw", userPreferences.getpassword());
-
-			} catch (NoSuchAlgorithmException e) {
-				Toast.makeText(
-						this,
-						"Problema nella criptazione della password\nSegnalare Errore",
-						Toast.LENGTH_LONG).show();
-			} catch (DigestException e) {
-				Toast.makeText(
-						this,
-						"Problema nella criptazione della password\nSegnalare Errore",
-						Toast.LENGTH_LONG).show();
-				;
-			} catch (IOException e) {
-				Toast.makeText(this, "Problema Digest\nSegnalare Errore",
-						Toast.LENGTH_LONG).show();
-				Log.i("PreferencesNick", nickUser);
-				Log.i("PreferencesEmail", emailUser);
-				Log.i("Preferences", e.getMessage());
-			}
+		
 
 			i = new Intent(this, GeoMapActivity.class);
 			this.startActivity(i);

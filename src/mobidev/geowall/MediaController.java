@@ -104,7 +104,7 @@ public class MediaController {
 		getImage().delete();
 	}
 
-	public String encodeBase64toString(File image) {
+	public static String encodeBase64toString(File image) {
 
 		InputStream is;
 		try {
@@ -127,7 +127,7 @@ public class MediaController {
 
 	}
 
-	public Bitmap decodeBase64toBitmap(String image) {
+	public static Bitmap decodeBase64toBitmap(String image) {
 
 		byte[] b = Base64.decode(image, Base64.DEFAULT);
 		InputStream i = new ByteArrayInputStream(b);

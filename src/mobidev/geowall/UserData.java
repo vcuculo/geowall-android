@@ -11,9 +11,10 @@ public class UserData  {
 	private String img;
 	private String country;
 	private String city;
+	private String date;
 	
 	
-	public UserData( String email, String nick, String hash){
+	public UserData(String nick, String email,  String hash){
 		super();		
 		this.email=email;
 		this.nick=nick;
@@ -21,7 +22,7 @@ public class UserData  {
 		
 	}
 	
-	public UserData(String email, String nick, String hash, String img, String country, String city){
+	public UserData(String nick,String email, String hash, String img, String date,String country, String city){
 		super();
 		this.email=email;
 		this.nick=nick;
@@ -29,6 +30,7 @@ public class UserData  {
 		this.country=country;
 		this.city=city;
 		this.hash=hash;
+		this.date=date;
 	}
 	
 	
@@ -39,7 +41,7 @@ public class UserData  {
 	public String getnick(){
 		return nick;
 	}
-	public String getbitmap(){
+	public String getimage(){
 		return img;
 	}
 	public String getcountry(){
@@ -50,5 +52,8 @@ public class UserData  {
 	}
 	public String getpassword(){
 		return hash;
+	}
+	public String getdate(){
+		return date;
 	}
 }
