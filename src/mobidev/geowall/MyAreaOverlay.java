@@ -29,7 +29,6 @@ public class MyAreaOverlay extends Overlay {
 
 		mGp1 = new GeoPoint((Math.round(lat) * LAT_FACTOR),
 				(Math.round(lon) * LON_FACTOR));
-
 		Log.i("INFO_ROUNDED",
 				(mGp1.getLatitudeE6()) + " - " + mGp1.getLongitudeE6());
 
