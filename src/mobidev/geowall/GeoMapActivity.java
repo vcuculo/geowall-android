@@ -25,7 +25,7 @@ public class GeoMapActivity extends MapActivity {
 		Drawable icon = this.getResources().getDrawable(R.drawable.ic_launcher);
 		
 		if (lastKnownLocation != null)
-			PositionView.drawMyPosition(lastKnownLocation, mapView, icon, this);
+			PositionView.drawMyPosition(lastKnownLocation, mapView, icon);
 		
 		PositionController locationListener = new PositionController(mapView, icon, this);
 		

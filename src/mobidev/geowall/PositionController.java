@@ -28,7 +28,7 @@ public class PositionController implements LocationListener {
 	public void onLocationChanged(Location arg0) {
 		if (isBetterLocation(arg0)){
 			bestPosition = arg0;
-			PositionView.drawMyPosition(arg0, mapview, icon, cont);
+			PositionView.drawMyPosition(arg0, mapview, icon);
 		}
 	}
 
