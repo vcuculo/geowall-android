@@ -1,5 +1,6 @@
 package mobidev.geowall;
 
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -51,7 +52,8 @@ public class MyAreaOverlay extends Overlay {
 		if (i != -1) {
 			clicked[i] = false;
 			mMap.invalidate();
-			// TODO mostra bacheca
+			Intent intent = new Intent(mMap.getContext(), WallActivity.class);
+			mMap.getContext().startActivity(intent);
 		}
 	}
 
