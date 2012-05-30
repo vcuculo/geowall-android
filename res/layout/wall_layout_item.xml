@@ -3,7 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dip" >
+    android:padding="8dp"
+    android:background="#FFFFFF" >
 
     <LinearLayout
         android:id="@+id/thumbnail"
@@ -15,8 +16,8 @@
 
         <ImageView
             android:id="@+id/thumbnail_image"
-            android:layout_width="50dip"
-            android:layout_height="50dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/account" />
     </LinearLayout>
 
@@ -27,10 +28,8 @@
         android:layout_alignTop="@+id/thumbnail"
         android:layout_marginTop="1dip"
         android:layout_toRightOf="@+id/thumbnail"
-        android:text="Event"
         android:textColor="#000000"
-        android:textSize="13dip"
-        android:textStyle="bold"
+        android:textSize="10dip"
         android:typeface="monospace" />
 
      <TextView
@@ -41,7 +40,6 @@
         android:layout_alignTop="@id/title"
         android:layout_marginRight="6dip"
         android:gravity="right"
-        android:text="Date"
         android:textColor="#000000"
         android:textSize="8dip" />
 
