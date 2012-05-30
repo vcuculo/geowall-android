@@ -4,9 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
@@ -18,33 +17,128 @@ public class MyAreaOverlay extends Overlay {
 	final static int LON_FACTOR = (int) (1 * 1E4);
 	final static int LAT_FACTOR = (int) (5 * 1E3);
 
-	private GeoPoint mGp1, mGp2;
-	private int id;
-	private boolean clicked = false;
+	private GeoPoint myPosition, outsidePosition;
+	private GeoPoint[][] areas;
+	private boolean[] clicked;
+	private MapView mMap;
+	private GestureDetector mGestureDetector;
+	private boolean longpress = false;
 
-	public MyAreaOverlay(GeoPoint gp, int i) {
-		id = i;
-		Log.i("INFO", (gp.getLatitudeE6()) + " - " + gp.getLongitudeE6());
+	public MyAreaOverlay(GeoPoint gp, MapView map) {
+		myPosition = gp;
+		mMap = map;
+		clicked = new boolean[9];
+		areas = new GeoPoint[9][2];
+		mGestureDetector = new GestureDetector(new MapGestureDetector(this));
+	}
 
-		int lat = gp.getLatitudeE6() / LAT_FACTOR;
-		int lon = gp.getLongitudeE6() / LON_FACTOR;
+	public void longPress(MotionEvent e) {
+		outsidePosition = mMap.getProjection().fromPixels((int) e.getX(),
+				(int) e.getY());
 
-		mGp1 = new GeoPoint((Math.round(lat) * LAT_FACTOR),
-				(Math.round(lon) * LON_FACTOR));
-		Log.i("INFO_ROUNDED",
-				(mGp1.getLatitudeE6()) + " - " + mGp1.getLongitudeE6());
+		if (isInsideArea(outsidePosition) == -1) {
+			longpress = true;
+			mMap.invalidate();
+		}
+	}
+
+	public void onTap(MotionEvent e) {
+		GeoPoint p = mMap.getProjection().fromPixels((int) e.getX(),
+				(int) e.getY());
+
+		int i = isInsideArea(p);
+
+		if (i != -1) {
+			clicked[i] = false;
+			mMap.invalidate();
+			// TODO mostra bacheca
+		}
+	}
+
+	public void onDown(MotionEvent e) {
+		GeoPoint p = mMap.getProjection().fromPixels((int) e.getX(),
+				(int) e.getY());
+
+		int i = isInsideArea(p);
+
+		if (i != -1) {
+			clicked[i] = true;
+			mMap.invalidate();
+		}
+	}
+
+	private void drawAreas(Canvas canvas, MapView mapView) {
+		Canvas mCanvas = canvas;
+		Projection projection = mapView.getProjection();
+		int latfact, lonfact;
+		double lat, lon;
+
+		for (int i = 0; i < 9; i++) {
+
+			latfact = (-(i / 3) + 1) * LAT_FACTOR;
+			lonfact = ((i % 3) - 1) * LON_FACTOR;
+
+			lat = (myPosition.getLatitudeE6() + latfact) / LAT_FACTOR;
+			lon = (myPosition.getLongitudeE6() + lonfact) / LON_FACTOR;
+
+			areas[i][0] = new GeoPoint((int) (Math.round(lat)) * LAT_FACTOR,
+					(int) (Math.round(lon)) * LON_FACTOR);
+
+			areas[i][1] = new GeoPoint(
+					areas[i][0].getLatitudeE6() + LAT_FACTOR,
+					areas[i][0].getLongitudeE6() + LON_FACTOR);
+
+			// Convert Points to on screen location
+			Point p1 = new Point();
+			Point p2 = new Point();
+			projection.toPixels(areas[i][0], p1);
+			projection.toPixels(areas[i][1], p2);
+
+			Paint areaPaint = new Paint();
+
+			if (!clicked[i]) {
+				areaPaint.setStyle(Paint.Style.FILL);
+				areaPaint.setColor(Color.WHITE);
+				areaPaint.setStrokeWidth(0);
+				areaPaint.setAntiAlias(true);
+				areaPaint.setAlpha(60);
+				mCanvas.drawRect((float) p1.x, (float) p1.y, (float) p2.x,
+						(float) p2.y, areaPaint);
+
+			} else {
+				areaPaint.setStyle(Paint.Style.FILL);
+				areaPaint.setColor(Color.RED);
+				areaPaint.setStrokeWidth(0);
+				areaPaint.setAntiAlias(true);
+				areaPaint.setAlpha(70);
+				mCanvas.drawRect((float) p1.x, (float) p1.y, (float) p2.x,
+						(float) p2.y, areaPaint);
+			}
+
+			areaPaint.setStyle(Paint.Style.STROKE);
+			areaPaint.setStrokeWidth(1);
+			areaPaint.setColor(Color.BLACK);
+			areaPaint.setAlpha(70);
+			mCanvas.drawRect((float) p1.x, (float) p1.y, (float) p2.x,
+					(float) p2.y, areaPaint);
+		}
+	}
+
+	private void drawOutsideArea(Canvas canvas, MapView mapView) {
+		Canvas mCanvas = canvas;
+		Projection projection = mapView.getProjection();
+		double lat, lon;
+		GeoPoint mGp1 = outsidePosition;
+		GeoPoint mGp2;
+
+		lat = mGp1.getLatitudeE6() / LAT_FACTOR;
+		lon = mGp1.getLongitudeE6() / LON_FACTOR;
+
+		mGp1 = new GeoPoint((int) (Math.round(lat)) * LAT_FACTOR,
+				(int) (Math.round(lon)) * LON_FACTOR);
 
 		mGp2 = new GeoPoint(mGp1.getLatitudeE6() + LAT_FACTOR,
 				mGp1.getLongitudeE6() + LON_FACTOR);
-	}
-
-	@Override
-	public void draw(Canvas canvas, MapView mapView, boolean shadow) {
-		super.draw(canvas, mapView, shadow);
-
-		Canvas mCanvas = canvas;
-		Projection projection = mapView.getProjection();
-		
 		// Convert Points to on screen location
 		Point p1 = new Point();
 		Point p2 = new Point();
@@ -52,25 +146,13 @@ public class MyAreaOverlay extends Overlay {
 		projection.toPixels(mGp2, p2);
 
 		Paint areaPaint = new Paint();
-
-		if (!clicked) {
-			areaPaint.setStyle(Paint.Style.FILL);
-			areaPaint.setColor(Color.WHITE);
-			areaPaint.setStrokeWidth(0);
-			areaPaint.setAntiAlias(true);
-			areaPaint.setAlpha(60);
-			mCanvas.drawRect((float) p1.x, (float) p1.y, (float) p2.x,
-					(float) p2.y, areaPaint);
-
-		} else {
-			areaPaint.setStyle(Paint.Style.FILL);
-			areaPaint.setColor(Color.RED);
-			areaPaint.setAlpha(70);
-			areaPaint.setStrokeWidth(0);
-			areaPaint.setAntiAlias(true);
-			mCanvas.drawRect((float) p1.x, (float) p1.y, (float) p2.x,
-					(float) p2.y, areaPaint);
-		}
+		areaPaint.setStyle(Paint.Style.FILL);
+		areaPaint.setColor(Color.RED);
+		areaPaint.setStrokeWidth(0);
+		areaPaint.setAntiAlias(true);
+		areaPaint.setAlpha(70);
+		mCanvas.drawRect((float) p1.x, (float) p1.y, (float) p2.x,
+				(float) p2.y, areaPaint);
 
 		areaPaint.setStyle(Paint.Style.STROKE);
 		areaPaint.setStrokeWidth(1);
@@ -78,65 +160,45 @@ public class MyAreaOverlay extends Overlay {
 		areaPaint.setAlpha(70);
 		mCanvas.drawRect((float) p1.x, (float) p1.y, (float) p2.x,
 				(float) p2.y, areaPaint);
+	}
 
+	@Override
+	public void draw(Canvas canvas, MapView mapView, boolean shadow) {
+		super.draw(canvas, mapView, shadow);
+		Canvas mCanvas = canvas;
+		MapView mMap = mapView;
+
+		if (longpress)
+			drawOutsideArea(mCanvas, mMap);
+
+		drawAreas(mCanvas, mMap);
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent e, MapView mapView) {
-		
-		GeoPoint p = mapView.getProjection().fromPixels((int) e.getX(),
-				(int) e.getY());
-		
-		if (isInsideMe(p)) {
-			if (e.getAction() == MotionEvent.ACTION_DOWN) {
-				clicked = true;
-			} else if (e.getAction() == MotionEvent.ACTION_UP) {
-				clicked = false;
-			}
-			mapView.invalidate();
+		if (e.getAction() == MotionEvent.ACTION_UP) {
+			longpress = false;
+			mMap.invalidate();
 		}
+		mGestureDetector.onTouchEvent(e);
 		return super.onTouchEvent(e, mapView);
 	}
 
-	private boolean isInsideMe(GeoPoint p) {
-		int minX = mGp1.getLatitudeE6();
-		int minY = mGp1.getLongitudeE6();
+	private int isInsideArea(GeoPoint p) {
+		int minX, maxX, minY, maxY, i;
 
-		int maxX = mGp2.getLatitudeE6();
-		int maxY = mGp2.getLongitudeE6();
+		if (areas != null && areas.length != 0)
+			for (i = 0; i < 9; i++) {
+				minX = areas[i][0].getLatitudeE6();
+				minY = areas[i][0].getLongitudeE6();
+				maxX = areas[i][1].getLatitudeE6();
+				maxY = areas[i][1].getLongitudeE6();
 
-		return (p.getLatitudeE6() >= minX && p.getLongitudeE6() >= minY
-				&& p.getLatitudeE6() <= maxX && p.getLongitudeE6() <= maxY) ? true
-				: false;
+				if (p.getLatitudeE6() >= minX && p.getLongitudeE6() >= minY
+						&& p.getLatitudeE6() <= maxX
+						&& p.getLongitudeE6() <= maxY)
+					return i;
+			}
+		return -1;
 	}
-
-	@Override
-	public boolean onTap(GeoPoint p, MapView m) {
-
-		if (isInsideMe(p)) {
-			/*
-			 * Context contexto = m.getContext(); Geocoder geoCoder = new
-			 * Geocoder(contexto, Locale.getDefault());
-			 * 
-			 * List<Address> addresses; try { addresses =
-			 * geoCoder.getFromLocation(p.getLatitudeE6() / 1E6,
-			 * p.getLongitudeE6() / 1E6, 1);
-			 * 
-			 * String add = ""; if (addresses.size() > 0) { for (int i = 0; i <
-			 * addresses.get(0) .getMaxAddressLineIndex(); i++) add +=
-			 * addresses.get(0).getAddressLine(i) + "\n"; }
-			 */
-			Toast.makeText(m.getContext(), "Area #" + id, Toast.LENGTH_SHORT)
-					.show();
-			/*
-			 * } catch (IOException e) { // TODO Auto-generated catch block
-			 * e.printStackTrace(); }
-			 */
-
-			return true;
-		}
-
-		return false;
-	}
-
 }

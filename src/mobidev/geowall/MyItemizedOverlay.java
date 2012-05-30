@@ -2,7 +2,6 @@ package mobidev.geowall;
 
 import java.util.ArrayList;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
@@ -40,11 +39,11 @@ public class MyItemizedOverlay extends ItemizedOverlay {
 
 	@Override
 	protected boolean onTap(int index) {
-		OverlayItem item = mOverlays.get(index);
+	/*	OverlayItem item = mOverlays.get(index);
 		AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
 		dialog.setTitle(item.getTitle());
 		dialog.setMessage(item.getSnippet());
-		dialog.show();
-		return true;
+		dialog.show();*/
+		return false;
 	}
 }
