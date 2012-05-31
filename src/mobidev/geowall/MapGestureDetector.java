@@ -12,7 +12,7 @@ public class MapGestureDetector implements OnGestureListener {
 
 	@Override
 	public void onLongPress(MotionEvent e) {
-		myArea.longPress(e);
+		myArea.onTap(e);
 	}
 
 	@Override
@@ -30,18 +30,18 @@ public class MapGestureDetector implements OnGestureListener {
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 			float velocityY) {
-		return false;
+		myArea.onUp(e1);
+		return true;
 	}
 
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 			float distanceY) {
-		myArea.onTap(e1);
+		myArea.onUp(e1);
 		return true;
 	}
 
 	@Override
 	public void onShowPress(MotionEvent e) {
-
 	}
 }

@@ -2,9 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/message_shape"
     android:orientation="horizontal"
-    android:padding="8dp"
-    android:background="#FFFFFF" >
+    android:padding="8dp" >
 
     <LinearLayout
         android:id="@+id/thumbnail"
@@ -32,7 +32,7 @@
         android:textSize="10dip"
         android:typeface="monospace" />
 
-     <TextView
+    <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

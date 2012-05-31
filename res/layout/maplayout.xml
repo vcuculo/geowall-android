@@ -22,13 +22,13 @@
             android:layout_toRightOf="@id/accountImage"
             android:gravity="right" >
 
-            <Button
+<!--             <Button
                 android:id="@+id/saveButtonAdvanced"
                 style="@style/buttonToolbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button"
-                android:text="@string/finishButton" />
+                android:text="@string/finishButton" /> -->
         </LinearLayout>
     </RelativeLayout>
 

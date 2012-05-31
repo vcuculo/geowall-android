@@ -18,12 +18,11 @@ public class MyAreaOverlay extends Overlay {
 	final static int LON_FACTOR = (int) (1 * 1E4);
 	final static int LAT_FACTOR = (int) (5 * 1E3);
 
-	private GeoPoint myPosition, outsidePosition;
+	private GeoPoint myPosition;
 	private GeoPoint[][] areas;
 	private boolean[] clicked;
 	private MapView mMap;
 	private GestureDetector mGestureDetector;
-	private boolean longpress = false;
 
 	public MyAreaOverlay(GeoPoint gp, MapView map) {
 		myPosition = gp;
@@ -33,16 +32,6 @@ public class MyAreaOverlay extends Overlay {
 		mGestureDetector = new GestureDetector(new MapGestureDetector(this));
 	}
 
-	public void longPress(MotionEvent e) {
-		outsidePosition = mMap.getProjection().fromPixels((int) e.getX(),
-				(int) e.getY());
-
-		if (isInsideArea(outsidePosition) == -1) {
-			longpress = true;
-			mMap.invalidate();
-		}
-	}
-
 	public void onTap(MotionEvent e) {
 		GeoPoint p = mMap.getProjection().fromPixels((int) e.getX(),
 				(int) e.getY());
@@ -50,8 +39,7 @@ public class MyAreaOverlay extends Overlay {
 		int i = isInsideArea(p);
 
 		if (i != -1) {
-			clicked[i] = false;
-			mMap.invalidate();
+			drawUnpressedArea(i);
 			Intent intent = new Intent(mMap.getContext(), WallActivity.class);
 			mMap.getContext().startActivity(intent);
 		}
@@ -63,12 +51,30 @@ public class MyAreaOverlay extends Overlay {
 
 		int i = isInsideArea(p);
 
-		if (i != -1) {
-			clicked[i] = true;
-			mMap.invalidate();
-		}
+		if (i != -1)
+			drawPressedArea(i);
 	}
 
+	public void onUp(MotionEvent e) {
+		GeoPoint p = mMap.getProjection().fromPixels((int) e.getX(),
+				(int) e.getY());
+
+		int i = isInsideArea(p);
+
+		if (i != -1)
+			drawUnpressedArea(i);
+	}
+	
+	private void drawPressedArea(int i){
+		clicked[i] = true;
+		mMap.invalidate();
+	}
+	
+	private void drawUnpressedArea(int i){
+		clicked[i] = false;
+		mMap.invalidate();
+	}
+	
 	private void drawAreas(Canvas canvas, MapView mapView) {
 		Canvas mCanvas = canvas;
 		Projection projection = mapView.getProjection();
@@ -126,62 +132,17 @@ public class MyAreaOverlay extends Overlay {
 		}
 	}
 
-	private void drawOutsideArea(Canvas canvas, MapView mapView) {
-		Canvas mCanvas = canvas;
-		Projection projection = mapView.getProjection();
-		double lat, lon;
-		GeoPoint mGp1 = outsidePosition;
-		GeoPoint mGp2;
-
-		lat = mGp1.getLatitudeE6() / LAT_FACTOR;
-		lon = mGp1.getLongitudeE6() / LON_FACTOR;
-
-		mGp1 = new GeoPoint((int) (Math.round(lat)) * LAT_FACTOR,
-				(int) (Math.round(lon)) * LON_FACTOR);
-
-		mGp2 = new GeoPoint(mGp1.getLatitudeE6() + LAT_FACTOR,
-				mGp1.getLongitudeE6() + LON_FACTOR);
-		// Convert Points to on screen location
-		Point p1 = new Point();
-		Point p2 = new Point();
-		projection.toPixels(mGp1, p1);
-		projection.toPixels(mGp2, p2);
-
-		Paint areaPaint = new Paint();
-		areaPaint.setStyle(Paint.Style.FILL);
-		areaPaint.setColor(Color.RED);
-		areaPaint.setStrokeWidth(0);
-		areaPaint.setAntiAlias(true);
-		areaPaint.setAlpha(70);
-		mCanvas.drawRect((float) p1.x, (float) p1.y, (float) p2.x,
-				(float) p2.y, areaPaint);
-
-		areaPaint.setStyle(Paint.Style.STROKE);
-		areaPaint.setStrokeWidth(1);
-		areaPaint.setColor(Color.BLACK);
-		areaPaint.setAlpha(70);
-		mCanvas.drawRect((float) p1.x, (float) p1.y, (float) p2.x,
-				(float) p2.y, areaPaint);
-	}
-
 	@Override
 	public void draw(Canvas canvas, MapView mapView, boolean shadow) {
 		super.draw(canvas, mapView, shadow);
 		Canvas mCanvas = canvas;
 		MapView mMap = mapView;
 
-		if (longpress)
-			drawOutsideArea(mCanvas, mMap);
-
 		drawAreas(mCanvas, mMap);
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent e, MapView mapView) {
-		if (e.getAction() == MotionEvent.ACTION_UP) {
-			longpress = false;
-			mMap.invalidate();
-		}
 		mGestureDetector.onTouchEvent(e);
 		return super.onTouchEvent(e, mapView);
 	}
