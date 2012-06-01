@@ -1,7 +1,7 @@
 package mobidev.geowall;
 
 
-import android.graphics.Bitmap;
+
 
 public class UserData  {
 
