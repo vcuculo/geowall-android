@@ -154,7 +154,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 			if(imageBase64!=null)
 				img=imageBase64;
 			UtilityCheck checkDate=new CheckDateIsNotCurrent(mYear, mMonth, mDay);
-			Log.i("PreferencesImg",img);
+			//Log.i("PreferencesImg",img);
 			if(!checkDate.check())
 				date=null;
 			if(country!="" || country==cCountry)
@@ -176,7 +176,8 @@ public class RegistrationAdvancedActivity extends Activity implements
 
 		SharedPreferences settings = getSharedPreferences(USER_PREFERENCES, 0);
 		SharedPreferences.Editor editor = settings.edit();
-
+		
+		
 		editor.putString("IMG", userPreferences.getimage());
 		editor.putString("DATE", userPreferences.getdate());
 		editor.putString("COUNTRY", userPreferences.getcountry());
