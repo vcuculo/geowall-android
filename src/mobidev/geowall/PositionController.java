@@ -2,8 +2,6 @@ package mobidev.geowall;
 
 import com.google.android.maps.MapView;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -13,22 +11,18 @@ public class PositionController implements LocationListener {
 
 	private Location bestPosition;
 	private MapView mapview;
-	private Drawable icon;
-	private Context cont;
 	final static float DISTANZA_BACHECA = 100;
-	
-	
-	public PositionController(MapView map, Drawable icon, Context context) {
-		this.icon = icon;
+
+
+	public PositionController(MapView map) {
 		this.mapview = map;
-		this.cont = context;
 	}
 
 	@Override
 	public void onLocationChanged(Location arg0) {
 		if (isBetterLocation(arg0)){
 			bestPosition = arg0;
-			PositionView.drawMyPosition(arg0, mapview, icon, cont);
+			PositionView.drawMyPosition(PositionView.location2geopoint(arg0), mapview);
 		}
 	}
 
@@ -59,7 +53,7 @@ public class PositionController implements LocationListener {
 			return true;
 		else
 			return false;
-		
+
 	}
 
 
