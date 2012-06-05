@@ -4,6 +4,7 @@ import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -40,5 +41,10 @@ public class GeoMapActivity extends MapActivity {
 	@Override
 	protected boolean isRouteDisplayed() {
 		return false;
+	}
+	
+	public void showWall(){
+		Intent intent = new Intent(this, WallActivity.class);
+		this.startActivity(intent);
 	}
 }

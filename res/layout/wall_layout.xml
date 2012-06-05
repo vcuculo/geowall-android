@@ -22,7 +22,7 @@
             android:layout_toRightOf="@id/accountImage"
             android:gravity="right" >
 
-<!--             <Button
+  <!--           <Button
                 android:id="@+id/saveButtonAdvanced"
                 style="@style/buttonToolbar"
                 android:layout_width="wrap_content"
@@ -32,11 +32,18 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <com.google.android.maps.MapView
-        android:id="@+id/mapview"
+    <ScrollView
+        android:id="@+id/scrollMessages"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:apiKey="@string/googleMapsDebugKey"
-        android:clickable="true" />
+        android:scrollbars="horizontal" >
+
+        <TableLayout
+            android:id="@+id/tableMessages"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp" >
+        </TableLayout>
+    </ScrollView>
 
 </LinearLayout>
