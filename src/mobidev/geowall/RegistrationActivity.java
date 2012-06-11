@@ -60,7 +60,7 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 		nextButton.setOnClickListener(this);
 		saveButton.setOnClickListener(this);
 
-		SharedPreferences setting = getSharedPreferences(USER_PREFERENCES, 0);
+		
 
 	}
 

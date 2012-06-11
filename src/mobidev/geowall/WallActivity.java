@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.SearchManager.OnCancelListener;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TableLayout;
@@ -22,7 +24,9 @@ public class WallActivity extends Activity implements OnClickListener{
 	/** Called when the activity is first created. */
 
 	final static int CUSTOM_DIALOG=1;
-	
+	private String USER_PREFERENCES = "UserPreferncer";
+	SharedPreferences setting;
+	ImageView accountImage;
 	Button insert;
 	
 	@Override
@@ -30,7 +34,7 @@ public class WallActivity extends Activity implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.wall_layout);
 		addElementResult();
-				
+		accountImage=(ImageView) findViewById(R.id.accountImage);		
 		insert=(Button) findViewById(R.id.insertMessageButton);
 		insert.setOnClickListener(this);
 		
@@ -49,6 +53,21 @@ public class WallActivity extends Activity implements OnClickListener{
 
 			messages.addView(itemView);
 		}
+	}
+	
+	public void onResume() {
+		super.onResume();
+		setting = getSharedPreferences(USER_PREFERENCES, 0);
+		String photo=setting.getString("IMG", null);
+
+		if (photo!=null) {
+			accountImage.setAdjustViewBounds(true);
+			accountImage.setMaxHeight(40);
+			accountImage.setMaxWidth(40);
+			accountImage.setImageBitmap(MediaController.decodeBase64toBitmap(photo));
+			
+		}
+
 	}
 	
 	protected Dialog onCreateDialog(int id) {

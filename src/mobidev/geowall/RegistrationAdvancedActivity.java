@@ -67,6 +67,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 	File imageAccountFile = null;
 
 	UserData userPreferences = null;
+	SharedPreferences setting;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -95,7 +96,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 		mMonth = c.get(Calendar.MONTH);
 		mDay = c.get(Calendar.DAY_OF_MONTH);
 		updateBirthday();
-
+		setting = getSharedPreferences(USER_PREFERENCES, 0);
 	}
 
 	public void onResume() {
@@ -108,12 +109,12 @@ public class RegistrationAdvancedActivity extends Activity implements
 			accountImage.setMaxHeight(40);
 			accountImage.setMaxWidth(40);
 			accountImage.setImageURI(Uri.fromFile(imageAccountFile));
-			imageBase64 = MediaController.encodeBase64toString(MediaController
-					.getImage());
+			imageBase64 = MediaController.encodeBase64toString(MediaController.getImage());
 		}
-		imageAccountFile = null;
 
 	}
+
+	
 
 	@Override
 	public void onClick(View v) {
@@ -131,7 +132,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 			break;
 		case R.id.saveButtonAdvanced:
 			
-			SharedPreferences setting = getSharedPreferences(USER_PREFERENCES, 0);
+			//SharedPreferences setting = getSharedPreferences(USER_PREFERENCES, 0);
 			String nick=setting.getString("NICK", "default");
 			String email=setting.getString("EMAIL", "default");
 			String pw=setting.getString("PASS", "default");
@@ -174,8 +175,8 @@ public class RegistrationAdvancedActivity extends Activity implements
 		if (userPreferences == null)
 			return;
 
-		SharedPreferences settings = getSharedPreferences(USER_PREFERENCES, 0);
-		SharedPreferences.Editor editor = settings.edit();
+		setting = getSharedPreferences(USER_PREFERENCES, 0);
+		SharedPreferences.Editor editor = setting.edit();
 		
 		
 		editor.putString("IMG", userPreferences.getimage());
@@ -191,9 +192,9 @@ public class RegistrationAdvancedActivity extends Activity implements
 	}
 
 	@Override
-	protected void onStop() {
+	protected void onPause() {
 
-		super.onStop();
+		super.onPause();
 		setSharedPreference(userPreferences);
 	}
 
@@ -372,6 +373,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 
 					imageBase64 = MediaController
 							.encodeBase64toString(MediaController.getImage());
+				
 
 				} catch (OutOfMemoryError e) {
 					String errorSizeImage = getResources().getString(

@@ -5,20 +5,29 @@ import com.google.android.maps.MapView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.GestureDetector;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 public class GeoMapActivity extends MapActivity {
 
 	public GestureDetector data;
 	private MapView mapView;
 
+	private String USER_PREFERENCES = "UserPreferncer";
+	SharedPreferences setting;
+	ImageView accountImage;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.maplayout);
+		accountImage=(ImageView) findViewById(R.id.accountImage);
+		
 
 		mapView = (MapView) findViewById(R.id.mapview);
 
@@ -36,6 +45,21 @@ public class GeoMapActivity extends MapActivity {
 				LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
 				0, locationListener);
+	}
+	
+	public void onResume() {
+		super.onResume();
+		setting = getSharedPreferences(USER_PREFERENCES, 0);
+		String photo=setting.getString("IMG", null);
+
+		if (photo!=null) {
+			accountImage.setAdjustViewBounds(true);
+			accountImage.setMaxHeight(40);
+			accountImage.setMaxWidth(40);
+			accountImage.setImageBitmap(MediaController.decodeBase64toBitmap(photo));
+			
+		}
+
 	}
 
 	@Override
