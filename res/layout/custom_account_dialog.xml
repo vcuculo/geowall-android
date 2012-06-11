@@ -1,53 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/accountDialog"
+    android:id="@+id/insertMessageDialog"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/black"
-    android:orientation="vertical" >
+    android:layout_height="match_parent"
+    android:background="@color/gray"
+    android:orientation="vertical"
+    android:padding="10dp"
+     >
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/messageText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="200dp"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginBottom="8dp"
+        android:maxLength="140"
+        android:cursorVisible="false"
+        
+        android:gravity="top"
+        android:textColor="@color/black" >
+    </EditText>
+</ScrollView>
     <LinearLayout
-        android:id="@+id/imageItem"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        style="@style/layoutStyle"
+        android:layout_gravity="left"
+        android:layout_marginTop="10dp"
+        android:gravity="fill_horizontal"
         android:orientation="horizontal"
-        android:padding="10dp" >
+        >
 
-        <ImageView
-            android:id="@+id/imageGetPhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/image" />
-
-        <TextView
-            android:id="@+id/getPhotoText"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:text="@string/getPhotoText"
-            android:textColor="#FFF" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/takePhotoItem"
+    <ImageButton
+        android:id="@+id/facebookShareButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp" >
+        android:src="@drawable/facebook" />
 
-        <ImageView
-            android:id="@+id/imageTakePhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/camera" />
+    <ImageButton
+        android:id="@+id/twitterShareButtom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/twitter" />
 
-        <TextView
-            android:id="@+id/takePhotoText"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:text="@string/takePhotoText"
-            android:textColor="#FFF" />
+    <ImageButton
+        android:id="@+id/uploadButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/updateimage" />
+     <Button
+        android:id="@+id/sendButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sendText"
+        android:textSize="20dp"
+    />   
     </LinearLayout>
+
+    
 
 </LinearLayout>

@@ -22,13 +22,14 @@
             android:layout_toRightOf="@id/accountImage"
             android:gravity="right" >
 
-  <!--           <Button
-                android:id="@+id/saveButtonAdvanced"
+            <Button
+                android:id="@+id/insertMessageButton"
                 style="@style/buttonToolbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button"
-                android:text="@string/finishButton" /> -->
+                android:text="@string/messageText"
+                 /> 
         </LinearLayout>
     </RelativeLayout>
 

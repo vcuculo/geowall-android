@@ -26,4 +26,7 @@
     <string name="getPhotoText">Select Photo</string>
     <string name="takePhotoText">Take a Photo</string>
     <string name="outOfMemoryException">The max image size is 5 MB</string>
+    <string name="sendText">Send</string>
+    <string name="messageText">Geowall</string>
+    <string name="dialogTitle">Insert Message</string>
 </resources>
