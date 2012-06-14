@@ -11,6 +11,9 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -70,5 +73,34 @@ public class GeoMapActivity extends MapActivity {
 	public void showWall(){
 		Intent intent = new Intent(this, WallActivity.class);
 		this.startActivity(intent);
+	}
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu){
+		MenuInflater inflater= getMenuInflater();
+		inflater.inflate(R.menu.menu, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		switch(item.getItemId()){
+		case R.id.logoutMenu:
+			SharedPreferences settings = getSharedPreferences(USER_PREFERENCES, 0);
+			SharedPreferences.Editor editor = settings.edit();
+			editor.clear();
+			editor.commit();
+			finish();
+
+			break;
+		case R.id.settingMenu:
+			Intent i = new Intent(this, RegistrationActivity.class);
+			this.startActivity(i);
+			break;
+		default :
+			return super.onOptionsItemSelected(item);
+		}
+		return true;
 	}
 }

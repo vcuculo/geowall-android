@@ -60,7 +60,9 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 		nextButton.setOnClickListener(this);
 		saveButton.setOnClickListener(this);
 
-		
+		SharedPreferences settings = getSharedPreferences(USER_PREFERENCES, 0);
+		nick.setText(settings.getString("NICK", ""));
+		email.setText(settings.getString("EMAIL", ""));
 
 	}
 

@@ -4,7 +4,11 @@ import java.io.File;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -15,6 +19,8 @@ public class GeoWallActivity extends Activity implements OnClickListener {
 	private TextView nick, pw, forgot;
 	private Button login, signup;
 	private ImageButton fbSocial, twSocial;
+	
+	private String USER_PREFERENCES = "UserPreferncer";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -46,6 +52,11 @@ public class GeoWallActivity extends Activity implements OnClickListener {
 		case R.id.registerButton:
 			// Il codice che segue lo utlizzo solo per far partire
 			// l'activity di registrazione per fare delle prove
+			SharedPreferences settings = getSharedPreferences(USER_PREFERENCES, 0);
+			SharedPreferences.Editor editor = settings.edit();
+			editor.clear();
+			editor.commit();
+			
 			Intent i = new Intent(this, RegistrationActivity.class);
 			this.startActivity(i);
 
@@ -55,4 +66,6 @@ public class GeoWallActivity extends Activity implements OnClickListener {
 			break;
 		}
 	}
+	
+
 }

@@ -29,4 +29,6 @@
     <string name="sendText">Send</string>
     <string name="messageText">Geowall</string>
     <string name="dialogTitle">Insert Message</string>
+    <string name="settingMenu">Setting Account</string>
+    <string name="logutMenu">Exit</string>
 </resources>
