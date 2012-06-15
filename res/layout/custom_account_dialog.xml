@@ -21,6 +21,7 @@
             android:background="@drawable/messagetext"
             android:gravity="top"
             android:imeOptions="actionDone"
+            android:inputType="textImeMultiLine"
             android:maxLength="140"
             android:maxLines="5"
             android:minHeight="100dp"
