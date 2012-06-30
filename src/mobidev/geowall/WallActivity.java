@@ -1,21 +1,30 @@
 package mobidev.geowall;
 
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.SearchManager.OnCancelListener;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.style.ImageSpan;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -23,6 +32,7 @@ import android.widget.TableLayout;
 import android.widget.TableLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.io.File;
 
 public class WallActivity extends Activity implements OnClickListener{
 	/** Called when the activity is first created. */
@@ -30,8 +40,13 @@ public class WallActivity extends Activity implements OnClickListener{
 	final static int CUSTOM_DIALOG=1;
 	private String USER_PREFERENCES = "UserPreferncer";
 	SharedPreferences setting;
-	ImageView accountImage;
+	ImageView accountImage, messageImage;
+	String imageMessageBase64=null;//immagine da passare al server
+	
 	Button insert;
+	ImageButton upload;
+	TextView mesText;
+	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -41,6 +56,8 @@ public class WallActivity extends Activity implements OnClickListener{
 		accountImage=(ImageView) findViewById(R.id.accountImage);		
 		insert=(Button) findViewById(R.id.insertMessageButton);
 		insert.setOnClickListener(this);
+		
+	
 		
 	}
 
@@ -75,13 +92,15 @@ public class WallActivity extends Activity implements OnClickListener{
 	}
 	
 	protected Dialog onCreateDialog(int id) {
-	    Dialog dialog=new Dialog(this);
+	    Dialog dialog=new CustomDialog(this);
 	    switch(id) {
 	    case CUSTOM_DIALOG:
 
 	    	dialog.setContentView(R.layout.custom_account_dialog);
 	    	dialog.setTitle(R.string.dialogTitle);
-	    	
+	    	mesText=(TextView)dialog.findViewById(R.id.messageText);
+			mesText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+		
 	    	break;
 	    }
 	    return dialog;
@@ -94,12 +113,11 @@ public class WallActivity extends Activity implements OnClickListener{
 		case R.id.insertMessageButton:
 			Context mContext = getApplicationContext();
 			Dialog dialog = new Dialog(mContext);
-
 			dialog.setContentView(R.layout.custom_account_dialog);
 			showDialog(CUSTOM_DIALOG);
-			Toast.makeText(this, "Geo", Toast.LENGTH_LONG).show();
+			
 			break;
-
+		
 	
 		}
 	}
@@ -135,4 +153,71 @@ public class WallActivity extends Activity implements OnClickListener{
 	}
 	
 	
+	//hide class
+	class CustomDialog extends Dialog {
+		
+		EditText etName;
+
+		public CustomDialog(Context context) {
+			super(context);
+			
+		}
+
+		@Override
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.custom_account_dialog);
+			setTitle(R.string.dialogTitle);
+			ImageButton upload = (ImageButton) findViewById(R.id.uploadButton);
+			upload.setOnClickListener(new buttonListener());
+			etName = (EditText) findViewById(R.id.messageText);
+		}
+
+		private class buttonListener implements android.view.View.OnClickListener {
+			@Override
+	        public void onClick(View v) {
+	        	switch(v.getId()){
+	        	case R.id.uploadButton:
+
+	        		Intent imageIntent = MediaController.getMedia(MediaController.TAKE_PHOTO);
+	        		startActivityForResult(imageIntent, MediaController.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+	        		//CustomDialog.this.dismiss();
+	            break;
+	        	}
+	        }
+		}
+		
+		protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+			if (requestCode == MediaController.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+				if (resultCode == RESULT_OK) {
+
+					try {
+						messageImage.setAdjustViewBounds(true);
+						messageImage.setMaxHeight(40);
+						messageImage.setMaxWidth(40);
+						// user take photo
+						File imageMessageFile = MediaController.getImage();
+						Bitmap temp = MediaController.decodeFile(imageMessageFile);
+						MediaController.saveMedia(temp,
+								MediaController.MEDIA_TYPE_IMAGE);
+					
+						messageImage.setImageBitmap(temp);
+						temp = null;
+						imageMessageFile = null;
+
+						imageMessageBase64 = MediaController
+								.encodeBase64toString(MediaController.getImage());
+						ImageSpan imagespan=new ImageSpan(messageImage.getDrawable());
+						Drawable imgDraw=messageImage.getDrawable();
+						imgDraw.setBounds(0, 0, 40, 40);
+						etName.setCompoundDrawables(messageImage.getDrawable(), null, null, null);
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+					
+	}
+
+			}
+		}
+}
 }

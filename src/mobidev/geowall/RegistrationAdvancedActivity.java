@@ -367,6 +367,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 					Bitmap temp = MediaController.decodeFile(imageAccountFile);
 					MediaController.saveMedia(temp,
 							MediaController.MEDIA_TYPE_IMAGE);
+				
 					accountImage.setImageBitmap(temp);
 					temp = null;
 					imageAccountFile = null;
