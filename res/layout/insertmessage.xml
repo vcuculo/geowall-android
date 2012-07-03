@@ -3,11 +3,41 @@
     android:id="@+id/insertMessage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray"
-    android:minWidth="300dp"
+    style="@style/layoutBackground"
     android:orientation="vertical"
-    android:padding="5dp" >
+    android:gravity="center_horizontal"
+    android:layout_gravity="center" >
 
+    <RelativeLayout
+        android:id="@+id/barCompleteAdavanced"
+        style="@style/barStyle"
+        android:background="@drawable/bar"
+        android:layout_marginBottom="20dp" >
+
+        <ImageView
+            android:id="@+id/accountImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/account" />
+
+        <LinearLayout
+            android:id="@+id/barRegistrationAdvanced"
+            style="@style/layoutStyleHorizontal"
+            android:layout_toRightOf="@id/accountImage"
+            android:gravity="right" >
+
+            <Button
+                android:id="@+id/insertMessageButton"
+                style="@style/buttonToolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button"
+                android:text="@string/sendText"
+                 /> 
+        </LinearLayout>
+    </RelativeLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
@@ -16,16 +46,16 @@
             android:id="@+id/messageText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
             android:background="@drawable/messagetext"
             android:gravity="top"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:maxLength="140"
+            android:height="100dp"
+            android:maxWidth="300dp"
             android:maxLines="5"
-            android:imeOptions="actionGo"
-            android:inputType="textMultiLine"
-
-            android:minHeight="100dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textColor="@color/black" >
@@ -35,9 +65,9 @@
     <LinearLayout
         style="@style/layoutStyle"
         android:layout_gravity="left"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:orientation="horizontal" >
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp" >
 
         <ImageButton
             android:id="@+id/facebookShareButton"
@@ -57,12 +87,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/updateimage" />
 
-        <Button
-            android:id="@+id/sendButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sendText"
-            android:textSize="20dp" />
+   
     </LinearLayout>
 
 </LinearLayout>
