@@ -58,11 +58,12 @@ public class GeoWallActivity extends Activity implements OnClickListener {
 			editor.commit();
 			
 			Intent i = new Intent(this, RegistrationActivity.class);
+			File temp = MediaController.getImage();
+			temp.delete();
 			this.startActivity(i);
 
 			// delete image temp if it exists
-			File temp = MediaController.getImage();
-			temp.delete();
+			
 			break;
 		}
 	}

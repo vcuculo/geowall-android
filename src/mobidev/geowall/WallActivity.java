@@ -3,17 +3,12 @@ package mobidev.geowall;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.SearchManager.OnCancelListener;
-import android.content.Context;
-import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
+
 import android.os.Bundle;
-import android.text.style.ImageSpan;
-import android.util.Log;
-import android.view.KeyEvent;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -91,31 +86,16 @@ public class WallActivity extends Activity implements OnClickListener{
 
 	}
 	
-	protected Dialog onCreateDialog(int id) {
-	    Dialog dialog=new CustomDialog(this);
-	    switch(id) {
-	    case CUSTOM_DIALOG:
 
-	    	dialog.setContentView(R.layout.custom_account_dialog);
-	    	dialog.setTitle(R.string.dialogTitle);
-	    	mesText=(TextView)dialog.findViewById(R.id.messageText);
-			mesText.setImeOptions(EditorInfo.IME_ACTION_DONE);
-		
-	    	break;
-	    }
-	    return dialog;
-	}
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.insertMessageButton:
-			Context mContext = getApplicationContext();
-			Dialog dialog = new Dialog(mContext);
-			dialog.setContentView(R.layout.custom_account_dialog);
-			showDialog(CUSTOM_DIALOG);
 			
+			Intent intent=new Intent(this,mobidev.geowall.InsertMessageActivity.class);
+			startActivity(intent);
 			break;
 		
 	
@@ -152,72 +132,8 @@ public class WallActivity extends Activity implements OnClickListener{
 		return true;
 	}
 	
-	
-	//hide class
-	class CustomDialog extends Dialog {
-		
-		EditText etName;
 
-		public CustomDialog(Context context) {
-			super(context);
-			
-		}
 
-		@Override
-		public void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState);
-			setContentView(R.layout.custom_account_dialog);
-			setTitle(R.string.dialogTitle);
-			ImageButton upload = (ImageButton) findViewById(R.id.uploadButton);
-			upload.setOnClickListener(new buttonListener());
-			etName = (EditText) findViewById(R.id.messageText);
-		}
 
-		private class buttonListener implements android.view.View.OnClickListener {
-			@Override
-	        public void onClick(View v) {
-	        	switch(v.getId()){
-	        	case R.id.uploadButton:
 
-	        		Intent imageIntent = MediaController.getMedia(MediaController.TAKE_PHOTO);
-	        		startActivityForResult(imageIntent, MediaController.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-	        		//CustomDialog.this.dismiss();
-	            break;
-	        	}
-	        }
-		}
-		
-		protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-			if (requestCode == MediaController.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-				if (resultCode == RESULT_OK) {
-
-					try {
-						messageImage.setAdjustViewBounds(true);
-						messageImage.setMaxHeight(40);
-						messageImage.setMaxWidth(40);
-						// user take photo
-						File imageMessageFile = MediaController.getImage();
-						Bitmap temp = MediaController.decodeFile(imageMessageFile);
-						MediaController.saveMedia(temp,
-								MediaController.MEDIA_TYPE_IMAGE);
-					
-						messageImage.setImageBitmap(temp);
-						temp = null;
-						imageMessageFile = null;
-
-						imageMessageBase64 = MediaController
-								.encodeBase64toString(MediaController.getImage());
-						ImageSpan imagespan=new ImageSpan(messageImage.getDrawable());
-						Drawable imgDraw=messageImage.getDrawable();
-						imgDraw.setBounds(0, 0, 40, 40);
-						etName.setCompoundDrawables(messageImage.getDrawable(), null, null, null);
-					}catch(Exception e){
-						e.printStackTrace();
-					}
-					
-	}
-
-			}
-		}
-}
 }
