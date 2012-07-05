@@ -126,6 +126,11 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 			if(settings.contains("SESSION")){
 				i = new Intent(this, GeoMapActivity.class);
 				this.startActivity(i);
+			}else{
+				if(ErrorLog.empty())
+					ERRORCOM=ErrorLog.get();
+					showDialog(ERROR_COMMUNICATION);
+			
 			}
 			break;
 

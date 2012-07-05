@@ -42,7 +42,7 @@ public class LoginController extends AsyncTask<Context, Context, String> {
 				se.putString("SESSION", session);
 				se.commit();
 			}else{
-				ErrorLog.put("Account alredy exist");
+				ErrorLog.put("Credentials are not correct");
 			}
 		}catch(IOException e){
 			ErrorLog.put("Error to comunicate with server");

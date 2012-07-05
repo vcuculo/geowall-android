@@ -47,9 +47,10 @@ public class SignUpController extends AsyncTask<Context,Context,String> {
 				se.putString("SESSION", session);
 				se.commit();
 			}else{
-				onCreateDialog(ERROR_DIALOG_ID, context[0]);
+				ErrorLog.put("Account alredy exist");
 			}
 		}catch(IOException e){
+			ErrorLog.put("Error to comunicate with server");
 			Log.e("Errore login", e.getMessage());
 			error=true;
 		}
@@ -60,8 +61,6 @@ public class SignUpController extends AsyncTask<Context,Context,String> {
     	if(error==false){
     	ProgressDialog dialog = ProgressDialog.show(c[0], "", 
                 "Loading. Please wait...", true);
-    	}else{
-    		onCreateDialog(ERROR_COMMUNICATION, c[0]);
     	}
     }
     
@@ -69,32 +68,7 @@ public class SignUpController extends AsyncTask<Context,Context,String> {
         return;
     }
     
-    protected void onCreateDialog(int id, Context c) {
-		AlertDialog alert = null;
-		switch (id) {
-		case ERROR_DIALOG_ID:
-
-			createAlert(ERROR,c).show();
-			break;
-		case ERROR_COMMUNICATION:
-			createAlert(ERRORCOM,c).show();
-			break;
-		}
-		
-	}
+ 
     
-	private AlertDialog createAlert(String messaggeError,Context c) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(c);
-		builder.setMessage(messaggeError.toString())
-				.setTitle("Error")
-				.setCancelable(false)
-				.setPositiveButton("Yes",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								dialog.cancel();
-							}
-						});
-		AlertDialog alert = builder.create();
-		return alert;
-	}
+
 }

@@ -55,7 +55,8 @@ public class RegistrationAdvancedActivity extends Activity implements
 	static final int DATE_DIALOG_ID = 0;
 	static final int COUNTRY_DIALOG_ID = 1;
 	static final int MEDIA_DIALOG_ID = 2;
-
+	public final int ERROR_COMMUNICATION = 3;
+	private String ERRORCOM="Impossible connect to server";
 	// it is used to callback activity
 	static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 200;
@@ -167,6 +168,10 @@ public class RegistrationAdvancedActivity extends Activity implements
 			if(settings.contains("SESSION")){
 				Intent i = new Intent(this, GeoMapActivity.class);
 				this.startActivity(i);
+			}else{
+				if(ErrorLog.empty())
+					ERRORCOM=ErrorLog.get();
+					showDialog(ERROR_COMMUNICATION);
 			}
 			break;
 		}
@@ -282,10 +287,30 @@ public class RegistrationAdvancedActivity extends Activity implements
 			});
 			AlertDialog alertMedia = buildMedia.create();
 			return alertMedia;
+			
+		case ERROR_COMMUNICATION:
+			AlertDialog alertError= createAlert(ERRORCOM);
+			return alertError;
+			
 		}
 		return null;
 	}
 
+	
+	private AlertDialog createAlert(String messaggeError) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(messaggeError.toString())
+				.setTitle("Error")
+				.setCancelable(false)
+				.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+							}
+						});
+		AlertDialog alert = builder.create();
+		return alert;
+	}
 	/**
 	 * This is used to capture image
 	 */
