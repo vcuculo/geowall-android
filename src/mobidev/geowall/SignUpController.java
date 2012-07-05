@@ -57,7 +57,7 @@ public class SignUpController extends AsyncTask<Context,Context,String> {
     }
 
     protected void onProgressUpdate(Context... c) {
-    	if(error=false){
+    	if(error==false){
     	ProgressDialog dialog = ProgressDialog.show(c[0], "", 
                 "Loading. Please wait...", true);
     	}else{
@@ -78,6 +78,7 @@ public class SignUpController extends AsyncTask<Context,Context,String> {
 			break;
 		case ERROR_COMMUNICATION:
 			createAlert(ERRORCOM,c).show();
+			break;
 		}
 		
 	}

@@ -25,8 +25,9 @@ public class GeoWallActivity extends Activity implements OnClickListener {
 
 	private String USER_PREFERENCES = "UserPreference";
 	private String ERROR = "- Insert nick or email\n\n- Password is required and it is max 10 character";
+	private String ERRORC = "Error comunicattion to server";
 	public final int ERROR_DIALOG_ID = 0;
-
+	public final int ERROR_COMMUNICATION = 1;
 	String clog;
 	String cEmail;
 	String cPw;
@@ -104,6 +105,10 @@ public class GeoWallActivity extends Activity implements OnClickListener {
 				if (settings.contains("SESSION")) {
 					i = new Intent(this, GeoMapActivity.class);
 					this.startActivity(i);
+				}else{
+					if(ErrorLog.empty())
+						ERRORC=ErrorLog.get();
+						showDialog(ERROR_COMMUNICATION);
 				}
 			}
 			break;
@@ -130,6 +135,9 @@ public class GeoWallActivity extends Activity implements OnClickListener {
 		switch (id) {
 		case ERROR_DIALOG_ID:
 			alert = createAlert(ERROR);
+			break;
+		case ERROR_COMMUNICATION:
+			alert = createAlert(ERRORC);
 			break;
 		}
 		return alert;
