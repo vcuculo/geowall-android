@@ -38,7 +38,7 @@ public class DataController {
 		}
 		
 	}
-	
+	/*
 	public static UserData unMarshallUser(String jsonUser){
 		try {
 			JSONObject user=new JSONObject(jsonUser);
@@ -57,7 +57,7 @@ public class DataController {
 		}
 	
 	}
-	
+	*/
 		/*
 		 * positionX
 		 * positionY
@@ -185,6 +185,68 @@ public class DataController {
 				e.printStackTrace();
 				return null;
 			}
+		}
+		
+		public static String marshallSession(String session){
+			JSONObject sess=new JSONObject();
+			try {
+				sess.put("sessionid", session);
+				return sess.toString();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
+		}
+		
+		public static String unMarshallSession(String jsonSession){
+			try {
+				JSONObject sess=new JSONObject(jsonSession);
+				String session=sess.optString("sessionid");
+				return session;
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
+		}
+		
+		
+		/*
+		 * nick
+		 * email
+		 * pw
+		 */
+		public static String marshallLogin(LoginData loginData){	
+			JSONObject userJS= new JSONObject();
+			try {
+				userJS.put("pw",loginData.getpassword());
+				if(loginData.getnick()!=null)
+					userJS.put("nick", loginData.getnick());
+				if(loginData.getemail()!=null)
+					userJS.put("email", loginData.getemail());
+				return userJS.toString();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
+			
+		}
+		
+		public static LoginData unMarshallLogin(String jsonLogin){
+			try {
+				JSONObject user=new JSONObject(jsonLogin);
+				String nick=user.optString("nick");
+				String email=user.optString("email");
+				String pw=user.getString("pw");
+				return new LoginData(nick, email, pw);
+				
+			} catch (JSONException e) {
+						e.printStackTrace();
+						return null;
+			}
+		
 		}
 		
 	}

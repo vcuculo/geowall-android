@@ -22,7 +22,7 @@ public class GeoMapActivity extends MapActivity {
 	public GestureDetector data;
 	private MapView mapView;
 
-	private String USER_PREFERENCES = "UserPreferncer";
+	private String USER_PREFERENCES = "UserPreference";
 	SharedPreferences setting;
 	ImageView accountImage;
 	@Override

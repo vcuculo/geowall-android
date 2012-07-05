@@ -1,27 +1,20 @@
 package mobidev.geowall;
 
 import java.io.File;
-import java.io.IOException;
 import java.math.BigInteger;
-import java.security.DigestException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,10 +28,11 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 	File imageAccountFile = null;
 
 	private UserData userPreferences;
-	private String USER_PREFERENCES = "UserPreferncer";
+	private String USER_PREFERENCES = "UserPreference";
 	private String ERROR = "- Nick is required\n\n- Check the email is correct\n\n- Password is required and it is max 10 character";
-
+	private String ERRORCOM="Impossible connect to server";
 	public final int ERROR_DIALOG_ID = 0;
+	public final int ERROR_COMMUNICATION = 1;
 	String cNick;
 	String cEmail;
 	String cPw;
@@ -128,8 +122,11 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 		case R.id.saveButton:
 			setSharedPreference(userPreferences);	
 			new SignUpController().execute(this,this,null);
-			i = new Intent(this, GeoMapActivity.class);
-			this.startActivity(i);
+			SharedPreferences settings = getSharedPreferences(USER_PREFERENCES, 0);
+			if(settings.contains("SESSION")){
+				i = new Intent(this, GeoMapActivity.class);
+				this.startActivity(i);
+			}
 			break;
 
 		case R.id.nextButton:
@@ -143,9 +140,8 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 		AlertDialog alert = null;
 		switch (id) {
 		case ERROR_DIALOG_ID:
-
 			alert = createAlert(ERROR);
-
+			break;
 		}
 		return alert;
 	}

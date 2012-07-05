@@ -13,8 +13,8 @@ public class CommunicationController {
 	
 	private static final String PROTOCOL = "http";
 	private static final String SERVER_ADDRESS = "172.16.44.93";
-	private static final int SERVER_PORT = 8080;
-	private static final String SERVICE_NAME = "myService";
+	private static final int SERVER_PORT = 8081;
+	private static final String SERVICE_NAME = "geowall";
 	//private static final String COMMAND_NAME = "getnoticeboard";
 	//private static final String DATA = "some data to send";
 	

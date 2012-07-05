@@ -33,7 +33,7 @@ public class WallActivity extends Activity implements OnClickListener{
 	/** Called when the activity is first created. */
 
 	final static int CUSTOM_DIALOG=1;
-	private String USER_PREFERENCES = "UserPreferncer";
+	private String USER_PREFERENCES = "UserPreference";
 	SharedPreferences setting;
 	ImageView accountImage, messageImage;
 	String imageMessageBase64=null;//immagine da passare al server

@@ -62,7 +62,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 
 	static final String STOREIMAGE = "image/*";
 
-	private String USER_PREFERENCES = "UserPreferncer";
+	private String USER_PREFERENCES = "UserPreference";
 
 	File imageAccountFile = null;
 
@@ -136,14 +136,10 @@ public class RegistrationAdvancedActivity extends Activity implements
 			String nick=setting.getString("NICK", "default");
 			String email=setting.getString("EMAIL", "default");
 			String pw=setting.getString("PASS", "default");
-			
-			
-			
 			String img=null;
 			String date=mDateDisplay.getText().toString();
 			String country=countryText.getText().toString();
 			String city=cityText.getText().toString();
-		
 			Log.i("PreferencesNick",nick);
 			Log.i("PreferencesEmail",email);
 			Log.i("PreferencesPw",pw);
@@ -165,8 +161,13 @@ public class RegistrationAdvancedActivity extends Activity implements
 			
 			userPreferences=new UserData(nick,email,pw,img,date,country,city);
 			
-			Intent i = new Intent(this, GeoMapActivity.class);
-			this.startActivity(i);
+			setSharedPreference(userPreferences);
+			new SignUpController().execute(this,this,null);
+			SharedPreferences settings = getSharedPreferences(USER_PREFERENCES, 0);
+			if(settings.contains("SESSION")){
+				Intent i = new Intent(this, GeoMapActivity.class);
+				this.startActivity(i);
+			}
 			break;
 		}
 	}
@@ -191,12 +192,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 
 	}
 
-	@Override
-	protected void onPause() {
 
-		super.onPause();
-		setSharedPreference(userPreferences);
-	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
