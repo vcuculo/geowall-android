@@ -73,6 +73,7 @@ public class GeoMapActivity extends MapActivity {
 	public void showWall(){
 		Intent intent = new Intent(this, WallActivity.class);
 		this.startActivity(intent);
+	
 	}
 	
 	

@@ -118,9 +118,9 @@ public class WallActivity extends Activity implements OnClickListener{
 			SharedPreferences.Editor editor = settings.edit();
 			editor.clear();
 			editor.commit();
-			finish();
-
-			
+			Intent logoutIntent = new Intent(this, CloseActivity.class);
+            logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(logoutIntent);
 			break;
 		case R.id.settingMenu:
 			Intent i = new Intent(this, RegistrationActivity.class);

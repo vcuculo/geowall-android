@@ -12,7 +12,7 @@ import java.net.URL;
 public class CommunicationController {
 	
 	private static final String PROTOCOL = "http";
-	private static final String SERVER_ADDRESS = "localhost";
+	private static final String SERVER_ADDRESS = "172.16.44.93";
 	private static final int SERVER_PORT = 8080;
 	private static final String SERVICE_NAME = "myService";
 	//private static final String COMMAND_NAME = "getnoticeboard";

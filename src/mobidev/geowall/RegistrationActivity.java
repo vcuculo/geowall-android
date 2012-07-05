@@ -2,6 +2,7 @@ package mobidev.geowall;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.security.DigestException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -9,10 +10,12 @@ import java.security.NoSuchAlgorithmException;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,7 +42,7 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 	String cNick;
 	String cEmail;
 	String cPw;
-
+	String session;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -120,23 +123,11 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 					this,
 					"Problema nella criptazione della password\nSegnalare Errore",
 					Toast.LENGTH_LONG).show();
-		} catch (DigestException e) {
-			Toast.makeText(
-					this,
-					"Problema nella criptazione della password\nSegnalare Errore",
-					Toast.LENGTH_LONG).show();
-			;
-		} catch (IOException e) {
-			Toast.makeText(this, "Problema Digest\nSegnalare Errore",
-					Toast.LENGTH_LONG).show();
-			Log.i("PreferencesNick", nickUser);
-			Log.i("PreferencesEmail", emailUser);
-			Log.i("Preferences", e.getMessage());
 		}
 		switch (v.getId()) {
 		case R.id.saveButton:
-		
-
+			setSharedPreference(userPreferences);	
+			new SignUpController().execute(this,this,null);
 			i = new Intent(this, GeoMapActivity.class);
 			this.startActivity(i);
 			break;
@@ -174,22 +165,10 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 		return alert;
 	}
 
-	private String getDigest(String pw) throws NoSuchAlgorithmException,
-			IOException, DigestException {
-
-		StringBuffer hexString = null;
+	private String getDigest(String pw) throws NoSuchAlgorithmException{
 		MessageDigest digester = MessageDigest.getInstance("MD5");
-
 		digester.update(pw.getBytes());
-		byte[] messageDigest = digester.digest();
-
-		// Hex
-		hexString = new StringBuffer();
-		for (int i = 0; i < messageDigest.length; i++)
-			hexString.append(Integer.toHexString(0xff & messageDigest[i]));
-
-		return hexString.toString();
-
+		return String.format("%032x", new BigInteger(1,digester.digest()));
 	}
 
 	private void setSharedPreference(UserData userPreferences) {
@@ -202,16 +181,9 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 		editor.putString("NICK", userPreferences.getnick());
 		editor.putString("EMAIL", userPreferences.getemail());
 		editor.putString("PASS", userPreferences.getpassword());
-
 		editor.commit();
 
 	}
 
-	@Override
-	protected void onStop() {
-
-		super.onStop();
-		setSharedPreference(userPreferences);
-	}
 
 }

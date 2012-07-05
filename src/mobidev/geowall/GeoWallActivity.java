@@ -63,7 +63,7 @@ public class GeoWallActivity extends Activity implements OnClickListener {
 			this.startActivity(i);
 
 			// delete image temp if it exists
-			
+		
 			break;
 		}
 	}
