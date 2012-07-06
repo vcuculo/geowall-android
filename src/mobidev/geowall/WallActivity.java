@@ -112,18 +112,19 @@ public class WallActivity extends Activity implements OnClickListener{
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
+		Intent i;
 		switch(item.getItemId()){
 		case R.id.logoutMenu:
 			SharedPreferences settings = getSharedPreferences(USER_PREFERENCES, 0);
 			SharedPreferences.Editor editor = settings.edit();
 			editor.clear();
 			editor.commit();
-			Intent logoutIntent = new Intent(this, CloseActivity.class);
-            logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(logoutIntent);
+			i =new Intent(this,GeoWallActivity.class);
+			startActivity(i);
+			finish();
 			break;
 		case R.id.settingMenu:
-			Intent i = new Intent(this, RegistrationActivity.class);
+			i = new Intent(this, RegistrationActivity.class);
 			this.startActivity(i);
 			break;
 		default :

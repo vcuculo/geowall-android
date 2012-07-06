@@ -65,8 +65,8 @@ public class RegistrationAdvancedActivity extends Activity implements
 
 	private String USER_PREFERENCES = "UserPreference";
 
-	File imageAccountFile = null;
-
+	Bitmap imageAccount = null;
+	File imageAccountFile= null;
 	UserData userPreferences = null;
 	SharedPreferences setting;
 
@@ -103,14 +103,15 @@ public class RegistrationAdvancedActivity extends Activity implements
 	public void onResume() {
 		super.onResume();
 
-		imageAccountFile = MediaController.getImage();
+		if (setting.contains("IMG")) {
+			imageAccount = MediaController.decodeBase64toBitmap(setting.getString("IMG",null));
 
-		if (imageAccountFile.exists()) {
-			accountImage.setAdjustViewBounds(true);
-			accountImage.setMaxHeight(40);
-			accountImage.setMaxWidth(40);
-			accountImage.setImageURI(Uri.fromFile(imageAccountFile));
-			imageBase64 = MediaController.encodeBase64toString(MediaController.getImage());
+				accountImage.setAdjustViewBounds(true);
+				accountImage.setMaxHeight(40);
+				accountImage.setMaxWidth(40);
+				accountImage.setImageBitmap(imageAccount);
+
+			
 		}
 
 	}
@@ -134,45 +135,11 @@ public class RegistrationAdvancedActivity extends Activity implements
 		case R.id.saveButtonAdvanced:
 			
 			//SharedPreferences setting = getSharedPreferences(USER_PREFERENCES, 0);
-			String nick=setting.getString("NICK", "default");
-			String email=setting.getString("EMAIL", "default");
-			String pw=setting.getString("PASS", "default");
-			String img=null;
-			String date=mDateDisplay.getText().toString();
-			String country=countryText.getText().toString();
-			String city=cityText.getText().toString();
-			Log.i("PreferencesNick",nick);
-			Log.i("PreferencesEmail",email);
-			Log.i("PreferencesPw",pw);
-			Log.i("PreferencesDate",date);
 			
-			Log.i("PreferencesCountry",country);
-			Log.i("PreferencesCity",city);
-			
-			if(imageBase64!=null)
-				img=imageBase64;
-			UtilityCheck checkDate=new CheckDateIsNotCurrent(mYear, mMonth, mDay);
-			//Log.i("PreferencesImg",img);
-			if(!checkDate.check())
-				date=null;
-			if(country!="" || country==cCountry)
-				country=null;
-			if(city!="")
-				city=null;
-			
-			userPreferences=new UserData(nick,email,pw,img,date,country,city);
+			userPreferences=createUser();
 			
 			setSharedPreference(userPreferences);
-			new SignUpController().execute(this,this,null);
-			SharedPreferences settings = getSharedPreferences(USER_PREFERENCES, 0);
-			if(settings.contains("SESSION")){
-				Intent i = new Intent(this, GeoMapActivity.class);
-				this.startActivity(i);
-			}else{
-				if(ErrorLog.empty())
-					ERRORCOM=ErrorLog.get();
-					showDialog(ERROR_COMMUNICATION);
-			}
+			new SignUpController().execute(this);
 			break;
 		}
 	}
@@ -395,7 +362,9 @@ public class RegistrationAdvancedActivity extends Activity implements
 
 					imageBase64 = MediaController
 							.encodeBase64toString(MediaController.getImage());
-				
+					userPreferences=createUser();
+					
+					setSharedPreference(userPreferences);
 
 				} catch (OutOfMemoryError e) {
 					String errorSizeImage = getResources().getString(
@@ -413,6 +382,37 @@ public class RegistrationAdvancedActivity extends Activity implements
 
 	}
 
+	private UserData createUser(){
+		UserData  user;
+		String nick=setting.getString("NICK", "default");
+		String email=setting.getString("EMAIL", "default");
+		String pw=setting.getString("PASS", "default");
+		String img=null;
+		String date=mDateDisplay.getText().toString();
+		String country=countryText.getText().toString();
+		String city=cityText.getText().toString();
+		Log.i("PreferencesNick",nick);
+		Log.i("PreferencesEmail",email);
+		Log.i("PreferencesPw",pw);
+		Log.i("PreferencesDate",date);
+		
+		Log.i("PreferencesCountry",country);
+		Log.i("PreferencesCity",city);
+		
+		if(imageBase64!=null)
+			img=imageBase64;
+		UtilityCheck checkDate=new CheckDateIsNotCurrent(mYear, mMonth, mDay);
+		//Log.i("PreferencesImg",img);
+		if(!checkDate.check())
+			date=null;
+		if(country!="" || country==cCountry)
+			country=null;
+		if(city!="")
+			city=null;
+		
+		user=new UserData(nick,email,pw,img,date,country,city);
+		return user;
+	}
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();

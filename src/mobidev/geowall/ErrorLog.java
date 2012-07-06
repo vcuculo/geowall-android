@@ -1,8 +1,8 @@
 package mobidev.geowall;
 
-public  class ErrorLog {
+public class ErrorLog {
 
-	public static String errorMessage;
+	private static String errorMessage="";
 	
 	public static void put(String message){
 		errorMessage=message;

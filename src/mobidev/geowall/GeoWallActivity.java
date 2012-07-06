@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,8 +37,15 @@ public class GeoWallActivity extends Activity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		SharedPreferences settings=getSharedPreferences(USER_PREFERENCES,0);
+		if(settings.contains("SESSION")){
+			Intent i=new Intent(this,GeoMapActivity.class);
+			startActivity(i);
+		}
+		
 		setContentView(R.layout.main);
-
+		
 		nick = (TextView) findViewById(R.id.nickText);
 		pw = (TextView) findViewById(R.id.pwText);
 		forgot = (TextView) findViewById(R.id.forgotLabel);
@@ -65,7 +73,7 @@ public class GeoWallActivity extends Activity implements OnClickListener {
 		case R.id.registerButton:
 			// Il codice che segue lo utlizzo solo per far partire
 			// l'activity di registrazione per fare delle prove
-			settings = getSharedPreferences(USER_PREFERENCES, 0);
+			settings = getSharedPreferences(USER_PREFERENCES, MODE_MULTI_PROCESS);
 			SharedPreferences.Editor editor = settings.edit();
 			editor.clear();
 			editor.commit();
@@ -100,16 +108,7 @@ public class GeoWallActivity extends Activity implements OnClickListener {
 				else
 					l = new LoginData(log, null, pass);
 				setSharedPreference(l);
-				new SignUpController().execute(this, this, null);
-				settings = getSharedPreferences(USER_PREFERENCES, 0);
-				if (settings.contains("SESSION")) {
-					i = new Intent(this, GeoMapActivity.class);
-					this.startActivity(i);
-				}else{
-					if(ErrorLog.empty())
-						ERRORC=ErrorLog.get();
-						showDialog(ERROR_COMMUNICATION);
-				}
+				new LoginController().execute(this);
 			}
 			break;
 		}
@@ -119,7 +118,7 @@ public class GeoWallActivity extends Activity implements OnClickListener {
 		if (userPreferences == null)
 			return;
 
-		SharedPreferences settings = getSharedPreferences(USER_PREFERENCES, 0);
+		SharedPreferences settings = getSharedPreferences(USER_PREFERENCES, MODE_MULTI_PROCESS);
 		SharedPreferences.Editor editor = settings.edit();
 		if (userPreferences.getnick() != null)
 			editor.putString("NICK", userPreferences.getnick());
@@ -157,4 +156,6 @@ public class GeoWallActivity extends Activity implements OnClickListener {
 		AlertDialog alert = builder.create();
 		return alert;
 	}
+	
+	
 }

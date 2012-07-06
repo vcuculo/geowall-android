@@ -4,8 +4,10 @@ import java.io.IOException;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -18,12 +20,14 @@ public class LoginController extends AsyncTask<Context, Context, String> {
 	private String ERRORCOM="Impossible connect to server";
 	public final int ERROR_DIALOG_ID = 0;
 	public final int ERROR_COMMUNICATION = 1;
-	
+	ProgressDialog dialog;
+	Context contextglobal;
 	public LoginController(){
 		super();
 	}
 
     protected String doInBackground(Context... context){
+    	contextglobal=context[0];
     	CommunicationController cc=new CommunicationController();
     	SharedPreferences sharePreferences=context[0].getSharedPreferences(USER_PREFERENCES, 0);
     	publishProgress(context[0]);
@@ -41,25 +45,41 @@ public class LoginController extends AsyncTask<Context, Context, String> {
 				SharedPreferences.Editor se=sharePreferences.edit();
 				se.putString("SESSION", session);
 				se.commit();
+				Intent i = new Intent(context[0], GeoMapActivity.class);
+				context[0].startActivity(i);
 			}else{
-				ErrorLog.put("Credentials are not correct");
+				error=true;
+				session=tempSession;
 			}
 		}catch(IOException e){
-			ErrorLog.put("Error to comunicate with server");
-			Log.e("Errore login", e.getMessage());
+			Log.e("Errore login", e.getLocalizedMessage());
 			error=true;
 		}
 		return session;
     }
 
     protected void onProgressUpdate(Context... c) {
-    	if(error=false){
-    	ProgressDialog dialog = ProgressDialog.show(c[0], "", 
+  
+    	dialog = ProgressDialog.show(c[0], "", 
                 "Loading. Please wait...", true);
-    	}
+
     }
     
     protected void onPostExecute(String session) {
+     	if(error==true){
+    		AlertDialog.Builder alertDialog= new AlertDialog.Builder(contextglobal);
+    		alertDialog.setMessage(session)
+    		.setPositiveButton("Yes",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.cancel();
+						}
+					});
+    		alertDialog.create().show();
+    	}
+
+	dialog.dismiss();
+	dialog=null;
         return;
     }
 }
