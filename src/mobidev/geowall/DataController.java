@@ -187,6 +187,10 @@ public class DataController {
 			}
 		}
 		
+		/*
+		 * session u
+		 */
+		
 		public static String marshallSession(String session){
 			JSONObject sess=new JSONObject();
 			try {
@@ -233,7 +237,7 @@ public class DataController {
 			}
 			
 		}
-		
+		/*
 		public static LoginData unMarshallLogin(String jsonLogin){
 			try {
 				JSONObject user=new JSONObject(jsonLogin);
@@ -248,7 +252,7 @@ public class DataController {
 			}
 		
 		}
-		
+		*/
 	}
 	
 

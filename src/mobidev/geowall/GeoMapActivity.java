@@ -89,14 +89,7 @@ public class GeoMapActivity extends MapActivity {
 		Intent i;
 		switch(item.getItemId()){
 		case R.id.logoutMenu:
-			SharedPreferences settings = getSharedPreferences(USER_PREFERENCES, 0);
-			SharedPreferences.Editor editor = settings.edit();
-			editor.clear();
-			editor.commit();
-			i =new Intent(this,GeoWallActivity.class);
-			startActivity(i);
-			finish();
-
+			new LogoutController().execute(this);
 			break;
 		case R.id.settingMenu:
 			i = new Intent(this, RegistrationActivity.class);
