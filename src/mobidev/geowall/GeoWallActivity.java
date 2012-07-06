@@ -1,6 +1,9 @@
 package mobidev.geowall;
 
 import java.io.File;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -102,13 +105,18 @@ public class GeoWallActivity extends Activity implements OnClickListener {
 				showDialog(ERROR_DIALOG_ID);
 				return;
 			} else {
-
-				if (log.contains("@"))
-					l = new LoginData(null, log, pass);
-				else
-					l = new LoginData(log, null, pass);
-				setSharedPreference(l);
-				new LoginController().execute(this);
+				try{
+					pass=getDigest(pass);
+					if (log.contains("@"))
+						l = new LoginData(null, log, pass);
+					else
+						l = new LoginData(log, null, pass);
+					setSharedPreference(l);
+					new LoginController().execute(this);
+				}catch(NoSuchAlgorithmException e){
+					return ;
+				}
+			
 			}
 			break;
 		}
@@ -129,6 +137,12 @@ public class GeoWallActivity extends Activity implements OnClickListener {
 
 	}
 
+	private String getDigest(String pw) throws NoSuchAlgorithmException {
+		MessageDigest digester = MessageDigest.getInstance("MD5");
+		digester.update(pw.getBytes());
+		return String.format("%032x", new BigInteger(1, digester.digest()));
+	}
+	
 	protected Dialog onCreateDialog(int id) {
 		AlertDialog alert = null;
 		switch (id) {

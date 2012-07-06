@@ -35,7 +35,7 @@ public class LoginController extends AsyncTask<Context, Context, String> {
     		nick=sharePreferences.getString("NICK", null);
     		email=sharePreferences.getString("EMAIL", null);
     		pw=sharePreferences.getString("PASS", null);
-    	
+    		
     	user=new LoginData(nick, email, pw);
 		session=null;
 		try{
