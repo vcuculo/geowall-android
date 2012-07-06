@@ -53,7 +53,7 @@ public class LoginController extends AsyncTask<Context, Context, String> {
 			}
 		}catch(IOException e){
 			Log.e("Errore login", e.getLocalizedMessage());
-			error=true;
+			error=false;
 		}
 		return session;
     }

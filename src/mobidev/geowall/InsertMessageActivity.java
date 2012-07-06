@@ -93,7 +93,7 @@ public class InsertMessageActivity extends Activity implements OnClickListener {
 					imageMessageBase64 = MediaController
 							.encodeBase64toString(MediaController.getImage());
 					Drawable imDr = new BitmapDrawable(temp);
-					imDr.setBounds(0, 0, 40, 40);
+					imDr.setBounds(0, 0, 60, 60);
 					// text = "Entrato";
 					// setSharedPreference(message);
 					message.setCompoundDrawables(imDr, null, null, null);

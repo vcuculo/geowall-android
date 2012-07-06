@@ -59,7 +59,7 @@ public class SignUpController extends AsyncTask<Context, Context, String> {
 			}
 		} catch (IOException e) {
 			Log.e("Errore login", e.getLocalizedMessage());
-			error = true;
+			error = false;
 		}
 	return null;
 	}

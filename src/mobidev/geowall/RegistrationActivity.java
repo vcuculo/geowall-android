@@ -124,6 +124,7 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 			break;
 
 		case R.id.nextButton:
+			setSharedPreference(userPreferences);
 			i = new Intent(this, RegistrationAdvancedActivity.class);
 			this.startActivity(i);
 			break;

@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/insertMessage"
+    style="@style/layoutBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/layoutBackground"
-    android:orientation="vertical"
+    android:layout_gravity="center"
     android:gravity="center_horizontal"
-    android:layout_gravity="center" >
+    android:orientation="vertical" >
 
     <RelativeLayout
         android:id="@+id/barCompleteAdavanced"
         style="@style/barStyle"
-        android:background="@drawable/bar"
-        android:layout_marginBottom="20dp" >
+        android:background="@drawable/bar" >
 
         <ImageView
             android:id="@+id/accountImage"
@@ -34,41 +33,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button"
-                android:text="@string/sendText"
-                 /> 
+                android:text="@string/sendText" />
         </LinearLayout>
     </RelativeLayout>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+
+ 
 
         <EditText
             android:id="@+id/messageText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/messagetext"
             android:gravity="top"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:maxLength="140"
-            android:height="100dp"
-            android:maxLines="5"
+            android:minHeight="200dp"
             android:imeOptions="actionDone"
-        	android:inputType="textMultiLine"
-            android:paddingTop="10dp"
+            android:inputType="textMultiLine"
             android:paddingBottom="10dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
+            android:paddingTop="10dp"
             android:textColor="@color/black" >
         </EditText>
-    </ScrollView>
+
+
 
     <LinearLayout
         style="@style/layoutStyle"
         android:layout_gravity="left"
+        android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp" >
+        android:orientation="horizontal" >
 
         <ImageButton
             android:id="@+id/facebookShareButton"
@@ -87,8 +80,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/updateimage" />
-
-   
     </LinearLayout>
 
 </LinearLayout>

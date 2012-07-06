@@ -135,8 +135,33 @@ public class RegistrationAdvancedActivity extends Activity implements
 		case R.id.saveButtonAdvanced:
 			
 			//SharedPreferences setting = getSharedPreferences(USER_PREFERENCES, 0);
+			String nick=setting.getString("NICK", "default");
+			String email=setting.getString("EMAIL", "default");
+			String pw=setting.getString("PASS", "default");
+			String img=null;
+			String date=mDateDisplay.getText().toString();
+			String country=countryText.getText().toString();
+			String city=cityText.getText().toString();
+			Log.i("PreferencesNick",nick);
+			Log.i("PreferencesEmail",email);
+			Log.i("PreferencesPw",pw);
+			Log.i("PreferencesDate",date);
 			
-			userPreferences=createUser();
+			Log.i("PreferencesCountry",country);
+			Log.i("PreferencesCity",city);
+			
+			if(imageBase64!=null)
+				img=imageBase64;
+			UtilityCheck checkDate=new CheckDateIsNotCurrent(mYear, mMonth, mDay);
+			//Log.i("PreferencesImg",img);
+			if(!checkDate.check())
+				date=null;
+			if(country!="" || country==cCountry)
+				country=null;
+			if(city!="")
+				city=null;
+			
+			userPreferences=new UserData(nick,email,pw,img,date,country,city);
 			
 			setSharedPreference(userPreferences);
 			new SignUpController().execute(this);
@@ -362,9 +387,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 
 					imageBase64 = MediaController
 							.encodeBase64toString(MediaController.getImage());
-					userPreferences=createUser();
-					
-					setSharedPreference(userPreferences);
+
 
 				} catch (OutOfMemoryError e) {
 					String errorSizeImage = getResources().getString(
@@ -382,37 +405,7 @@ public class RegistrationAdvancedActivity extends Activity implements
 
 	}
 
-	private UserData createUser(){
-		UserData  user;
-		String nick=setting.getString("NICK", "default");
-		String email=setting.getString("EMAIL", "default");
-		String pw=setting.getString("PASS", "default");
-		String img=null;
-		String date=mDateDisplay.getText().toString();
-		String country=countryText.getText().toString();
-		String city=cityText.getText().toString();
-		Log.i("PreferencesNick",nick);
-		Log.i("PreferencesEmail",email);
-		Log.i("PreferencesPw",pw);
-		Log.i("PreferencesDate",date);
-		
-		Log.i("PreferencesCountry",country);
-		Log.i("PreferencesCity",city);
-		
-		if(imageBase64!=null)
-			img=imageBase64;
-		UtilityCheck checkDate=new CheckDateIsNotCurrent(mYear, mMonth, mDay);
-		//Log.i("PreferencesImg",img);
-		if(!checkDate.check())
-			date=null;
-		if(country!="" || country==cCountry)
-			country=null;
-		if(city!="")
-			city=null;
-		
-		user=new UserData(nick,email,pw,img,date,country,city);
-		return user;
-	}
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
