@@ -1,16 +1,18 @@
 package mobidev.geowall;
 
+import java.util.ArrayList;
+
 public class NoticeBoard {
 
 	protected int positionX;
 	protected int positionY;
 	protected String date;
-	protected String hour;
-	public NoticeBoard(int positionX,int positionY,String date, String hour){
+	protected ArrayList<Message> m;
+	public NoticeBoard(int positionX,int positionY,String date, ArrayList<Message> m){
 		this.positionX=positionX;
 		this.positionY=positionY;
 		this.date=date;
-		this.hour=hour;
+		this.m=m;
 	}
 	
 	public int getPositionY(){
@@ -24,8 +26,8 @@ public class NoticeBoard {
 		return date;
 	}
 	
-	public String getHour(){
-		return hour;
+	public ArrayList<Message> getMessages(){
+		return m;
 	}
 	
 }

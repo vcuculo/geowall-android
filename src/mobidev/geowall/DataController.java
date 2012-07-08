@@ -1,5 +1,8 @@
 package mobidev.geowall;
 
+import java.util.ArrayList;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -64,14 +67,14 @@ public class DataController {
 		 * date
 		 * hour
 		 */
-		public static String marshallNoticeBoard(NoticeBoard bd){
+		public static String marshallGetNoticeBoard(String session,RequestNoticeBoard bd){
 			JSONObject board=new JSONObject();
 			
 			try{
-				board.put("positionX", bd.getPositionX());
-				board.put("positionY", bd.getPositionY());
+				board.put("sessionid", session);
+				board.put("positionX", bd.getPx());
+				board.put("positionY", bd.getPy());
 				board.put("date", bd.getDate());
-				board.put("hour",bd.getHour());
 				return board.toString();
 			}catch(JSONException e){
 				e.printStackTrace();
@@ -80,14 +83,24 @@ public class DataController {
 			
 		}
 		
-		public static NoticeBoard unMarshallBoard(String jsonBoard){
+		public static NoticeBoard unMarshallGetNoticeBoard(String jsonBoard){
 			try {
 				JSONObject board=new JSONObject(jsonBoard);
 				int px=board.getInt("positionX");
 				int py=board.getInt("positionY");
 				String date= board.getString("date");
-				String hour=board.getString("hour");
-				return new NoticeBoard(px, py, date,hour);
+				ArrayList<Message> m=new ArrayList<Message>();
+				JSONArray messageJson=board.getJSONArray("messages");
+				for(int i=0;i<messageJson.length();i++){
+					JSONObject message=messageJson.getJSONObject(i);
+					int id=message.getInt("id");
+					String nick=message.getString("nick");
+					String text=message.getString("text");
+					String image=message.optString("image");
+					String video=message.optString("video");
+					m.add(new Message(id, nick, text, image, video));
+				}
+				return new NoticeBoard(px, py, date, m);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -101,7 +114,7 @@ public class DataController {
 		 * type
 		 * token
 		 */
-		
+		/*
 		public static String marshallSocial(Social sc){
 			JSONObject social=new JSONObject();
 			
@@ -131,7 +144,7 @@ public class DataController {
 			}
 			
 		}
-		
+		*/
 		
 		/*
 		 * nick
@@ -141,6 +154,7 @@ public class DataController {
 		 * img
 		 * video
 		 */
+		/*
 		public static String marshallMessage(Message m){
 			JSONObject mess=new JSONObject();
 			try {
@@ -186,7 +200,7 @@ public class DataController {
 				return null;
 			}
 		}
-		
+		*/
 		/*
 		 * session u
 		 */

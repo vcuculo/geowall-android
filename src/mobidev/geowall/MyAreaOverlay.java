@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -41,6 +42,8 @@ public class MyAreaOverlay extends Overlay {
 		if (i != -1) {
 			drawUnpressedArea(i);
 			Intent intent = new Intent(mMap.getContext(), WallActivity.class);
+			intent.putExtra("ID", i);
+			Log.i("INTENT", Integer.toString(i));
 			mMap.getContext().startActivity(intent);
 		}
 	}

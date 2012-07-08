@@ -2,32 +2,21 @@ package mobidev.geowall;
 
 
 import android.app.Activity;
-import android.app.Dialog;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
-
 import android.os.Bundle;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TableLayout;
-import android.widget.TableLayout.LayoutParams;
 import android.widget.TextView;
-import android.widget.Toast;
-import java.io.File;
 
 public class WallActivity extends Activity implements OnClickListener{
 	/** Called when the activity is first created. */
@@ -47,12 +36,17 @@ public class WallActivity extends Activity implements OnClickListener{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.wall_layout);
+		int i= getIntent().getIntExtra("ID", 5);
+		Log.i("INTENT2", Integer.toString(i));
 		addElementResult();
 		accountImage=(ImageView) findViewById(R.id.accountImage);		
 		insert=(Button) findViewById(R.id.insertMessageButton);
-		insert.setOnClickListener(this);
+		if(i==4){
+			insert.setVisibility(0);
+			insert.setOnClickListener(this);
+		}
 		
-	
+		
 		
 	}
 

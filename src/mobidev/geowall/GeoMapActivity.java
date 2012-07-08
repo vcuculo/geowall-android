@@ -69,13 +69,13 @@ public class GeoMapActivity extends MapActivity {
 	protected boolean isRouteDisplayed() {
 		return false;
 	}
-	
+	/*
 	public void showWall(){
 		Intent intent = new Intent(this, WallActivity.class);
 		this.startActivity(intent);
 	
 	}
-	
+	*/
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu){

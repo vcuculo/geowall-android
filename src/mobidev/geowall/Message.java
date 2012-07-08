@@ -5,16 +5,15 @@ import org.w3c.dom.UserDataHandler;
 public class Message {
 
 	
+	protected int id;
 	protected String text;
 	protected String img;
 	protected String video;
 	protected String nick;
-	protected NoticeBoard nb;
-	
-	public Message (String nick,NoticeBoard nb,String text,String img,String video){
-		
+
+	public Message (int id,String nick,String text,String img,String video){
+		this.id=id;
 		this.nick=nick;
-		this.nb=nb;
 		this.text=text;
 		this.img=img;
 		this.video=video;
@@ -22,13 +21,14 @@ public class Message {
 	}
 	
 	
+	public int getid(){
+		return id;
+	}
+	
 	public String getnick(){
 		return nick;
 	}
 	
-	public NoticeBoard getnb(){
-		return nb;
-	}
 	
 	public String gettext(){
 		return text;

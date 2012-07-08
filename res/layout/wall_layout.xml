@@ -29,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/button"
                 android:text="@string/messageText"
+                android:visibility="invisible"
                  /> 
         </LinearLayout>
     </RelativeLayout>
