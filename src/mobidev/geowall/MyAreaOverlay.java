@@ -1,10 +1,13 @@
 package mobidev.geowall;
 
+import java.util.Date;
+
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -42,8 +45,12 @@ public class MyAreaOverlay extends Overlay {
 		if (i != -1) {
 			drawUnpressedArea(i);
 			Intent intent = new Intent(mMap.getContext(), WallActivity.class);
-			intent.putExtra("ID", i);
-			Log.i("INTENT", Integer.toString(i));
+			intent.putExtra("ID", i);	
+			intent.putExtra("pxNb", p.getLatitudeE6());
+			intent.putExtra("pyNb", p.getLongitudeE6());
+			Date d=new Date();
+			Log.i("Data",d.toLocaleString());
+			intent.putExtra("dateNb", new Date().toLocaleString());
 			mMap.getContext().startActivity(intent);
 		}
 	}

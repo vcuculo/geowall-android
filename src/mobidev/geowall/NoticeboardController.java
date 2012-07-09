@@ -1,16 +1,18 @@
 package mobidev.geowall;
 
-
 import java.io.IOException;
+import java.util.ArrayList;
 
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class NoticeboardController extends AsyncTask<Context, Context, Void> {
+public class NoticeboardController extends AsyncTask<Context, Context, Context> {
 	String nick, email, pw, session;
 	private String USER_PREFERENCES = "UserPreference";
 	boolean error = false;
@@ -18,45 +20,51 @@ public class NoticeboardController extends AsyncTask<Context, Context, Void> {
 	public final int ERROR_COMMUNICATION = 1;
 	ProgressDialog dialog;
 	Context contextglobal;
+	RequestNoticeBoard rnb;
+	NoticeBoard nb;
 
-	public NoticeboardController(){
+	public NoticeboardController() {
 		super();
 	}
 
-	protected Void doInBackground(Context... context) {
+	protected Context doInBackground(Context... context) {
 		contextglobal = context[0];
-		CommunicationController cc = new CommunicationController();
-		SharedPreferences sharePreferences = context[0].getSharedPreferences(
+		publishProgress(contextglobal);
+		SharedPreferences setting = contextglobal.getSharedPreferences(
 				USER_PREFERENCES, 0);
-		publishProgress(context[0]);
-		session = sharePreferences.getString("SESSION", null);
-		if (session != null) {
-			try {
-				
-				cc.sendRequest("logout",
-						DataController.marshallSession(session));
-				SharedPreferences.Editor editor = sharePreferences.edit();
-				editor.clear();
-				editor.commit();
-				Intent i =new Intent(contextglobal,GeoWallActivity.class);
-				contextglobal.startActivity(i);
-			} catch (IOException e) {
-				Log.e("Errore login", e.getLocalizedMessage());
-				error = false;
-			}
+		try {
+			CommunicationController cc = new CommunicationController();
+			rnb = DataBaseController.request(new DataBaseGeowall(contextglobal));
+			String result = cc.sendRequest(
+					"getnoticeboard",
+					DataController.marshallGetNoticeBoard(
+							setting.getString("SESSION", null), rnb));
+			NoticeBoard nb = DataController.unMarshallGetNoticeBoard(result);
+			if(nb!=null)
+			DataBaseController.write(new DataBaseGeowall(contextglobal),nb);
+
+		} catch (IOException e) {
+			Log.e("Errore login", e.getLocalizedMessage());
+			error = false;
 		}
+
 		return null;
 	}
 
-	protected void onProgressUpdate(Context... c) {
+	protected void onProgressUpdate(Context c) {
 
-		dialog = ProgressDialog.show(c[0], "", "Loading. Please wait...", true);
+		dialog = ProgressDialog.show(c, "", "Loading. Please wait...", true);
 
 	}
 
-	protected void onPostExecute(Void parameter) {
-		dialog.dismiss();
-		dialog = null;
+	protected void onPostExecute(Context c) {
+		if (dialog != null) {
+			dialog.dismiss();
+			dialog = null;
+		}
+		
 		return;
 	}
+
+	
 }
