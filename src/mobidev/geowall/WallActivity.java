@@ -84,7 +84,7 @@ public class WallActivity extends Activity implements OnClickListener {
 		for (int i = 0; i < messaggio.size(); i++) {
 			View itemView = inflater.inflate(R.layout.wall_layout_item, null);
 
-			TextView t2 = (TextView) itemView.findViewById(R.id.title);
+			TextView t2 = (TextView) itemView.findViewById(R.id.text);
 			t2.setText(messaggio.get(i).gettext());
 			String imgBase64 = messaggio.get(i).getimg();
 			if (imgBase64 != null) {
@@ -95,8 +95,8 @@ public class WallActivity extends Activity implements OnClickListener {
 				t2.setCompoundDrawables(null, null, img, null);
 				t2.setPadding(2, 2, 2, 2);
 			}
-			TextView t1 = (TextView) itemView.findViewById(R.id.date);
-			 t1.setText((i + 1) + "/05/2012");
+			TextView t1 = (TextView) itemView.findViewById(R.id.title);
+			 t1.setText(messaggio.get(i).getnick());
 
 			messages.addView(itemView);
 		}
