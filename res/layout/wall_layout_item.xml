@@ -28,6 +28,7 @@
         android:layout_alignTop="@+id/thumbnail"
         android:layout_marginTop="1dip"
         android:layout_toRightOf="@+id/thumbnail"
+        android:layout_marginBottom="5dip"
         android:textColor="#000000"
         android:textSize="15dip"
         android:textStyle="bold"
@@ -38,10 +39,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignBottom="@id/thumbnail"
+        android:layout_below="@+id/title"
         android:layout_toRightOf="@+id/thumbnail"
         android:layout_marginTop="10dip"
-        android:gravity="right"
+        android:gravity="left"
         android:textColor="#000000"
         android:textSize="12dip" />
 

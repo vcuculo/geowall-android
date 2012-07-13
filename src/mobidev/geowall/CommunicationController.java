@@ -12,7 +12,7 @@ import java.net.URL;
 public class CommunicationController {
 	
 	private static final String PROTOCOL = "http";
-	private static final String SERVER_ADDRESS = "192.168.43.125";
+	private static final String SERVER_ADDRESS = "geo.wallo.be";
 	private static final int SERVER_PORT = 8081;
 	private static final String SERVICE_NAME = "geowall";
 	//private static final String COMMAND_NAME = "getnoticeboard";
