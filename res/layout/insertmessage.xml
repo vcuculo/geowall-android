@@ -37,24 +37,20 @@
         </LinearLayout>
     </RelativeLayout>
 
- 
-
-        <EditText
-            android:id="@+id/messageText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="top"
-            android:minHeight="200dp"
-            android:imeOptions="actionDone"
-            android:inputType="textMultiLine"
-            android:paddingBottom="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp"
-            android:textColor="@color/black" >
-        </EditText>
-
-
+    <EditText
+        android:id="@+id/messageText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:imeOptions="actionDone"
+        android:inputType="textMultiLine"
+        android:minHeight="200dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:textColor="@color/black" >
+    </EditText>
 
     <LinearLayout
         style="@style/layoutStyle"

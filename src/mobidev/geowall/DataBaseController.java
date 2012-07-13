@@ -9,32 +9,34 @@ import android.provider.ContactsContract.Contacts.Data;
 
 public class DataBaseController {
 
-	public static RequestNoticeBoard request(DataBaseGeowall db) {
-		SQLiteDatabase sql = db.getReadableDatabase();
-		String query = "SELECT posizioneX, posizioneY, ultimaData FROM Bacheca";
-		Cursor p = sql.rawQuery(query, null);
-		// i know that there is one noticeboard
-		p.moveToFirst();
-		int x = p.getInt(p.getColumnIndex("posizioneX"));
-		int y = p.getInt(p.getColumnIndex("posizioneY"));
-		String date = p.getString(p.getColumnIndex("ultimaData"));
-		db.close();
-		return new RequestNoticeBoard(x, y, date);
-		
+	public static void writeMessage(DataBaseGeowall db,RequestNoticeBoard nb, Message m){
+		SQLiteDatabase sql = db.getWritableDatabase();
+		ContentValues raw = new ContentValues();
+		raw.put("idMessaggio", m.getid());
+		raw.put("testo", m.gettext());
+		raw.put("img", m.getimg());
+		raw.put("video", m.getvideo());
+		raw.put("nick", m.getnick());
+		raw.put("posizioneX", nb.getPx());
+		raw.put("posizioneY", nb.getPy());
+		raw.put("ultimaData", nb.getDate());
+		sql.insert("Messaggio", null, raw);
 	}
 
-	public static void write(DataBaseGeowall db,NoticeBoard nb) {
+	public static void writeAllMessage(DataBaseGeowall db,NoticeBoard nb) {
 		SQLiteDatabase sql = db.getWritableDatabase();
-		int idBacheca = 1;
 		if (nb != null) {
 			ArrayList<Message> messages = nb.getMessages();
 			for (Message m : messages) {
 				ContentValues raw = new ContentValues();
 				raw.put("idMessaggio", m.getid());
-				raw.put("idBacheca", idBacheca);
 				raw.put("testo", m.gettext());
 				raw.put("img", m.getimg());
 				raw.put("video", m.getvideo());
+				raw.put("nick", m.getnick());
+				raw.put("posizioneX", nb.getPositionX());
+				raw.put("posizioneY", nb.getPositionY());
+				raw.put("ultimaData", nb.getDate());
 				sql.insert("Messaggio", null, raw);
 			}
 		}

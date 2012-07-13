@@ -41,26 +41,9 @@ public class DataController {
 		}
 		
 	}
-	/*
-	public static UserData unMarshallUser(String jsonUser){
-		try {
-			JSONObject user=new JSONObject(jsonUser);
-			String nick=user.getString("nick");
-			String email=user.getString("email");
-			String pw=user.getString("pw");
-			String image=user.optString("image",null);
-			String date=user.optString("date",null);
-			String country=user.optString("country",null);
-			String city=user.optString("city");
-			return new UserData(nick, email, pw, image, date, country, city);
-			
-		} catch (JSONException e) {
-					e.printStackTrace();
-					return null;
-		}
+
 	
-	}
-	*/
+
 		/*
 		 * positionX
 		 * positionY
@@ -98,7 +81,7 @@ public class DataController {
 					String text=message.getString("text");
 					String image=message.optString("image");
 					String video=message.optString("video");
-					m.add(new Message(id, nick, text, image, video));
+					m.add(new Message(id, nick, text, image, video,null));
 				}
 				return new NoticeBoard(px, py, date, m);
 			} catch (JSONException e) {
@@ -147,26 +130,28 @@ public class DataController {
 		*/
 		
 		/*
-		 * nick
+		 * sessionid
 		 * positionX of the notice board
 		 * positionY of the notice board
 		 * text
-		 * img
+		 * image
 		 * video
+		 * social
 		 */
-		/*
-		public static String marshallMessage(Message m){
+		public static String marshallMessage(String session,RequestNoticeBoard b,Message m){
 			JSONObject mess=new JSONObject();
 			try {
-				mess.put("nick", m.getnick());
-				mess.put("positionX", m.getnb().getPositionX());
-				mess.put("positionY", m.getnb().getPositionX());
+				mess.put("sessionid", session);
+				mess.put("positionX", b.getPx());
+				mess.put("positionY", b.getPy());
 				if(m.gettext()!=null)
 					mess.put("text", m.gettext());
 				if(m.getimg()!=null)
 					mess.put("img", m.getimg());
 				if(m.getvideo()!=null)
 					mess.put("video", m.getvideo());
+				if(m.getsocial()!=null)
+					mess.put("social", m.getsocial());
 				return mess.toString();
 				
 			} catch (JSONException e) {
@@ -177,30 +162,21 @@ public class DataController {
 			
 		}
 		
-		
-		public static Message unMarshallMessage(String jsonMessage){
+		public static int unMarshallMessage(String jsonSession){
 			try {
-				JSONObject mess=new JSONObject(jsonMessage);
-				String nick=mess.getString("nick");
-				
-				int px=mess.getInt("positionX");
-				int py=mess.getInt("positionY");
-				String date= mess.getString("date");
-				String hour=mess.getString("hour");
-				
-				String text=mess.optString("text", null);
-				String img=mess.optString("img",null);
-				String video=mess.optString("video",null);
-				
-				NoticeBoard nb=new NoticeBoard(px,py,date,hour);
-				return new Message(nick, nb, text, img, video);
+				JSONObject sess=new JSONObject(jsonSession);
+				int id=sess.optInt("id", -1);
+				return id;
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				return null;
+				return -1;
 			}
 		}
-		*/
+		
+		
+
+	
 		/*
 		 * session u
 		 */
@@ -251,22 +227,7 @@ public class DataController {
 			}
 			
 		}
-		/*
-		public static LoginData unMarshallLogin(String jsonLogin){
-			try {
-				JSONObject user=new JSONObject(jsonLogin);
-				String nick=user.optString("nick");
-				String email=user.optString("email");
-				String pw=user.getString("pw");
-				return new LoginData(nick, email, pw);
-				
-			} catch (JSONException e) {
-						e.printStackTrace();
-						return null;
-			}
-		
-		}
-		*/
+	
 	}
 	
 

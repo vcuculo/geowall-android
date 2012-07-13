@@ -3,6 +3,7 @@ package mobidev.geowall;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 
+import android.content.ClipData.Item;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +15,7 @@ import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -90,10 +92,6 @@ public class GeoMapActivity extends MapActivity {
 		switch(item.getItemId()){
 		case R.id.logoutMenu:
 			new LogoutController().execute(this);
-			break;
-		case R.id.settingMenu:
-			i = new Intent(this, RegistrationActivity.class);
-			this.startActivity(i);
 			break;
 		default :
 			return super.onOptionsItemSelected(item);

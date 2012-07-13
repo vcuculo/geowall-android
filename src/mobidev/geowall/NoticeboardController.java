@@ -23,8 +23,9 @@ public class NoticeboardController extends AsyncTask<Context, Context, Context> 
 	RequestNoticeBoard rnb;
 	NoticeBoard nb;
 
-	public NoticeboardController() {
+	public NoticeboardController(RequestNoticeBoard rnb) {
 		super();
+		this.rnb = rnb;
 	}
 
 	protected Context doInBackground(Context... context) {
@@ -34,14 +35,14 @@ public class NoticeboardController extends AsyncTask<Context, Context, Context> 
 				USER_PREFERENCES, 0);
 		try {
 			CommunicationController cc = new CommunicationController();
-			rnb = DataBaseController.request(new DataBaseGeowall(contextglobal));
 			String result = cc.sendRequest(
 					"getnoticeboard",
 					DataController.marshallGetNoticeBoard(
 							setting.getString("SESSION", null), rnb));
 			NoticeBoard nb = DataController.unMarshallGetNoticeBoard(result);
-			if(nb!=null)
-			DataBaseController.write(new DataBaseGeowall(contextglobal),nb);
+			if (nb != null)
+				DataBaseController.writeAllMessage(new DataBaseGeowall(
+						contextglobal), nb);
 
 		} catch (IOException e) {
 			Log.e("Errore login", e.getLocalizedMessage());
@@ -51,9 +52,9 @@ public class NoticeboardController extends AsyncTask<Context, Context, Context> 
 		return null;
 	}
 
-	protected void onProgressUpdate(Context c) {
+	protected void onProgressUpdate(Context... c) {
 
-		dialog = ProgressDialog.show(c, "", "Loading. Please wait...", true);
+		dialog = ProgressDialog.show(c[0], "", "Loading. Please wait...", true);
 
 	}
 
@@ -62,9 +63,8 @@ public class NoticeboardController extends AsyncTask<Context, Context, Context> 
 			dialog.dismiss();
 			dialog = null;
 		}
-		
+
 		return;
 	}
 
-	
 }

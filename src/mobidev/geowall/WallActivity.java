@@ -3,11 +3,13 @@ package mobidev.geowall;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,8 +47,10 @@ public class WallActivity extends Activity implements OnClickListener {
 		int i = getIntent().getIntExtra("ID", 5);
 		int pxNb = getIntent().getIntExtra("pxNb", Integer.MAX_VALUE);
 		int pyNb = getIntent().getIntExtra("pyNb", Integer.MAX_VALUE);
+		boolean noticeboardRequest = getIntent().getBooleanExtra("NoRequest",
+				false);
 		String dateNb = getIntent().getStringExtra("dateNb");
-		addElementResult();
+
 		accountImage = (ImageView) findViewById(R.id.accountImage);
 		insert = (Button) findViewById(R.id.insertMessageButton);
 		db = new DataBaseGeowall(this);
@@ -59,12 +63,12 @@ public class WallActivity extends Activity implements OnClickListener {
 			rNB = new RequestNoticeBoard(pxNb, pyNb, dateNb);
 		setting = getSharedPreferences(USER_PREFERENCES, 0);
 
-		if (setting.contains("SESSION")) {
-			String request = DataController.marshallGetNoticeBoard(
-					setting.getString("SESSION", null), rNB);
-			insertNoticeBoard(pxNb, pyNb, dateNb);
-			new NoticeboardController().execute(this);
+		if (setting.contains("SESSION") && !noticeboardRequest) {
+			new NoticeboardController(rNB).execute(this);
+			addElementResult();
 
+		} else if (noticeboardRequest) {
+			addElementResult();
 		} else {
 			Log.e("SharePreferences", "Session non è nelle pre");
 		}
@@ -74,16 +78,25 @@ public class WallActivity extends Activity implements OnClickListener {
 	public void addElementResult() {
 		TableLayout messages = (TableLayout) findViewById(R.id.tableMessages);
 		LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-		ArrayList<String> testoMessaggio= getMessage();
-		if(testoMessaggio==null)
+		ArrayList<Message> messaggio = getMessage();
+		if (messaggio == null)
 			return;
-		for (int i = 0; i < testoMessaggio.size(); i++) {
+		for (int i = 0; i < messaggio.size(); i++) {
 			View itemView = inflater.inflate(R.layout.wall_layout_item, null);
 
-			TextView t1 = (TextView) itemView.findViewById(R.id.title);
-			t1.setText(testoMessaggio.get(i));
-			//TextView t2 = (TextView) itemView.findViewById(R.id.date);
-			//t2.setText((i + 1) + "/05/2012");
+			TextView t2 = (TextView) itemView.findViewById(R.id.title);
+			t2.setText(messaggio.get(i).gettext());
+			String imgBase64 = messaggio.get(i).getimg();
+			if (imgBase64 != null) {
+				Bitmap temp=MediaController.decodeBase64toBitmap(imgBase64);
+				temp.setDensity(0);
+				Drawable img = new BitmapDrawable(temp);
+				img.setBounds(0, 0, 40, 40);
+				t2.setCompoundDrawables(null, null, img, null);
+				t2.setPadding(2, 2, 2, 2);
+			}
+			TextView t1 = (TextView) itemView.findViewById(R.id.date);
+			 t1.setText((i + 1) + "/05/2012");
 
 			messages.addView(itemView);
 		}
@@ -113,6 +126,9 @@ public class WallActivity extends Activity implements OnClickListener {
 
 			Intent intent = new Intent(this,
 					mobidev.geowall.InsertMessageActivity.class);
+			intent.putExtra("positionX", rNB.getPx());
+			intent.putExtra("positionY", rNB.getPy());
+			intent.putExtra("date", rNB.getDate());
 			startActivity(intent);
 			break;
 
@@ -134,7 +150,7 @@ public class WallActivity extends Activity implements OnClickListener {
 			new LogoutController().execute(this);
 			break;
 		case R.id.settingMenu:
-			i = new Intent(this, RegistrationActivity.class);
+			i = new Intent(this, GeoMapActivity.class);
 			this.startActivity(i);
 			break;
 		default:
@@ -143,28 +159,26 @@ public class WallActivity extends Activity implements OnClickListener {
 		return true;
 	}
 
-	private void insertNoticeBoard(int x, int y, String date) {
-		ContentValues raw = new ContentValues();
-		raw.put("idBacheca", 1);
-		raw.put("posizioneX", x);
-		raw.put("posizioneY", y);
-		raw.put("ultimaData", date);
-		sql.insert("Bacheca", "", raw);
-		/*
-		 * Cursor c=sql.rawQuery("select ultimaData from Bacheca", null);
-		 * c.moveToFirst();
-		 * Log.i("db",c.getString(c.getColumnIndex("ultimaData")));
-		 */
-	}
+	private ArrayList<Message> getMessage() {
+		int pxNb = getIntent().getIntExtra("pxNb", Integer.MAX_VALUE);
+		int pyNb = getIntent().getIntExtra("pyNb", Integer.MAX_VALUE);
+		ArrayList<Message> m = new ArrayList<Message>();
+		String where = "Messaggio.posizioneX = " + pxNb
+				+ " and Messaggio.posizioneY = " + pyNb
+				+ " order by ultimaData desc";
+		try {
+			Cursor c = sql.rawQuery(
+					"select testo, img, nick from Messaggio where "
+							+ where, null);
+			while (c.moveToNext()) {
+				String text = c.getString(c.getColumnIndex("testo"));
+				String img = c.getString(c.getColumnIndex("img"));
+				String nick = c.getString(c.getColumnIndex("nick"));
+				m.add(new Message(nick, text, img, null, null));
+			}
+			Log.i("message", "messaggio");
 
-	private ArrayList<String> getMessage() {
-		
-		ArrayList<String> m = new ArrayList<String>();
-		try{
-		Cursor c = sql.rawQuery("select testo from Messaggio", null);
-		while (c.moveToNext())
-			m.add(c.getString(c.getColumnIndex("testo")));
-		}catch(NullPointerException e){
+		} catch (NullPointerException e) {
 			return null;
 		}
 		return m;

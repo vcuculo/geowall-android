@@ -4,7 +4,9 @@ import java.io.File;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -23,10 +25,17 @@ public class InsertMessageActivity extends Activity implements OnClickListener {
 	Button send;
 	TextView message;
 	String imageMessageBase64, text;
-
+	private String USER_PREFERENCES = "UserPreference";
+	private RequestNoticeBoard rNB;
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.insertmessage);
+		
+		int posX=getIntent().getIntExtra("positionX", Integer.MAX_VALUE);
+		int posY=getIntent().getIntExtra("positionY", Integer.MAX_VALUE);
+		String date=getIntent().getStringExtra("date");
+		rNB=new RequestNoticeBoard(posX, posY, date);
 		ImageButton upload = (ImageButton) findViewById(R.id.uploadButton);
 		message = (TextView) findViewById(R.id.messageText);
 		
@@ -55,6 +64,15 @@ public class InsertMessageActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.insertMessageButton:
 			text=message.getText().toString();
+			String image;
+			if(imageMessageBase64!=null)
+				image=imageMessageBase64;
+			else
+				image=null;
+			SharedPreferences settings=getSharedPreferences(USER_PREFERENCES, 0);
+			String nick= settings.getString("NICK", null);
+			Message message=new Message(nick, text, image, null, null);
+			new MessageController(rNB, message).execute(this);
 			/*
 			 * chiamata al server
 			 */
@@ -85,6 +103,7 @@ public class InsertMessageActivity extends Activity implements OnClickListener {
 					// user take photo
 					File imageMessageFile = MediaController.getImage();
 					Bitmap temp = MediaController.decodeFile(imageMessageFile);
+					
 					// MediaController.saveMedia(temp,
 					// MediaController.MEDIA_TYPE_IMAGE);
 
