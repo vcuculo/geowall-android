@@ -46,7 +46,7 @@ public class MyAreaOverlay extends Overlay {
 			drawUnpressedArea(i);
 			Intent intent = new Intent(mMap.getContext(), WallActivity.class);
 			intent.putExtra("ID", i);	
-			intent.putExtra("pxNb", areas[i][0].getLatitudeE6());
+			intent.putExtra("pxNb", areas[i][1].getLatitudeE6());
 			intent.putExtra("pyNb", areas[i][0].getLongitudeE6());
 			Date d=new Date();
 			Log.i("Data",d.toLocaleString());

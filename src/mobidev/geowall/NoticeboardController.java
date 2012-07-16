@@ -26,6 +26,9 @@ public class NoticeboardController extends AsyncTask<Context, Context, Context> 
 	public NoticeboardController(RequestNoticeBoard rnb) {
 		super();
 		this.rnb = rnb;
+		Log.i("positionX", Integer.toString(rnb.getPx()));
+		Log.i("positionY", Integer.toString(rnb.getPy()));
+
 	}
 
 	protected Context doInBackground(Context... context) {
@@ -39,16 +42,19 @@ public class NoticeboardController extends AsyncTask<Context, Context, Context> 
 					"getnoticeboard",
 					DataController.marshallGetNoticeBoard(
 							setting.getString("SESSION", null), rnb));
+			Log.i("RequestNoticeBoard", Integer.toString(rnb.getPx()));
+			Log.i("RequestNoticeBoard", Integer.toString(rnb.getPy()));
 			NoticeBoard nb = DataController.unMarshallGetNoticeBoard(result);
 			if (nb != null)
 				DataBaseController.writeAllMessage(new DataBaseGeowall(
 						contextglobal), nb);
 
 		} catch (IOException e) {
-			Log.e("Errore login", e.getLocalizedMessage());
+			Log.e("Errore login", "errore");
 			error = false;
 		}
 
+		// Log.i("ResultNoticeBoard","scrive");
 		return null;
 	}
 

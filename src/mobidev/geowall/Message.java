@@ -1,8 +1,7 @@
 package mobidev.geowall;
 
+import java.sql.Timestamp;
 import java.util.Date;
-
-import org.w3c.dom.UserDataHandler;
 
 public class Message {
 
@@ -12,7 +11,8 @@ public class Message {
 	protected String video;
 	protected String nick;
 	protected String social;
-
+	protected String date;
+	
 	public Message(int id, String nick, String text, String img, String video,
 			String social) {
 		this.id = id;
@@ -21,7 +21,8 @@ public class Message {
 		this.img = img;
 		this.video = video;
 		this.social = social;
-
+		Timestamp dateSql=new Timestamp(new Date().getTime()); 
+		date=dateSql.toString();
 	}
 
 	public Message(String nick, String text, String img, String video,
@@ -31,7 +32,29 @@ public class Message {
 		this.img = img;
 		this.video = video;
 		this.social = social;
-
+		Timestamp dateSql=new Timestamp(new Date().getTime()); 
+		date=dateSql.toString();
+	}
+	
+	public Message(int id, String nick, String text, String img, String video,
+			String social, String date) {
+		this.id = id;
+		this.nick = nick;
+		this.text = text;
+		this.img = img;
+		this.video = video;
+		this.social = social;
+		this.date=date;
+	}
+	
+	public Message(String nick, String text, String img, String video,
+			String social, String date) {
+		this.nick = nick;
+		this.text = text;
+		this.img = img;
+		this.video = video;
+		this.social = social;
+		this.date=date;
 	}
 
 	public int getid() {
@@ -57,5 +80,8 @@ public class Message {
 	public String getsocial() {
 		return social;
 	}
-
+	
+	public String getdate(){
+		return date;
+	}
 }

@@ -88,16 +88,19 @@ public class WallActivity extends Activity implements OnClickListener {
 			t2.setText(messaggio.get(i).gettext());
 			String imgBase64 = messaggio.get(i).getimg();
 			if (imgBase64 != null) {
-				Bitmap temp=MediaController.decodeBase64toBitmap(imgBase64);
-				temp.setDensity(0);
+				Bitmap temp = MediaController.decodeBase64toBitmap(imgBase64);
+
 				Drawable img = new BitmapDrawable(temp);
 				img.setBounds(0, 0, 40, 40);
 				t2.setCompoundDrawables(null, null, img, null);
 				t2.setPadding(2, 2, 2, 2);
 			}
 			TextView t1 = (TextView) itemView.findViewById(R.id.title);
-			 t1.setText(messaggio.get(i).getnick());
-
+			t1.setText(messaggio.get(i).getnick());
+			
+			TextView t3 = (TextView) itemView.findViewById(R.id.textDate);
+			t3.setText(messaggio.get(i).getdate());
+			
 			messages.addView(itemView);
 		}
 	}
@@ -165,18 +168,18 @@ public class WallActivity extends Activity implements OnClickListener {
 		ArrayList<Message> m = new ArrayList<Message>();
 		String where = "Messaggio.posizioneX = " + pxNb
 				+ " and Messaggio.posizioneY = " + pyNb
-				+ " order by ultimaData desc";
+				+ " order by idMessaggio desc";
 		try {
 			Cursor c = sql.rawQuery(
-					"select testo, img, nick from Messaggio where "
+					"select testo, img, nick, dataMessaggio from Messaggio where "
 							+ where, null);
 			while (c.moveToNext()) {
 				String text = c.getString(c.getColumnIndex("testo"));
 				String img = c.getString(c.getColumnIndex("img"));
 				String nick = c.getString(c.getColumnIndex("nick"));
-				m.add(new Message(nick, text, img, null, null));
+				String date = c.getString(c.getColumnIndex("dataMessaggio"));
+				m.add(new Message(nick, text, img, null, null, date));
 			}
-			Log.i("message", "messaggio");
 
 		} catch (NullPointerException e) {
 			return null;

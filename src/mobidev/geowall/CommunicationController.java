@@ -9,6 +9,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import android.util.Log;
+
 public class CommunicationController {
 	
 	private static final String PROTOCOL = "http";
@@ -62,6 +64,7 @@ public class CommunicationController {
 			result.append('\r');
 		}
 		rd.close();
+		Log.e("ResultServer", result.toString());
 		return result.toString();
 	}
 
