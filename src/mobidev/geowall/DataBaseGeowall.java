@@ -14,8 +14,8 @@ public class DataBaseGeowall extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
-		db.execSQL("create table Messaggio(idMessaggio int unique, nick varchar, posizioneX numeric not null,posizioneY numeric, dataBacheca datetime, dataMessaggio datetime, testo  varchar default null,"
-				+ "img blob default null, video blob default null, primary key(idMessaggio));");
+		db.execSQL("create table Messaggio(idMessaggio int unique, nick varchar, posizioneX numeric,posizioneY numeric, dataBacheca datetime, dataMessaggio datetime, testo  varchar default null,"
+				+ "img blob, video blob, primary key(idMessaggio));");
 
 	}
 

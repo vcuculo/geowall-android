@@ -2,6 +2,7 @@ package mobidev.geowall;
 
 import java.io.IOException;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -19,9 +20,10 @@ public class LogoutController extends AsyncTask<Context, Context, Void> {
 	public final int ERROR_COMMUNICATION = 1;
 	ProgressDialog dialog;
 	Context contextglobal;
-
-	public LogoutController() {
+	Activity a;
+	public LogoutController(Activity a) {
 		super();
+		this.a=a;
 	}
 
 	protected Void doInBackground(Context... context) {
@@ -41,6 +43,7 @@ public class LogoutController extends AsyncTask<Context, Context, Void> {
 				editor.commit();
 				Intent i =new Intent(contextglobal,GeoWallActivity.class);
 				contextglobal.startActivity(i);
+				a.finish();
 			} catch (IOException e) {
 				Log.e("Errore login", e.getLocalizedMessage());
 				error = false;

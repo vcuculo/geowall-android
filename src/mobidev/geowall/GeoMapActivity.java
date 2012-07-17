@@ -91,7 +91,7 @@ public class GeoMapActivity extends MapActivity {
 		Intent i;
 		switch(item.getItemId()){
 		case R.id.logoutMenu:
-			new LogoutController().execute(this);
+			new LogoutController(this).execute(this);
 			break;
 		default :
 			return super.onOptionsItemSelected(item);

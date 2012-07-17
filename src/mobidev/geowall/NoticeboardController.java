@@ -1,14 +1,11 @@
 package mobidev.geowall;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -22,46 +19,40 @@ public class NoticeboardController extends AsyncTask<Context, Context, Context> 
 	Context contextglobal;
 	RequestNoticeBoard rnb;
 	NoticeBoard nb;
-
-	public NoticeboardController(RequestNoticeBoard rnb) {
+	WallActivity a;
+	public NoticeboardController(RequestNoticeBoard rnb, WallActivity a) {
 		super();
 		this.rnb = rnb;
-		Log.i("positionX", Integer.toString(rnb.getPx()));
-		Log.i("positionY", Integer.toString(rnb.getPy()));
-
+		this.a=a;
 	}
 
 	protected Context doInBackground(Context... context) {
 		contextglobal = context[0];
-		publishProgress(contextglobal);
 		SharedPreferences setting = contextglobal.getSharedPreferences(
 				USER_PREFERENCES, 0);
+		publishProgress(contextglobal);
 		try {
 			CommunicationController cc = new CommunicationController();
 			String result = cc.sendRequest(
 					"getnoticeboard",
 					DataController.marshallGetNoticeBoard(
 							setting.getString("SESSION", null), rnb));
-			Log.i("RequestNoticeBoard", Integer.toString(rnb.getPx()));
-			Log.i("RequestNoticeBoard", Integer.toString(rnb.getPy()));
-			NoticeBoard nb = DataController.unMarshallGetNoticeBoard(result);
-			if (nb != null)
-				DataBaseController.writeAllMessage(new DataBaseGeowall(
-						contextglobal), nb);
 
+			NoticeBoard nb = DataController.unMarshallGetNoticeBoard(result);
+			if (nb != null){
+				DataBaseController.writeAllMessage(new DataBaseGeowall(
+						a), nb);
+			}
 		} catch (IOException e) {
-			Log.e("Errore login", "errore");
+			Log.e("Errore login", e.toString());
 			error = false;
 		}
-
-		// Log.i("ResultNoticeBoard","scrive");
-		return null;
+		return contextglobal;
 	}
 
-	protected void onProgressUpdate(Context... c) {
+	protected void onProgressUpdate(Context c) {
 
-		dialog = ProgressDialog.show(c[0], "", "Loading. Please wait...", true);
-
+    	dialog = ProgressDialog.show(a, "", "Loading. Please wait...", true);
 	}
 
 	protected void onPostExecute(Context c) {
@@ -69,7 +60,7 @@ public class NoticeboardController extends AsyncTask<Context, Context, Context> 
 			dialog.dismiss();
 			dialog = null;
 		}
-
+		a.addElementResult();
 		return;
 	}
 

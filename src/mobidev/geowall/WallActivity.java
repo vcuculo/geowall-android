@@ -64,18 +64,14 @@ public class WallActivity extends Activity implements OnClickListener {
 		setting = getSharedPreferences(USER_PREFERENCES, 0);
 
 		if (setting.contains("SESSION") && !noticeboardRequest) {
-			new NoticeboardController(rNB).execute(this);
-			addElementResult();
+			new NoticeboardController(rNB, this).execute(this);
 
-		} else if (noticeboardRequest) {
-			addElementResult();
-		} else {
-			Log.e("SharePreferences", "Session non è nelle pre");
 		}
 		db.close();
 	}
 
 	public void addElementResult() {
+
 		TableLayout messages = (TableLayout) findViewById(R.id.tableMessages);
 		LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 		ArrayList<Message> messaggio = getMessage();
@@ -85,7 +81,7 @@ public class WallActivity extends Activity implements OnClickListener {
 			View itemView = inflater.inflate(R.layout.wall_layout_item, null);
 
 			TextView t2 = (TextView) itemView.findViewById(R.id.text);
-			t2.setText(messaggio.get(i).gettext());
+			t2.setText(messaggio.get(i).gettext() + " ");
 			String imgBase64 = messaggio.get(i).getimg();
 			if (imgBase64 != null) {
 				Bitmap temp = MediaController.decodeBase64toBitmap(imgBase64);
@@ -97,10 +93,10 @@ public class WallActivity extends Activity implements OnClickListener {
 			}
 			TextView t1 = (TextView) itemView.findViewById(R.id.title);
 			t1.setText(messaggio.get(i).getnick());
-			
+
 			TextView t3 = (TextView) itemView.findViewById(R.id.textDate);
 			t3.setText(messaggio.get(i).getdate());
-			
+
 			messages.addView(itemView);
 		}
 	}
@@ -118,7 +114,8 @@ public class WallActivity extends Activity implements OnClickListener {
 					.decodeBase64toBitmap(photo));
 
 		}
-
+		// addElementResult();
+		// new UpdateNBController(this).execute(this);
 	}
 
 	@Override
@@ -150,7 +147,7 @@ public class WallActivity extends Activity implements OnClickListener {
 		Intent i;
 		switch (item.getItemId()) {
 		case R.id.logoutMenu:
-			new LogoutController().execute(this);
+			new LogoutController(this).execute(this);
 			break;
 		case R.id.settingMenu:
 			i = new Intent(this, GeoMapActivity.class);
@@ -163,16 +160,18 @@ public class WallActivity extends Activity implements OnClickListener {
 	}
 
 	private ArrayList<Message> getMessage() {
+		sql = db.getWritableDatabase();
 		int pxNb = getIntent().getIntExtra("pxNb", Integer.MAX_VALUE);
 		int pyNb = getIntent().getIntExtra("pyNb", Integer.MAX_VALUE);
 		ArrayList<Message> m = new ArrayList<Message>();
-		String where = "Messaggio.posizioneX = " + pxNb
-				+ " and Messaggio.posizioneY = " + pyNb
-				+ " order by idMessaggio desc";
+
+		String[] args = { Integer.toString(pxNb), Integer.toString(pyNb) };
 		try {
-			Cursor c = sql.rawQuery(
-					"select testo, img, nick, dataMessaggio from Messaggio where "
-							+ where, null);
+			Cursor c = sql
+					.rawQuery(
+							"select testo, img, nick, dataMessaggio from Messaggio where posizioneX = ? and posizioneY = ? order by idMessaggio desc",
+							args);
+
 			while (c.moveToNext()) {
 				String text = c.getString(c.getColumnIndex("testo"));
 				String img = c.getString(c.getColumnIndex("img"));
@@ -182,8 +181,10 @@ public class WallActivity extends Activity implements OnClickListener {
 			}
 
 		} catch (NullPointerException e) {
+			Log.i("cacthMessage", "messaggionon scrive");
 			return null;
 		}
+		sql.close();
 		return m;
 	}
 

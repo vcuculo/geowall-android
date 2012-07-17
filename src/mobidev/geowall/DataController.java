@@ -67,7 +67,8 @@ public class DataController {
 			ArrayList<Message> m = new ArrayList<Message>();
 			JSONArray messageJson = board.getJSONArray("messages");
 			if (messageJson != null) {
-				for (int i = 0; i < messageJson.length(); i++) {
+				int lenght=messageJson.length();
+				for (int i = 0; i < messageJson.length() ; i++) {
 					JSONObject message = messageJson.getJSONObject(i);
 					int id = message.getInt("id");
 					String nick = message.getString("nick");
