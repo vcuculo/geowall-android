@@ -20,6 +20,7 @@ public class NoticeboardController extends AsyncTask<Context, Context, Context> 
 	RequestNoticeBoard rnb;
 	NoticeBoard nb;
 	WallActivity a;
+	
 	public NoticeboardController(RequestNoticeBoard rnb, WallActivity a) {
 		super();
 		this.rnb = rnb;
@@ -49,10 +50,10 @@ public class NoticeboardController extends AsyncTask<Context, Context, Context> 
 		}
 		return contextglobal;
 	}
+	
+	protected void onProgressUpdate(Context... c) {
 
-	protected void onProgressUpdate(Context c) {
-
-    	dialog = ProgressDialog.show(a, "", "Loading. Please wait...", true);
+    	dialog = ProgressDialog.show(c[0], "", "Loading. Please wait...", true);
 	}
 
 	protected void onPostExecute(Context c) {

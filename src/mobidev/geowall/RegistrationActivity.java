@@ -74,9 +74,7 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 				accountImage.setAdjustViewBounds(true);
 				accountImage.setMaxHeight(40);
 				accountImage.setMaxWidth(40);
-				accountImage.setImageBitmap(imageAccount);
-
-			
+				accountImage.setImageBitmap(imageAccount);			
 		}
 	}
 
@@ -171,7 +169,5 @@ public class RegistrationActivity extends Activity implements OnClickListener {
 		editor.putString("EMAIL", userPreferences.getemail());
 		editor.putString("PASS", userPreferences.getpassword());
 		editor.commit();
-
 	}
-
 }

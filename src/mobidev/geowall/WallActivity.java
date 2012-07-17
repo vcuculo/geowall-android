@@ -66,6 +66,8 @@ public class WallActivity extends Activity implements OnClickListener {
 		if (setting.contains("SESSION") && !noticeboardRequest) {
 			new NoticeboardController(rNB, this).execute(this);
 
+		}else{
+			addElementResult();
 		}
 		db.close();
 	}

@@ -72,7 +72,7 @@ public class InsertMessageActivity extends Activity implements OnClickListener {
 			SharedPreferences settings=getSharedPreferences(USER_PREFERENCES, 0);
 			String nick= settings.getString("NICK", null);
 			Message message=new Message(nick, text, image, null, null);
-			new MessageController(rNB, message).execute(this);
+			new MessageController(rNB, message, this).execute(this);
 			/*
 			 * chiamata al server
 			 */

@@ -3,6 +3,7 @@ package mobidev.geowall;
 import java.io.IOException;
 import java.util.Date;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,12 +18,13 @@ public class MessageController extends AsyncTask<Context, Context, Context> {
 	RequestNoticeBoard nb;
 	Message m;
 	private String USER_PREFERENCES = "UserPreference";
-
+	Activity a;
 	
-	public MessageController(RequestNoticeBoard nb,Message m){
+	public MessageController(RequestNoticeBoard nb,Message m, Activity a){
 		super();
 		this.nb=nb;
 		this.m=m;
+		this.a=a;
 	}
 	
 	@Override
@@ -63,6 +65,7 @@ public class MessageController extends AsyncTask<Context, Context, Context> {
 			dialog.dismiss();
 			dialog = null;
 		}
+		a.finish();
 		Intent i=new Intent(contextglobal,WallActivity.class);
 		i.putExtra("ID", 4);
 		i.putExtra("NoRequest", true);
