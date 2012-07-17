@@ -93,11 +93,14 @@ public class MyAreaOverlay extends Overlay {
 
 		for (int i = 0; i < 9; i++) {
 
-			latfact = (-(i / 3) + 1) * LAT_FACTOR;
-			lonfact = ((i % 3) - 1) * LON_FACTOR;
+			latfact = -(i / 3) + 1;
+			lonfact = (i % 3) - 1;
 
-			lat = (Math.ceil(myPosition.getLatitudeE6() / LAT_FACTOR) * LAT_FACTOR) + latfact;
-			lon = (Math.floor(myPosition.getLongitudeE6() / LON_FACTOR) * LON_FACTOR) + lonfact;
+			int segnoLat = (myPosition.getLatitudeE6() < 0) ? -1 : 1;
+			int segnoLon = (myPosition.getLongitudeE6() < 0) ? -1 : 1;
+
+			lat = (Math.ceil(Math.abs(myPosition.getLatitudeE6()) / LAT_FACTOR) * LAT_FACTOR) + (latfact * LAT_FACTOR);
+			lon = (Math.floor(Math.abs(myPosition.getLongitudeE6()) / LON_FACTOR) * LON_FACTOR) + (lonfact * LON_FACTOR);
 			
 			Log.i("Lat - Lon", lat + " - " + lon);
 			
@@ -105,10 +108,8 @@ public class MyAreaOverlay extends Overlay {
 			//lon = (myPosition.getLongitudeE6() + lonfact) / LON_FACTOR;
 
 			//areas[i][0] = new GeoPoint((int) (Math.round(lat)) * LAT_FACTOR,(int) (Math.round(lon)) * LON_FACTOR);
-			areas[i][0] = new GeoPoint((int) lat ,	(int) lon);
-			areas[i][1] = new GeoPoint(
-					areas[i][0].getLatitudeE6() + LAT_FACTOR,
-					areas[i][0].getLongitudeE6() + LON_FACTOR);
+			areas[i][0] = new GeoPoint((int) lat * segnoLat,	(int) lon * segnoLon);
+			areas[i][1] = new GeoPoint((int) (lat + LAT_FACTOR) * segnoLat,(int) (lon + LON_FACTOR) * segnoLon);
 
 			// Convert Points to on screen location
 			Point p1 = new Point();
