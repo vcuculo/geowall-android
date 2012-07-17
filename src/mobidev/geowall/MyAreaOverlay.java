@@ -96,12 +96,16 @@ public class MyAreaOverlay extends Overlay {
 			latfact = (-(i / 3) + 1) * LAT_FACTOR;
 			lonfact = ((i % 3) - 1) * LON_FACTOR;
 
-			lat = (myPosition.getLatitudeE6() + latfact) / LAT_FACTOR;
-			lon = (myPosition.getLongitudeE6() + lonfact) / LON_FACTOR;
+			lat = (Math.ceil(myPosition.getLatitudeE6() / LAT_FACTOR) * LAT_FACTOR) + latfact;
+			lon = (Math.floor(myPosition.getLongitudeE6() / LON_FACTOR) * LON_FACTOR) + lonfact;
+			
+			Log.i("Lat - Lon", lat + " - " + lon);
+			
+			//lat = (myPosition.getLatitudeE6() + latfact) / LAT_FACTOR;
+			//lon = (myPosition.getLongitudeE6() + lonfact) / LON_FACTOR;
 
-			areas[i][0] = new GeoPoint((int) (Math.round(lat)) * LAT_FACTOR,
-					(int) (Math.round(lon)) * LON_FACTOR);
-
+			//areas[i][0] = new GeoPoint((int) (Math.round(lat)) * LAT_FACTOR,(int) (Math.round(lon)) * LON_FACTOR);
+			areas[i][0] = new GeoPoint((int) lat ,	(int) lon);
 			areas[i][1] = new GeoPoint(
 					areas[i][0].getLatitudeE6() + LAT_FACTOR,
 					areas[i][0].getLongitudeE6() + LON_FACTOR);
