@@ -47,6 +47,8 @@ public class LoginController extends AsyncTask<Context, Context, String> {
 				se.commit();
 				Intent i = new Intent(context[0], GeoMapActivity.class);
 				context[0].startActivity(i);
+
+
 			}else{
 				error=true;
 				session=tempSession;

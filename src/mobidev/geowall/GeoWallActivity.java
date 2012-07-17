@@ -45,7 +45,8 @@ public class GeoWallActivity extends Activity implements OnClickListener {
 		if(settings.contains("SESSION")){
 			Intent i=new Intent(this,GeoMapActivity.class);
 			startActivity(i);
-		}
+			finish();
+		}else{
 		
 		setContentView(R.layout.main);
 		
@@ -65,7 +66,7 @@ public class GeoWallActivity extends Activity implements OnClickListener {
 
 		clog = (String) nick.getText().toString();
 		cPw = (String) pw.getText().toString();
-
+		}
 	}
 
 	@Override
@@ -170,6 +171,5 @@ public class GeoWallActivity extends Activity implements OnClickListener {
 		AlertDialog alert = builder.create();
 		return alert;
 	}
-	
-	
+
 }
